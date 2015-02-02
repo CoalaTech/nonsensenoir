@@ -9,7 +9,7 @@ nsn.Stage = function(){
 
 		self.stage = new createjs.Stage(Engine.canvas);
 
-		self.stage.cursor = "url(/nsn/assets/props/cursor.png), auto";
+		// self.stage.cursor = "url(./build/img/props/cursor.png), auto";
 
 		self.stage.enableMouseOver(20);
 
@@ -66,11 +66,11 @@ nsn.Stage = function(){
 	};
 
 	self.setCursor = function(name){
-		self.stage.cursor = nsn.cursors[name];
+		// self.stage.cursor = nsn.cursors[name];
 	};
 
 	self.resetCursor = function(name){
-		self.stage.cursor = nsn.cursors["default"];
+		// self.stage.cursor = nsn.cursors["default"];
 	};
 
 	function createFadePanel(){

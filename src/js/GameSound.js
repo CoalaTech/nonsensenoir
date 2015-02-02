@@ -13,9 +13,9 @@ var GameSound = function(){
 		}
 
 		var manifest = [
-			{src: "./assets/sound/Thunder1.ogg", id:"startGameButton"},
-//			{src: "./assets/sound/SOLtheme.ogg", id:"mainGameMusic"},
-			{src: "./assets/sound/SOLthemeshort.ogg", id:"mainGameMusicShort"}
+			{src: "./sound/Thunder1.ogg", id:"startGameButton"},
+//			{src: "./sound/SOLtheme.ogg", id:"mainGameMusic"},
+			{src: "./sound/SOLthemeshort.ogg", id:"mainGameMusicShort"}
 		];
 
 		createjs.Sound.registerManifest(manifest);

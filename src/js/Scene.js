@@ -61,7 +61,7 @@ nsn.Scene = function(json){
 	self.flashback = function(enabled){
 		// Chame no console com Engine.currentScene.flashback(true);
 		if(!bitmapFilter){
-			bitmapFilter = new createjs.Bitmap("./assets/background/filter2.png");
+			bitmapFilter = new createjs.Bitmap("./img/background/filter2.png");
 			bitmapFilter.compositeOperation = "lighter";
 		}
 
