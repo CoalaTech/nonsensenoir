@@ -17,9 +17,9 @@
 	};
 
 	nsn.cursors = {
-		"default": "url(../assets/props/cursor.png), auto",
-		"default_highlight": "url(../assets/props/cursor_highlight.png), auto",
-		"exit": "url(../assets/props/cursor_exit.png), auto"
+		"default": "url(../build/img/props/cursor.png), auto",
+		"default_highlight": "url(../build/img/props/cursor_highlight.png), auto",
+		"exit": "url(../build/img/props/cursor_exit.png), auto"
 	};
 
 	nsn.listen = function(eventName, callback, scope){

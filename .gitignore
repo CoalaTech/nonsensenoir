@@ -12,3 +12,5 @@ tmp
 
 /component.json
 /bower_components
+
+/build
