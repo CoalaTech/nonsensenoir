@@ -1,0 +1,21 @@
+{
+  "name": "nonsensenoir",
+  "version": "0.0.0",
+  "description": "Adventure NonSenseNoir",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/CoalaTech/nonsensenoir.git"
+  },
+  "author": "",
+  "readmeFilename": "README.md",
+  "gitHead": "330f47fab9e45bd829e09d8f12a32d0cd2fe070e",
+  "bugs": {
+    "url": "https://github.com/CoalaTech/nonsensenoir/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-serve": "~0.1.6",
+    "bower": "~1.2.7"
+  }
+}
