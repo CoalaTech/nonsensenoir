@@ -1,0 +1,10 @@
+{
+  "name": "nonsensenoir",
+  "version": "0.0.1",
+  "dependencies": {
+    "easeljs": "~0.8.0",
+    "SoundJS": "~0.6.0",
+    "PreloadJS": "~0.6.0",
+    "TweenJS": "~0.6.0"
+  }
+}
