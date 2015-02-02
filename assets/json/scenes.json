@@ -1,0 +1,82 @@
+{
+	"Apartamento": {
+		"description": "Apartamento",
+		"showEffect": "fadeIn",
+		"hideEffect": "fadeOut",
+		"Characters":[
+			{
+				"name": "Detetive",
+				"startingX": 400,
+				"startingY": 300,
+				"facing": "right"
+			}
+			
+		],
+		"Background":{
+			"name": "apartamento",
+			"source": "apartamento.json"
+		},
+		"Objects":{
+			"source": "props.json"
+		},
+		"Exits":[
+			{
+				"name": "entradaSacada",
+				"description": "Porta para a sacada",
+				"source": "entradaSacada",
+				"imageX": 642,
+				"imageY": 42,
+				"exitX": 650,
+				"exitY": 225,
+				"playerX": 560,
+				"playerY": 275,
+				"targetScene": "Sacada",
+				"targetExit": "saidaSacada",
+				"facingOnEnter": "left"
+			}
+		]
+	},
+	"Sacada do Apartamento": {
+		"description": "Sacada",
+		"showEffect": "fadeIn",
+		"hideEffect": "fadeOut",
+		"Characters":[
+			{
+				"name": "Detetive",
+				"startingX": 60,
+				"startingY": 550,
+				"facing": "right"
+			},
+			{
+				"name": "Comadre",
+				"startingX": 500,
+				"startingY": 600,
+				"facing": "right"
+			}
+			
+		],
+		"Background":{
+			"name": "sacada",
+			"source": "sacada.json"
+		},
+		"Objects":{
+			"source": "props_sacada.json"
+		},
+		"Exits":[
+			{
+				"name": "saidaSacada",
+				"description": "Porta para o apartamento",
+				"source": "saidaSacada",
+				"imageX": 0,
+				"imageY": 472,
+				"exitX": 100,
+				"exitY": 550,
+				"playerX": 150,
+				"playerY": 550,
+				"targetScene": "Apartamento",
+				"targetExit": "entradaSacada",
+				"facingOnEnter": "right"
+			}
+		]
+	}
+}

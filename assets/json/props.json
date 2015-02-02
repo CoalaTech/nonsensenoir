@@ -1,0 +1,150 @@
+[
+        {
+                "name":"pinguim",
+                "path":"pinguim_s",
+                "x": 450,
+                "y": 54,
+                "pickable": true,
+                "use_position":{
+                    "x": 470,
+                    "y": 260
+                },
+                "dialogs": {
+                  "use": "Tá na mão mermão. Tá na mão do cumpadi! Tá na mãozinha...",
+                  "mouth": "Sabe lá o que rola em cima dessa geladeira. Não vou por a boca nesse bicho.",
+                  "see": "Um pinguim vestido a caráter para uma festa em cima do refrigerador que nunca acontecerá. Que deprimente..."
+                },                
+                "inventory_dialogs": {
+                  "mouth": "Oi pinguim lindo!",
+                  "see": "Um pinguim vestido de pinguim."
+                }
+        },
+        {
+                "name":"jackers",
+                "path":"jackers_s",
+                "x": 596,
+                "y": 119,
+                "pickable": true,
+                "use_position":{
+                    "x": 566,
+                    "y": 250
+                },
+                "dialogs": {
+                  "use": "Pegar um Jacker's eu vou. Eu vou, eu vou, eu vou agora eu vou!",
+                  "mouth": "Só se for agora!",
+                  "see": "Um jackers saboroso, apetitoso, lindo... Cara, que vontade de comer todos jackers do mundo e passar mal depois. Ah, eu quero simplesmente comer pra caramba, sem pensar em nada, só esquecer da vida e comer Jackers eternamente e acabar com meu estomâgo mas sentir o leve sabor apimentado com tomate. Hum, preciso ir pra Carrancas de novo. Bora galera?"
+                },                
+                "inventory_dialogs": {
+                  "mouth": "Hum... apetitoso!",
+                  "see": "O delicioso salgadinho tradicional de Carrancas."
+                }
+        },
+        {
+                "name":"faca",
+                "path":"faca_s",
+                "x": 370,
+                "y": 130,
+                "pickable": true,
+                "use_position":{
+                    "x": 400,
+                    "y": 130
+                },
+                "dialogs": { },
+                "inventory_dialogs": { }
+        },
+        {
+                "name":"mesinha",
+                "path":"mesinha",
+                "x": 604,
+                "y": 190,
+                "pickable": false,
+                "dialogs": { }
+        },
+        {
+                "name":"sofa",
+                "path":"sofa_s",
+                "x": 155,
+                "y": 255,
+                "pickable": false,
+                "use_position":{
+                    "x": 0,
+                    "y": 0
+                },
+                "dialogs": {
+                    "use": "Agora não é hora...",
+                    "mouth": "Tem comida no meio das almofadas",
+                    "see": "Um sofá macio"
+                }
+        },
+        {
+                "name":"almofada",
+                "path":"almofada_s",
+                "x": 193,
+                "y": 301,
+                "pickable": false,
+                "use_position":{
+                    "x": 100,
+                    "y": 360,
+                    "facing": "right",
+                    "pick_animation_direction": "bottom"
+                },
+                "dialogs": { }
+        },
+        {
+                "name":"Mesa de centro",
+                "path":"mesacentro",
+                "x": 60,
+                "y": 400,
+                "pickable": false,
+                "dialogs": { }
+        },
+        {
+                "name":"revista",
+                "path":"revista_s",
+                "x": 170,
+                "y": 410,
+                "pickable": true,
+                "use_position":{
+                    "x": 325,
+                    "y": 416
+                },
+                "dialogs": { },
+                "inventory_dialogs": { }
+        },
+        {
+                "name":"oculos",
+                "path":"oculos_s",
+                "x": 210,
+                "y": 450,
+                "pickable": true,
+                "use_position":{
+                    "x": 325,
+                    "y": 416
+                },
+                "dialogs": { },
+                "inventory_dialogs": { }
+        },
+        {
+                "name":"tesoura",
+                "path":"tesoura_s",
+                "x": 250,
+                "y": 425,
+                "pickable": true,
+                "use_position":{
+                    "x": 325,
+                    "y": 416
+                },
+                "dialogs": { },
+                "inventory_dialogs": { }
+        },
+        {
+                "name":"tv",
+                "path":"tv",
+                "x": 0,
+                "y": 457,
+                "foreground": true,
+                "pickable": false,
+                "dialogs": { },
+                "inventory_dialogs": { }
+        }
+]
