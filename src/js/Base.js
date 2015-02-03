@@ -1,6 +1,6 @@
 (function(){
 
-  window.nsn = {};
+  window.nsn = window.nsn || {};
 
   var listeners = {};
 

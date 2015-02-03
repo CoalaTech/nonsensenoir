@@ -169,23 +169,6 @@ $(function(){
     Engine.inventory = new Inventory();
   }
 
-
-
-  function onDeviceReady() {
-    //use AppMobi viewport to handle device resolution differences if you want
-    //AppMobi.display.useViewport(768,1024);
-
-    //hide splash screen now that our app is ready to run
-    AppMobi.device.hideSplashScreen();
-
-    initGame();
-  }
-
-  if(window.AppMobi !== undefined){
-    //initial event handler to detect when appMobi is ready to roll
-    document.addEventListener("appMobi.device.ready", onDeviceReady, false);
-  }else{
-    initGame();
-  }
+  window.onload = initGame;
 
 });

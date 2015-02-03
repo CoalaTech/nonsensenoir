@@ -10,6 +10,14 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      /*   Concats all the .js files under /src/js into nsn.js */
+      js: {
+        src: 'src/js/*.js',
+        dest: '<%=buildPath%>/js/nsn.js'
+      },
+    },
+
     copy: {
       dist: {
         files: [
@@ -50,13 +58,6 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: false,
-            cwd: 'src/js/',
-            src: ['**/*.js'],
-            dest: '<%=buildPath%>/js/'
-          },
-          {
-            expand: true,
-            flatten: false,
             cwd: 'src/css/',
             src: ['**/*.css'],
             dest: '<%=buildPath%>/css/'
@@ -75,7 +76,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-serve');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['copy:dist', 'serve']);
+  grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
 
 };
