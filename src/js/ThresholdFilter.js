@@ -35,63 +35,63 @@
 this.createjs = this.createjs||{};
 
 (function() {
-	"use strict";
+  "use strict";
 
 var ThresholdFilter = function( threshold ){
-	this.initialize(threshold);
+  this.initialize(threshold);
 };
 var p = ThresholdFilter.prototype = new createjs.Filter();
 
 // constructor:
-	/** @ignore */
-	p.initialize = function( threshold ) {
-		if( isNaN(threshold) || threshold < 0 ) threshold = 100;
-		this.threshold = threshold;
-	};
+  /** @ignore */
+  p.initialize = function( threshold ) {
+    if( isNaN(threshold) || threshold < 0 ) threshold = 100;
+    this.threshold = threshold;
+  };
 
 // public properties:
 
-	p.threshold = 100;
+  p.threshold = 100;
 
 // public methods:
 
-	p.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {
-		targetCtx = targetCtx || ctx;
-		if (!targetX) { targetX = x; }
-		if (!targetY) { targetY = y; }
-		var imageData, data, l,
-			r, g, b, v;
-		try {
-			imageData = ctx.getImageData(x, y, width, height);
-		} catch(e) {
-			return false;
-		}
+  p.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {
+    targetCtx = targetCtx || ctx;
+    if (!targetX) { targetX = x; }
+    if (!targetY) { targetY = y; }
+    var imageData, data, l,
+      r, g, b, v;
+    try {
+      imageData = ctx.getImageData(x, y, width, height);
+    } catch(e) {
+      return false;
+    }
 
-		data = imageData.data;
-		l = data.length;
-		for (var i=0; i<l; i+=4) {
-			r = data[i];
-			g = data[i+1];
-			b = data[i+2];
-			v = (0.2126*r + 0.7152*g + 0.0722*b >= this.threshold) ? 255 : 0;
-			data[i] = data[i+1] = data[i+2] = v;
-		}
-		targetCtx.putImageData(imageData, targetX, targetY);
-		return true;
-	};
+    data = imageData.data;
+    l = data.length;
+    for (var i=0; i<l; i+=4) {
+      r = data[i];
+      g = data[i+1];
+      b = data[i+2];
+      v = (0.2126*r + 0.7152*g + 0.0722*b >= this.threshold) ? 255 : 0;
+      data[i] = data[i+1] = data[i+2] = v;
+    }
+    targetCtx.putImageData(imageData, targetX, targetY);
+    return true;
+  };
 
-	/**
-	 * Returns a clone of this object.
-	 * @return {ThresholdFilter}
-	 **/
-	p.clone = function() {
-		return new ThresholdFilter(this.threshold);
-	};
+  /**
+   * Returns a clone of this object.
+   * @return {ThresholdFilter}
+   **/
+  p.clone = function() {
+    return new ThresholdFilter(this.threshold);
+  };
 
-	p.toString = function() {
-		return "[ThresholdFilter]";
-	};
+  p.toString = function() {
+    return "[ThresholdFilter]";
+  };
 
-	createjs.ThresholdFilter = ThresholdFilter;
+  createjs.ThresholdFilter = ThresholdFilter;
 
 }());
