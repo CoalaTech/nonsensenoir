@@ -1,199 +1,199 @@
 var Engine = function(){
 
-	var self = {};
+  var self = {};
 
-	self.scenes = {};
+  self.scenes = {};
 
-	self.characters = {};
+  self.characters = {};
 
-	self.backgrounds = {};
+  self.backgrounds = {};
 
-	self.assets = {};
+  self.assets = {};
 
-	function init () {
-		nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
-	}
+  function init () {
+    nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
+  }
 
-	self.loadManifest = function(manifest, callback){
-		var queue = new createjs.LoadQueue();
-		queue.addEventListener("complete",
-			function handleComplete() {
-				var asset;
-				for(var index in manifest){
-					asset = manifest[index];
-					self.assets[asset.id] = queue.getResult(asset.id);
-				}
-				noirSprite.fadeOut(2000);
-				callback.apply();
-			}
-		);
-		var pBar = $("#loadingBar");
-		var noirSprite = $("#loadingNoirAnimation");
-		var width = $("#gameArea").width() - 280;
-		queue.addEventListener("progress",
-			function(e){
-				pBar.css('width', e.loaded * 100 + "%");
-				if(e.loaded > 0){
-					noirSprite.css('left', width * e.loaded + "px");
-				}
-				if(e.loaded == 1){
-					noirSprite.fadeOut(2000);
-				}
-			}
-		);
-		queue.loadManifest(manifest);
-	};
+  self.loadManifest = function(manifest, callback){
+    var queue = new createjs.LoadQueue();
+    queue.addEventListener("complete",
+      function handleComplete() {
+        var asset;
+        for(var index in manifest){
+          asset = manifest[index];
+          self.assets[asset.id] = queue.getResult(asset.id);
+        }
+        noirSprite.fadeOut(2000);
+        callback.apply();
+      }
+    );
+    var pBar = $("#loadingBar");
+    var noirSprite = $("#loadingNoirAnimation");
+    var width = $("#gameArea").width() - 280;
+    queue.addEventListener("progress",
+      function(e){
+        pBar.css('width', e.loaded * 100 + "%");
+        if(e.loaded > 0){
+          noirSprite.css('left', width * e.loaded + "px");
+        }
+        if(e.loaded == 1){
+          noirSprite.fadeOut(2000);
+        }
+      }
+    );
+    queue.loadManifest(manifest);
+  };
 
-	self.buildScenes = function(){
-		self.objectManager = new nsn.ObjectManager();
+  self.buildScenes = function(){
+    self.objectManager = new nsn.ObjectManager();
 
-		var scenes = Engine.assets["scenes.json"];
-		$.each(scenes, function(name, config){
-			self.buildScene(this, config);
-		});
+    var scenes = Engine.assets["scenes.json"];
+    $.each(scenes, function(name, config){
+      self.buildScene(this, config);
+    });
 
-		/*	Deixar configuravel depois	*/
-		// self.currentScene = self.scenes.Apartamento;
-		// self.currentScene = self.scenes.Sacada;
-		// self.stage.addChild(self.currentScene.container);
-	};
+    /*  Deixar configuravel depois  */
+    // self.currentScene = self.scenes.Apartamento;
+    // self.currentScene = self.scenes.Sacada;
+    // self.stage.addChild(self.currentScene.container);
+  };
 
-	self.buildScene = function(config){
-		var scene = new nsn.Scene();
-		scene.jsonContent = config;
+  self.buildScene = function(config){
+    var scene = new nsn.Scene();
+    scene.jsonContent = config;
 
-		scene.name = config.description;
-		scene.showEffect = config.showEffect;
-		scene.hideEffect = config.hideEffect;
+    scene.name = config.description;
+    scene.showEffect = config.showEffect;
+    scene.hideEffect = config.hideEffect;
 
-		self.scenes[config.description] = scene;
-	};
+    self.scenes[config.description] = scene;
+  };
 
-	self.buildCharacter = function(config){
+  self.buildCharacter = function(config){
 
-		if(self.characters[config.name]){
-			return self.characters[config.name];
-		}
+    if(self.characters[config.name]){
+      return self.characters[config.name];
+    }
 
-		var character;
+    var character;
 
-		if(config.isPlayer){
-			character = new nsn.Player(config);
-			self.player = character;
-		}else{
-			character = new nsn.Character(config);
-		}
+    if(config.isPlayer){
+      character = new nsn.Player(config);
+      self.player = character;
+    }else{
+      character = new nsn.Character(config);
+    }
 
-		self.characters[config.name] = character;
+    self.characters[config.name] = character;
 
-		return character;
+    return character;
 
-	};
+  };
 
-	self.buildBackground = function(config){
+  self.buildBackground = function(config){
 
-		if(self.backgrounds[config.name]){
-			return self.backgrounds[config.name];
-		}
+    if(self.backgrounds[config.name]){
+      return self.backgrounds[config.name];
+    }
 
-		// var backgroundProperties = Engine.assets[config.source];
-		var background = new nsn.Background();
-		background.name = config.name;
-		background.properties = config;
-		background.init(Engine.assets[config.source]);
+    // var backgroundProperties = Engine.assets[config.source];
+    var background = new nsn.Background();
+    background.name = config.name;
+    background.properties = config;
+    background.init(Engine.assets[config.source]);
 
 
-		self.backgrounds[config.name] = background;
+    self.backgrounds[config.name] = background;
 
-		return background;
+    return background;
 
-	};
+  };
 
-	self.buildExit = function(config){
-		var exit = new nsn.Exit(config);
-	};
+  self.buildExit = function(config){
+    var exit = new nsn.Exit(config);
+  };
 
-	self.setSceneAsCurrent = function(sceneName, exitObject){
-		var scene = self.scenes[sceneName];
+  self.setSceneAsCurrent = function(sceneName, exitObject){
+    var scene = self.scenes[sceneName];
 
-		if(!scene){
-			return;
-		}
+    if(!scene){
+      return;
+    }
 
-		/*	A cena ainda nao foi construida	*/
-		if(!scene.loaded){
+    /*  A cena ainda nao foi construida  */
+    if(!scene.loaded){
 
-			var config = scene.jsonContent,
-				characterConfig,
-				character,
-				background,
-				exit;
+      var config = scene.jsonContent,
+        characterConfig,
+        character,
+        background,
+        exit;
 
-			$.each(config.Characters, function(index, conf){
-					characterConfig = self.assets['characters.json'][conf.name];
-					character = self.buildCharacter(characterConfig);
-					character.image.x = conf.startingX;
-					character.image.y = conf.startingY;
+      $.each(config.Characters, function(index, conf){
+          characterConfig = self.assets['characters.json'][conf.name];
+          character = self.buildCharacter(characterConfig);
+          character.image.x = conf.startingX;
+          character.image.y = conf.startingY;
 
-					scene.addCharacter(character);
-				}.bind(this)
-			);
+          scene.addCharacter(character);
+        }.bind(this)
+      );
 
-			var backgroundConfig = self.assets[config.Background.source];
-			background = self.buildBackground(backgroundConfig);
-			scene.addBackground(background);
+      var backgroundConfig = self.assets[config.Background.source];
+      background = self.buildBackground(backgroundConfig);
+      scene.addBackground(background);
 
-			if(config.Objects){
-				var objectsConfig = self.assets[config.Objects.source];
-				scene.setObjectsConfig(objectsConfig);
-			}
+      if(config.Objects){
+        var objectsConfig = self.assets[config.Objects.source];
+        scene.setObjectsConfig(objectsConfig);
+      }
 
-			if(config.Exits){
-				$.each(config.Exits, function(index, conf){
-					exit = new nsn.Exit();
-					exit.init(conf);
-					scene.addExit(exit);
-				});
-			}
+      if(config.Exits){
+        $.each(config.Exits, function(index, conf){
+          exit = new nsn.Exit();
+          exit.init(conf);
+          scene.addExit(exit);
+        });
+      }
 
-			scene.addListeners();
+      scene.addListeners();
 
-			scene.loaded = true;
-			
-		}
+      scene.loaded = true;
+      
+    }
 
-		/*	O jogador está vindo de outra cena	*/
-		if(exitObject){
-			var targetScene = scene.exits[exitObject.config.targetExit];
+    /*  O jogador está vindo de outra cena  */
+    if(exitObject){
+      var targetScene = scene.exits[exitObject.config.targetExit];
 
-			Engine.player.image.x = targetScene.config.playerX;
-			Engine.player.image.y = targetScene.config.playerY;
-			// Engine.player.facing = exitObject.config.facingOnEnter;
+      Engine.player.image.x = targetScene.config.playerX;
+      Engine.player.image.y = targetScene.config.playerY;
+      // Engine.player.facing = exitObject.config.facingOnEnter;
 
-			Engine.player.stop();
-			scene.addCharacter(Engine.player);
-		}
+      Engine.player.stop();
+      scene.addCharacter(Engine.player);
+    }
 
-		nsn.fire(nsn.events.SCENE_CHANGED, {"from": self.currentScene ? self.currentScene.name : undefined, "to": sceneName});
+    nsn.fire(nsn.events.SCENE_CHANGED, {"from": self.currentScene ? self.currentScene.name : undefined, "to": sceneName});
 
-		self.currentScene = scene;
-		self.stage.setScene(scene);
+    self.currentScene = scene;
+    self.stage.setScene(scene);
 
-		nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
-	};
+    nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
+  };
 
-	self.widescreen = function(value){
-		return Engine.currentScene.widescreen(value);
-	};
+  self.widescreen = function(value){
+    return Engine.currentScene.widescreen(value);
+  };
 
-	self.stopEverything = function() {
-		Engine.player.resetAnimation();
-		Engine.textManager.stopAllTexts();
-		Engine.objectHandler.hideHUD();
-	};
+  self.stopEverything = function() {
+    Engine.player.resetAnimation();
+    Engine.textManager.stopAllTexts();
+    Engine.objectHandler.hideHUD();
+  };
 
-	init();
+  init();
 
-	return self;
+  return self;
 
 }();
