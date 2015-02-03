@@ -1,13 +1,12 @@
-Repositorio do piloto do NonSenseNoir
+NonSenseNoir pilot
 ====
 
-## Iniciando um servidor simples
+Prototype of an adventure game. This is an old code that is being refactored and soon will become a full game.
 
-  Para rodar o piloto no Chrome é necessário um servidor HTTP simples. Se o Python estiver instalado é fácil de fazer.
-    1. Navegue até a pasta do projeto no terminal.
-    2. Digite 'python -m SimpleHTTPServer'
-    3. O comando vai indicar em que pasta o servidor está rodando. Por padrão é no localhost:8000
+## How to start the game
+ The project is using grunt and bower, so you need to run `npm install` and `bower install` first.
+ Then, just run `grunt` and visit:
+ 
+ `http://localhost:9000/build/index.html`
 
-  O servidor é iniciado na pasta que você está no terminal. Se houver um arquivo index.html na pasta ele é aberto automaticamente.
-
-  Para compartilhar o jogo com os amiguinhos na sua rede *local*, passe seu ip (ifconfig) e a porta, por exemplo, 192.168.1.4:8000
+ PS: This is not a fully playable game yet.
