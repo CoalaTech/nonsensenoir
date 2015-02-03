@@ -1,62 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head>
-	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
-	<title>NonSenseNoir - Best Adventure Game Ever</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <title>NonSenseNoir - Best Adventure Game Ever</title>
 
-	<link rel="stylesheet" type="text/css" href="css/fonts.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+  </head>
 
-	<div id="gameArea">
+  <body>
+    <div id="gameArea">
+      <div id="mainMenu">
 
-		<div id="mainMenu">
+        <div id="loadingProgressArea">
+          <div id="loadingNoirAnimation">
+            <img src="img/character/walk_s.gif" style="display: block;">
+          </div>
+          <div id="loadingBar"></div>
+        </div>
 
-			<div id="loadingProgressArea">
-				<div id="loadingNoirAnimation">
-					<img src="img/character/walk_s.gif" style="display: block;">
-				</div>
-				<div id="loadingBar"></div>
-			</div>
+        <div id="startGameButton">Iniciar</div>
+      </div>
 
-			<div id="startGameButton">Iniciar</div>
+      <canvas id="canvas"></canvas>
+    </div>
 
-		</div>
+    <script type="text/javascript">
+      nsn = {};
+    </script>
 
-		<canvas id="canvas"></canvas>
+    <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/easeljs-0.8.0.combined.js"></script>
+    <script type="text/javascript" src="js/lib/preloadjs-0.6.0.combined.js"></script>
+    <script type="text/javascript" src="js/lib/tweenjs-0.6.0.combined.js"></script>
+    <script type="text/javascript" src="js/lib/soundjs-0.6.0.combined.js"></script>
+    <script type="text/javascript" src="js/lib/pathfinding-browser.js"></script>
 
-	</div>
-
-	<script type="text/javascript">
-		nsn = {};
-	</script>
-
-	<script type="text/javascript" src="js/lib/jquery.min.js"></script>
-	<script type="text/javascript" src="js/lib/easeljs-0.8.0.combined.js"></script>
-	<script type="text/javascript" src="js/lib/preloadjs-0.6.0.combined.js"></script>
-	<script type="text/javascript" src="js/lib/tweenjs-0.6.0.combined.js"></script>
-	<script type="text/javascript" src="js/lib/soundjs-0.6.0.combined.js"></script>
-	<script type="text/javascript" src="js/lib/pathfinding-browser.js"></script>
-
-	<script type="text/javascript" src="js/ThresholdFilter.js"></script>
-	<script type="text/javascript" src="js/BrightnessFilter.js"></script>
-	<script type="text/javascript" src="js/Base.js"></script>
-	<script type="text/javascript" src="js/Stage.js"></script>
-	<script type="text/javascript" src="js/Scene.js"></script>
-	<script type="text/javascript" src="js/Background.js"></script>
-	<script type="text/javascript" src="js/Character.js"></script>
-	<script type="text/javascript" src="js/Player.js"></script>
-	<script type="text/javascript" src="js/GameSound.js"></script>	
-	<script type="text/javascript" src="js/Engine.js"></script>
-	<script type="text/javascript" src="js/Exit.js"></script>
-	<script type="text/javascript" src="js/ObjectManager.js"></script>
-	<script type="text/javascript" src="js/ObjectHandler.js"></script>
-	<script type="text/javascript" src="js/ObjectCombiner.js"></script>
-	<script type="text/javascript" src="js/Inventory.js"></script>
-	<script type="text/javascript" src="js/TextManager.js"></script>
-	<script type="text/javascript" src="js/ScriptMachine.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-
-</body>
+    <script type="text/javascript" src="js/ThresholdFilter.js"></script>
+    <script type="text/javascript" src="js/BrightnessFilter.js"></script>
+    <script type="text/javascript" src="js/Base.js"></script>
+    <script type="text/javascript" src="js/Stage.js"></script>
+    <script type="text/javascript" src="js/Scene.js"></script>
+    <script type="text/javascript" src="js/Background.js"></script>
+    <script type="text/javascript" src="js/Character.js"></script>
+    <script type="text/javascript" src="js/Player.js"></script>
+    <script type="text/javascript" src="js/GameSound.js"></script>  
+    <script type="text/javascript" src="js/Engine.js"></script>
+    <script type="text/javascript" src="js/Exit.js"></script>
+    <script type="text/javascript" src="js/ObjectManager.js"></script>
+    <script type="text/javascript" src="js/ObjectHandler.js"></script>
+    <script type="text/javascript" src="js/ObjectCombiner.js"></script>
+    <script type="text/javascript" src="js/Inventory.js"></script>
+    <script type="text/javascript" src="js/TextManager.js"></script>
+    <script type="text/javascript" src="js/ScriptMachine.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
 </html>
