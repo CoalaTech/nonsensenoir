@@ -35,62 +35,62 @@
 this.createjs = this.createjs||{};
 
 (function() {
-	"use strict";
+  "use strict";
 
 var BrightnessFilter = function( adjustment ){
-	this.initialize(adjustment);
+  this.initialize(adjustment);
 };
 var p = BrightnessFilter.prototype = new createjs.Filter();
 
 // constructor:
-	/** @ignore */
-	p.initialize = function( adjustment ) {
-		if( isNaN(adjustment) || adjustment < 0 ) adjustment = 100;
-		this.adjustment = adjustment;
-	};
+  /** @ignore */
+  p.initialize = function( adjustment ) {
+    if( isNaN(adjustment) || adjustment < 0 ) adjustment = 100;
+    this.adjustment = adjustment;
+  };
 
 // public properties:
 
-	p.adjustment = 100;
+  p.adjustment = 100;
 
 // public methods:
 
-	p.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {
-		targetCtx = targetCtx || ctx;
-		if (!targetX) { targetX = x; }
-		if (!targetY) { targetY = y; }
-		var imageData, data, l,
-			r, g, b, v;
-		try {
-			imageData = ctx.getImageData(x, y, width, height);
-		} catch(e) {
-			return false;
-		}
+  p.applyFilter = function(ctx, x, y, width, height, targetCtx, targetX, targetY) {
+    targetCtx = targetCtx || ctx;
+    if (!targetX) { targetX = x; }
+    if (!targetY) { targetY = y; }
+    var imageData, data, l,
+      r, g, b, v;
+    try {
+      imageData = ctx.getImageData(x, y, width, height);
+    } catch(e) {
+      return false;
+    }
 
-		data = imageData.data;
-		l = data.length;
-		for (var i=0; i<l; i+=4) {
-			data[i] += this.adjustment;
-			data[i+1] += this.adjustment;
-			data[i+2] += this.adjustment;
-		}
+    data = imageData.data;
+    l = data.length;
+    for (var i=0; i<l; i+=4) {
+      data[i] += this.adjustment;
+      data[i+1] += this.adjustment;
+      data[i+2] += this.adjustment;
+    }
 
-		targetCtx.putImageData(imageData, targetX, targetY);
-		return true;
-	};
+    targetCtx.putImageData(imageData, targetX, targetY);
+    return true;
+  };
 
-	/**
-	 * Returns a clone of this object.
-	 * @return {BrightnessFilter}
-	 **/
-	p.clone = function() {
-		return new BrightnessFilter(this.adjustment);
-	};
+  /**
+   * Returns a clone of this object.
+   * @return {BrightnessFilter}
+   **/
+  p.clone = function() {
+    return new BrightnessFilter(this.adjustment);
+  };
 
-	p.toString = function() {
-		return "[BrightnessFilter]";
-	};
+  p.toString = function() {
+    return "[BrightnessFilter]";
+  };
 
-	createjs.BrightnessFilter = BrightnessFilter;
+  createjs.BrightnessFilter = BrightnessFilter;
 
 }());
