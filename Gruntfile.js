@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     copy: {
       dist: {
         files: [
-          /*   Dependencias do bower */
+          /*   Bower dependencies */
           {
             expand: true,
             flatten: true,
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             dest: '<%=buildPath%>/js/lib'
           },
 
-          /*   Css das dependencias do bower */
+          /*   Bower's CSS dependencies */
           {
             expand: true,
             flatten: true,
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             src: ['**/*min.css'],
             dest: '<%=buildPath%>/css/lib'
           },
-          /*   Imagens das dependencias do bower */
+          /*   Bower's image dependencies */
           {
             expand: true,
             flatten: true,
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             dest: '<%=buildPath%>/img/lib'
           },
 
-          /*   Assets do projeto */
+          /*   Project's assets */
           {
             expand: true,
             flatten: false,
@@ -77,6 +77,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('default', ['copy:dist', 'serve']);
-  // grunt.registerTask('server', ['serve']);
 
 };
