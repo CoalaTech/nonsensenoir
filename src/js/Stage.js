@@ -9,8 +9,6 @@ nsn.Stage = function(){
 
     self.stage = new createjs.Stage(Engine.canvas);
 
-    // self.stage.cursor = "url(./build/img/props/cursor.png), auto";
-
     self.stage.enableMouseOver(20);
 
     self.stage.update();
