@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     concat: {
       /*   Concats all the .js files under /src/js into nsn.js */
       js: {
-        src: 'src/js/*.js',
+        src: ['src/js/**/*.js', '!src/js/main.js'],
         dest: '<%=buildPath%>/js/nsn.js'
       },
     },
@@ -21,6 +21,16 @@ module.exports = function(grunt) {
     copy: {
       dist: {
         files: [
+
+          /*   Main js file which must be loaded first */
+          {
+            expand: true,
+            flatten: true,
+            cwd: 'src/js/',
+            src: ['main.js'],
+            dest: '<%=buildPath%>/js/'
+          },
+
           /*   Bower dependencies */
           {
             expand: true,

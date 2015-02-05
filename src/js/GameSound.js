@@ -1,4 +1,4 @@
-var GameSound = function(){
+nsn.GameSound = function(){
 
   var self = {};
 

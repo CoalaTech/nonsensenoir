@@ -1,4 +1,4 @@
-var ObjectHandler = function(){
+nsn.ObjectHandler = function(){
 
   var self = {};
 

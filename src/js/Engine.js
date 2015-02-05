@@ -96,7 +96,6 @@ var Engine = function(){
       return self.backgrounds[config.name];
     }
 
-    // var backgroundProperties = Engine.assets[config.source];
     var background = new nsn.Background();
     background.name = config.name;
     background.properties = config;

@@ -87,7 +87,7 @@ var combinations = {
   }
 };
 
-var ObjectCombiner = function(){
+nsn.ObjectCombiner = function(){
 
   var self = {};
 
