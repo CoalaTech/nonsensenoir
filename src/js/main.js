@@ -1,4 +1,6 @@
-$(function(){
+(function(){
+
+  window.nsn = window.nsn || {};
 
   var canvas,
     stage,
@@ -8,7 +10,7 @@ $(function(){
 
   function initGame(){
 
-    Engine.gameSound = new GameSound();
+    Engine.gameSound = new nsn.GameSound();
 
     var canvas = $("#canvas")[0];
     canvas.width = 997;
@@ -154,7 +156,7 @@ $(function(){
   // }
 
   function createObjectHandler(){
-    Engine.objectHandler = new ObjectHandler();
+    Engine.objectHandler = new nsn.ObjectHandler();
   }
 
   function createObjectManager(){
@@ -162,13 +164,13 @@ $(function(){
   }
 
   function createObjectCombiner(){
-    Engine.objectCombiner = new ObjectCombiner();
+    Engine.objectCombiner = new nsn.ObjectCombiner();
   }
 
   function createInventory(){
-    Engine.inventory = new Inventory();
+    Engine.inventory = new nsn.Inventory();
   }
 
   window.onload = initGame;
 
-});
+})();

@@ -1,4 +1,4 @@
-var Inventory = function(){
+nsn.Inventory = function(){
 
   var self = {};
 
