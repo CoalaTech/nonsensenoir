@@ -29,9 +29,11 @@ nsn.Character = (function(){
 
       walkPromise = new $.Deferred();
 
-      var pathObject = Engine.currentScene.background.findPath(x, y);
+      var position = this.position();
 
-      walkPath.call(this, pathObject, walkPromise);
+      var path = Engine.currentScene.background.findPath(position[0], position[1], x, y);
+
+      walkPath.call(this, path, walkPromise);
 
       return walkPromise.promise();
 
@@ -95,15 +97,15 @@ nsn.Character = (function(){
 
   };
 
-  function walkPath(pathObject){
+  function walkPath(path){
 
-    if(!thereIsAPath(pathObject)){
+    if(!thereIsAPath(path)){
       walkPromise.resolve();
       return;
     }
 
-    currentPath = pathObject.path;
-    cellSize = pathObject.cellSize;
+    currentPath = path;
+    cellSize = Engine.cellSize;
     pathIndex = 0;
 
     walkAnimated.call(this);

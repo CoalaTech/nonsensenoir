@@ -96,10 +96,10 @@ var Engine = function(){
       return self.backgrounds[config.name];
     }
 
-    var background = new nsn.Background();
-    background.name = config.name;
-    background.properties = config;
-    background.init(Engine.assets[config.source]);
+    var imageSrc = Engine.assets[config.source],
+        image = new createjs.Bitmap(imageSrc);
+
+    var background = new nsn.Background(config.name, image, config.matrix);
 
 
     self.backgrounds[config.name] = background;
