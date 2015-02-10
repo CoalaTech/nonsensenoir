@@ -24,7 +24,7 @@ nsn.Inventory = function(){
     createCloseButton();
     setOpenInventoryOnKeypress();
 
-    Engine.stage.showHUD(self.openInventoryButton);
+    Engine.stage.addHUD(self.openInventoryButton);
 
     self.image = new createjs.Bitmap(Engine.assets.inventoryBackground);
 
@@ -94,8 +94,8 @@ nsn.Inventory = function(){
 
   self.showInventory = function(){
     Engine.stage.removeHUD(self.openInventoryButton);
-    Engine.stage.showHUD(self.closeInventoryButton);
-    Engine.stage.showHUD(self.group);
+    Engine.stage.addHUD(self.closeInventoryButton);
+    Engine.stage.addHUD(self.group);
 
     createjs.Tween.get(self.group).to({x: 0}, 200);
 
@@ -111,7 +111,7 @@ nsn.Inventory = function(){
     }
 
     Engine.stage.removeHUD(self.closeInventoryButton);
-    Engine.stage.showHUD(self.openInventoryButton);
+    Engine.stage.addHUD(self.openInventoryButton);
     createjs.Tween.get(self.group)
           .to({x: -200}, 200)
           .call(function(){
@@ -221,7 +221,7 @@ nsn.Inventory = function(){
       Engine.objectCombiner.combine(self.itemSelected, target);
     }else{
       Engine.objectManager.selectObject(target);
-      Engine.objectHandler.showHUD(
+      Engine.objectHandler.addHUD(
                     self.image.image.width + 10,
                     self.itemsGroup.y + target.group.y + 35,
                     target,

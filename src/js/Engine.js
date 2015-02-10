@@ -10,6 +10,8 @@ var Engine = function(){
 
   self.assets = {};
 
+  self.frameRate = 12;
+
   function init () {
     nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
   }
