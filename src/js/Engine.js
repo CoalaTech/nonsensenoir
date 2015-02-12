@@ -151,8 +151,7 @@ var Engine = function(){
 
       if(config.Exits){
         $.each(config.Exits, function(index, conf){
-          exit = new nsn.Exit();
-          exit.init(conf);
+          exit = new nsn.Exit(conf);
           scene.addExit(exit);
         });
       }
