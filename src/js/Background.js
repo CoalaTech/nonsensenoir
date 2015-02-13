@@ -28,6 +28,7 @@ nsn.Background = function(name, image, matrix){
    * @type {nsn.MatrixPathFinding}
    */
   this.pathFinder = new nsn.MatrixPathFinder(this.matrix);
+  // this.pathFinder = new nsn.BitmapMaskPathfinder(Engine.assets.maskAP);
 
   /**
    * The container for the background image and other children that might be needed
@@ -43,7 +44,7 @@ nsn.Background.prototype = {
 
   init: function(){
 
-    /* TODO: Nao deve ficar aqui. Deve ser atualizado sempre que a cena for trocada */
+    /* TODO: Shouldn't be here. Must be updated everytime the scene is switched */
     Engine.cellSize = this.cellSize;
 
     this.component.addChildAt(this.image, 0);
@@ -79,3 +80,5 @@ nsn.Background.prototype = {
   }
   
 };
+
+nsn.Background.prototype.constructor = nsn.Background;

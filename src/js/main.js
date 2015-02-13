@@ -42,41 +42,41 @@
   function addEventListeners(){
     var menuScreen = $('#mainMenu');
     // var self = this;
-    startButton.click(
-        function(){
-
-          menuScreen.fadeOut();
-
-          // Engine.gameSound.playSound(this.id, false);
-
-          Engine.buildScenes();
-
-          Engine.setSceneAsCurrent("Apartamento");
-          // Engine.setSceneAsCurrent("Sacada");
-
-          // Engine.stage.stage.update();
-
-          // initStage();
-
-          // stage.update();
-
-          createObjectHandler();
-          createObjectCombiner();
-
-          createInventory();
-
-          Engine.script = new nsn.ScriptMachine();
-
-          // Descomentar para rodar a música do jogo
-          // -1 quer dizer que o áudio fica em loop
-          // Engine.gameSound.playSound("mainGameMusicShort", -1);
-
-        }
-      );
+    startButton.click(onButtonClicked);
 
     startButton.css('display', 'none');
 
   }
+
+  var onButtonClicked = function(){
+
+    $('#mainMenu').fadeOut();
+
+    // Engine.gameSound.playSound(this.id, false);
+
+    Engine.buildScenes();
+
+    Engine.setSceneAsCurrent("Apartamento");
+    // Engine.setSceneAsCurrent("Sacada");
+
+    // Engine.stage.stage.update();
+
+    // initStage();
+
+    // stage.update();
+
+    createObjectHandler();
+    createObjectCombiner();
+
+    createInventory();
+
+    Engine.script = new nsn.ScriptMachine();
+
+    // Descomentar para rodar a música do jogo
+    // -1 quer dizer que o áudio fica em loop
+    // Engine.gameSound.playSound("mainGameMusicShort", -1);
+
+  };
 
   /*  Colocar na engine */
   // function buildScenes(scenes){
@@ -111,6 +111,10 @@
       {id: "player_sprite", src:"./img/character/player_sprite.png"},
       {id: "Dona", src:"./img/character/Dona.png"},
       {id: "scene2_2", src:"./img/background/scene2_2.jpg"},
+      // {id: "maskAP", src:"./img/background/maskAP.png"},
+      {id: "maskAP", src:"./img/background/maskAP.jpg"},
+      // {id: "maskAP", src:"./img/background/mask2.jpg"},
+      {id: "mask", src:"./img/background/mask.jpg"},
       {id: "balcony", src:"./img/background/balcony.jpg"},
       {id: "entradaSacada", src:"./img/props/entradaSacada.png"},
       {id: "saidaSacada", src:"./img/props/saidaSacada.png"},
@@ -140,6 +144,8 @@
     Engine.loadManifest(scene1_manifest,
       function handleComplete() {
         startButton.css('display', 'block');
+
+        // onButtonClicked();
       }
     );
   }

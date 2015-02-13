@@ -16,6 +16,9 @@ nsn.Exit.prototype = {
     /** @type {string} Exit's name/description */
     this.name = this.config.name;
 
+    /** @type {string} Exit's description */
+    this.description = this.config.description;
+
     /** @type {createjs.Bitmap} The exit's image, e.g, a door, a window, a rug, etc...  */
     this.image = new createjs.Bitmap(Engine.assets[this.config.source]);
 
