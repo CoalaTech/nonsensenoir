@@ -62,21 +62,19 @@ nsn.Exit.prototype = {
 
   _onMouseOver: function(){
 
+    //TODO Refatorar para stage ouvir novo evento
     Engine.stage.setCursor("exit");
-
-    if(!Engine.textManager.isShowingDialog){
-      Engine.textManager.showTextWithoutTimeout(this.description);
-    }
+    //TODO Refatorar para usar o nome do objeto e não uma string
+    nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Exit', text: this.description});
 
   },
 
   _onMouseOut: function (){
 
+    //TODO Refatorar para stage ouvir novo evento
     Engine.stage.resetCursor();
-
-    if (!Engine.textManager.isShowingDialog){
-      Engine.textManager.hideText();
-    }
+    //TODO Refatorar para usar o nome do objeto e não uma string
+    nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Exit'});
 
   }
 

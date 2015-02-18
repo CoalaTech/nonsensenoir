@@ -11,7 +11,10 @@
     TEXT_END: "text_end",
     STOP_EVERYTHING: "stop_everything",
 
-    ON_ACTION: "on_action"
+    ON_ACTION: "on_action",
+
+    ON_MOUSE_OVER_HIGHLIGHT: "on_mouse_over_highlight",
+    ON_MOUSE_OUT_HIGHLIGHT: "on_mouse_out_highlight",
   };
 
   nsn.cursors = {

@@ -45,6 +45,8 @@ nsn.TextManager.prototype = {
     this._textLayer.addEventListener('click', this.clearText);
 
     nsn.listen(nsn.events.SCENE_CHANGED, this.hideText);
+    nsn.listen(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, this._onMouseOverHighlight);
+    nsn.listen(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, this._onMouseOutHighlight);
   },
 
   _setSkipTextOnKeypress: function (){
@@ -232,7 +234,24 @@ nsn.TextManager.prototype = {
     _textObject.shadow = new createjs.Shadow("#000000", 2, 2, 0);
 
     return _textObject;
+  },
+
+  _onMouseOverHighlight: function(params){
+    if(!this._isShowingDialog){
+      this.showTextWithoutTimeout(params.text);
+    }
+  },
+
+  _onMouseOutHighlight: function(params){
+    if (!this._isShowingDialog){
+      this.hideText();
+    }
+
+    if(params.text){
+      this.showTextWithoutTimeout(params.text);
+    }
   }
+
 };
 
 nsn.TextManager.prototype.constructor = nsn.TextManager;

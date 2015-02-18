@@ -91,26 +91,32 @@ nsn.ObjectManager = function(){
 
   self.onMouseOverObject = function(evt){
     Engine.stage.setCursor("default_highlight");
-    if(!Engine.textManager.isShowingDialog){
-      var objectName = evt.target.name;
-      if(Engine.inventory.itemSelected){
-        if(isNotTheSameObjectInInventory(objectName)){
-          Engine.textManager.showTextWithoutTimeout(Engine.inventory.useItemMessage + " " + objectName);
-        }
-      }else{
-        Engine.textManager.showTextWithoutTimeout(objectName);
+
+    var objectName = evt.target.name;
+    var messageToShow = objectName;
+
+    //TODO Refatorar useItemMessage...
+    if(Engine.inventory.itemSelected){
+      if(isNotTheSameObjectInInventory(objectName)){
+        messageToShow = Engine.inventory.useItemMessage + " " + objectName
       }
     }
+
+    nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Object', text: messageToShow});
+
   };
 
   self.onMouseOutObject = function (evt){
     Engine.stage.resetCursor();
+
+    var messageToShow;
+
+    //TODO Refatorar useItemMessage...
     if(Engine.inventory.itemSelected){
-      Engine.textManager.hideText();
-      Engine.textManager.showTextWithoutTimeout(Engine.inventory.useItemMessage);
-    }else if (!Engine.textManager.isShowingDialog){
-      Engine.textManager.hideText();
+      messageToShow = Engine.inventory.useItemMessage;
     }
+
+    nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Object', text: messageToShow});
   };
 
   function isNotTheSameObjectInInventory(objectName){
