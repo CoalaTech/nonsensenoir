@@ -15,7 +15,6 @@ nsn.GameSound.prototype = {
 
   play: function(id, numberOfLoops){
 
-    // Plays the sound file
     // play (src, interrupt, delay, offset, loop (-1 for endless loop), volume, pan)
     var instance = createjs.Sound.play(id, createjs.Sound.INTERRUPT_NONE, 0, 0, numberOfLoops, 1);
 

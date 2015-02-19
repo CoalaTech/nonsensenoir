@@ -31,6 +31,7 @@ nsn.Character = (function(){
 
       var position = this.position();
 
+      /* TODO: Refatorar esse pedaço. Character nao tem que conhecer o background */
       var path = Engine.currentScene.background.findPath(position[0], position[1], x, y);
 
       walkPath.call(this, path, walkPromise);
@@ -182,7 +183,7 @@ nsn.Character = (function(){
 
   function thereIsAPath(pathToWalk){
 
-    if(pathToWalk){
+    if(pathToWalk && pathToWalk.length > 0){
       return true;
     }else{
       return false;

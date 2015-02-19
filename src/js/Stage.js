@@ -89,7 +89,7 @@ nsn.Stage.prototype = {
   setScene: function(scene){
     this.fadeIn(200, function(){
       this._scenePanel.removeAllChildren();
-      this._scenePanel.addChild(scene.container);
+      this._scenePanel.addChild(scene.component);
       this.fadeOut(200);
     }.bind(this));
   },
