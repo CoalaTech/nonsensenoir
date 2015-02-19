@@ -60,7 +60,7 @@
     } else {  /* It's an object */
       var keys = Object.keys(obj);
       for (i = 0, length = keys.length; i < length; i++) {
-        func.call(context, obj[keys[i]], keys[i], obj);
+        func.call(context, keys[i], obj[keys[i]], obj);
       }
     }
     return obj;

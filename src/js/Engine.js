@@ -51,7 +51,7 @@ var Engine = function(){
 
     var scenes = Engine.assets["scenes.json"];
     nsn.each(scenes, function(name, config){
-      self.buildScene(this, config);
+      self.buildScene(config);
     });
 
     /*  Deixar configuravel depois  */
@@ -130,7 +130,7 @@ var Engine = function(){
         background,
         exit;
 
-      nsn.each(config.Characters, function(index, conf){
+      nsn.each(config.Characters, function(conf, index){
           characterConfig = self.assets['characters.json'][conf.name];
           character = self.buildCharacter(characterConfig);
           character.image.x = conf.startingX;
@@ -151,7 +151,7 @@ var Engine = function(){
       }
 
       if(config.Exits){
-        nsn.each(config.Exits, function(index, conf){
+        nsn.each(config.Exits, function(conf, index){
           exit = new nsn.Exit(conf);
           scene.addExit(exit);
         });

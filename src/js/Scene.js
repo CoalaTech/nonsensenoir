@@ -29,6 +29,8 @@ nsn.Scene = function(){
 
   this.exits = {};
 
+  this.fx = {};
+
   this.init();
 
 };
@@ -44,6 +46,9 @@ p.init = function(){
   this.component.addChild(this.panels.main);
   this.component.addChild(this.panels.foreground);
   this.component.addChild(this.panels.effects);
+
+  this.fx.widescreen = new nsn.Panels.Widescreen(this.panels.effects, 100);
+  // this.panels.effects.addChild();
 
 };
 
@@ -176,13 +181,24 @@ p.flashback = function(){
   console.log('flashback');
 };
 
-p.widescreen = function(){
+// p.widescreen = function(){
+//   console.log('widescreen');
+//   var deferred = new $.Deferred();
+
+//   deferred.resolve();
+
+//   return deferred.promise();
+// };
+
+p.widescreen = function(enabled){
   console.log('widescreen');
-  var deferred = new $.Deferred();
 
-  deferred.resolve();
+  if(enabled){
+    return this.fx.widescreen.show(1000);
+  }else{
+    return this.fx.widescreen.hide(1000);
+  }
 
-  return deferred.promise();
 };
 
 p.fadeIn = function(){
