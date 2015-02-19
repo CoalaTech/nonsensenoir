@@ -207,7 +207,7 @@ nsn.Inventory = function(){
 
   self.reorganizeItems = function() {
     var position = 0;
-    $.each(self.itemsGroup.children, function() {
+    nsn.each(self.itemsGroup.children, function() {
       setGroupPositionInInventory(this, position);
       position++;
     });

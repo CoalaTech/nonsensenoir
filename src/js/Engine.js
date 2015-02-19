@@ -50,7 +50,7 @@ var Engine = function(){
     self.objectManager = new nsn.ObjectManager();
 
     var scenes = Engine.assets["scenes.json"];
-    $.each(scenes, function(name, config){
+    nsn.each(scenes, function(name, config){
       self.buildScene(this, config);
     });
 
@@ -130,7 +130,7 @@ var Engine = function(){
         background,
         exit;
 
-      $.each(config.Characters, function(index, conf){
+      nsn.each(config.Characters, function(index, conf){
           characterConfig = self.assets['characters.json'][conf.name];
           character = self.buildCharacter(characterConfig);
           character.image.x = conf.startingX;
@@ -146,17 +146,16 @@ var Engine = function(){
 
       if(config.Objects){
         var objectsConfig = self.assets[config.Objects.source];
-        scene.setObjectsConfig(objectsConfig);
+        var objects = self.objectManager.createObjects(objectsConfig);
+        scene.addObjects(objects);
       }
 
       if(config.Exits){
-        $.each(config.Exits, function(index, conf){
+        nsn.each(config.Exits, function(index, conf){
           exit = new nsn.Exit(conf);
           scene.addExit(exit);
         });
       }
-
-      scene.addListeners();
 
       scene.loaded = true;
       

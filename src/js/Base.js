@@ -46,4 +46,26 @@
     }
   };
 
+  /** Adapted from underscore.js - http://underscorejs.org/underscore.js */
+  nsn.each = function(obj, func, context){
+
+    if (!obj) return obj;
+
+    var i, length = obj.length;
+
+    if (length === +length) {  /* It's an array */
+      for (i = 0; i < length; i++) {
+        func.call(context, obj[i], i, obj);
+      }
+    } else {  /* It's an object */
+      var keys = Object.keys(obj);
+      for (i = 0, length = keys.length; i < length; i++) {
+        func.call(context, obj[keys[i]], keys[i], obj);
+      }
+    }
+    return obj;
+
+  }
+
+
 })();
