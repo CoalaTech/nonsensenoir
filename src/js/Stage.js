@@ -12,6 +12,8 @@ nsn.Stage = function(){
   this._textPanel = new createjs.Container();
   this._fadePanel = new createjs.Container();
 
+  this.scene = undefined;
+
   this.init();
 
 };
@@ -87,11 +89,20 @@ nsn.Stage.prototype = {
   },
 
   setScene: function(scene){
-    this.fadeIn(200, function(){
-      this._scenePanel.removeAllChildren();
-      this._scenePanel.addChild(scene.component);
-      this.fadeOut(200);
-    }.bind(this));
+    if(this.scene){
+      this.scene.fadeOut(function(){
+        this._scenePanel.removeAllChildren();
+        this._addScene(scene);
+      }.bind(this));
+    }else{
+      this._addScene(scene);
+    }
+  },
+
+  _addScene: function(scene){
+    this._scenePanel.addChild(scene.component);
+    scene.fadeIn();
+    this.scene = scene;
   },
 
   setCursor: function(name){
@@ -100,16 +111,6 @@ nsn.Stage.prototype = {
 
   resetCursor: function(name){
     this.stage.cursor = nsn.cursors["default"];
-  },
-
-  fadeIn: function(duration, onFinish){
-    var callback = onFinish || function(){};
-    createjs.Tween.get(this._fadePanel).to({alpha: 1}, duration).call(callback);
-  },
-
-  fadeOut: function(duration, onFinish){
-    var callback = onFinish || function(){};
-    createjs.Tween.get(this._fadePanel).to({alpha: 0}, duration).call(callback);
   },
 
   addHUD: function(item, fadeIn){

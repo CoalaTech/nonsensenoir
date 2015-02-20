@@ -48,7 +48,8 @@ p.init = function(){
   this.component.addChild(this.panels.effects);
 
   this.fx.widescreen = new nsn.Panels.Widescreen(this.panels.effects, 100);
-  // this.panels.effects.addChild();
+  this.fx.flashback = new nsn.Panels.Flashback(this.panels.effects);
+  this.fx.fade = new nsn.Panels.Fade(this.component);
 
 };
 
@@ -177,110 +178,28 @@ p.handleTick = function(){
 
 }
 
-p.flashback = function(){
-  console.log('flashback');
+p.flashback = function(enabled){
+  if(enabled){
+    this.fx.flashback.show();
+  }else{
+    this.fx.flashback.hide();
+  }
 };
 
-// p.widescreen = function(){
-//   console.log('widescreen');
-//   var deferred = new $.Deferred();
-
-//   deferred.resolve();
-
-//   return deferred.promise();
-// };
-
 p.widescreen = function(enabled){
-  console.log('widescreen');
-
   if(enabled){
     return this.fx.widescreen.show(1000);
   }else{
     return this.fx.widescreen.hide(1000);
   }
-
 };
 
-p.fadeIn = function(){
-  console.log('fadeIn');
+p.fadeIn = function(cb){
+  return this.fx.fade.in(400, cb);
 };
 
-p.fadeOut = function(){
-  console.log('fadeOut');
+p.fadeOut = function(cb){
+  return this.fx.fade.out(400, cb);
 };
 
 nsn.Scene.prototype.constructor = nsn.Scene;
-
-// nsn.Scene = function(json){
-
-  // self.flashback = function(enabled){
-  //   // Chame no console com Engine.currentScene.flashback(true);
-  //   if(!bitmapFilter){
-  //     bitmapFilter = new createjs.Bitmap("./img/background/filter2.png");
-  //     bitmapFilter.compositeOperation = "lighter";
-  //   }
-
-  //   if(enabled){
-  //     effectsPanel.addChild(bitmapFilter);
-  //   }else{
-  //     effectsPanel.removeChild(bitmapFilter);
-  //   }
-  // };
-
-  // self.widescreen = function(enabled){
-  //   var deferred = new $.Deferred();
-  //   var height = 100;
-  //   if(!wideEffect){
-  //     wideEffect = new createjs.Container();
-  //     // wideEffect.width = container.width;
-  //     // wideEffect.height = container.height;
-
-
-  //     bottomStrip = new createjs.Shape();
-  //     bottomStrip.graphics.beginFill("#000000").drawRect(0, 0, 1000, height);
-  //     bottomStrip.x = 0;
-  //     bottomStrip.alpha = 0.8;
-
-  //     topStrip = new createjs.Shape();
-  //     topStrip.graphics.beginFill("#000000").drawRect(0, 0, 1000, height);
-  //     topStrip.x = 0;
-  //     topStrip.alpha = 0.8;
-
-  //     wideEffect.addChild(bottomStrip);
-  //     wideEffect.addChild(topStrip);
-  //   }
-  //   var duration = 1000;
-  //   if(enabled){
-  //     topStrip.y = -height;
-  //     bottomStrip.y = 600;
-  //     effectsPanel.addChild(wideEffect);
-  //     createjs.Tween.get(topStrip).to({y: 0}, duration);
-  //     createjs.Tween.get(bottomStrip).to({y: bottomStrip.y - height}, duration).call(
-  //       function(){
-  //         deferred.resolve();
-  //       }
-  //     );
-  //   }else{
-  //     createjs.Tween.get(topStrip).to({y: -100}, duration);
-  //     createjs.Tween.get(bottomStrip).to({y: 600}, duration).call(
-  //       function(){
-  //         effectsPanel.removeChild(wideEffect);
-  //         deferred.resolve();
-  //       }
-  //     );
-  //   }
-  //   return deferred.promise();
-  // };
-
-  // self.fadeIn = function(duration, onFinish){
-  //   container.alpha = 0;
-  //   var callback = onFinish || function(){};
-  //   createjs.Tween.get(container).to({alpha: 1}, duration).call(callback);
-  // };
-
-  // self.fadeOut = function(duration, onFinish){
-  //   var callback = onFinish || function(){};
-  //   createjs.Tween.get(container).to({alpha: 0}, duration).call(callback);
-  // };
-
-// };
