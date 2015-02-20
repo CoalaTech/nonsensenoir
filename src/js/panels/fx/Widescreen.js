@@ -14,19 +14,18 @@ nsn.Panels.Widescreen = function(parent, stripHeight){
   this.bottomStrip = new createjs.Shape();
   this.bottomStrip.graphics.beginFill("#000000").drawRect(0, 0, this.width, this.stripHeight);
   this.bottomStrip.x = 0;
-  this.bottomStrip.y = -this.stripHeight;
+  this.bottomStrip.y = this.height;
   this.bottomStrip.alpha = 0.8;
 
   this.topStrip = new createjs.Shape();
   this.topStrip.graphics.beginFill("#000000").drawRect(0, 0, this.width, this.stripHeight);
   this.topStrip.x = 0;
-  this.topStrip.y = this.height;
+  this.topStrip.y = -this.stripHeight;
   this.topStrip.alpha = 0.8;
 
   this.panel.addChild(this.bottomStrip);
   this.panel.addChild(this.topStrip);
 
-  parent.addChild(this.panel);
 
 };
 
