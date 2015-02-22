@@ -96,7 +96,8 @@ nsn.ObjectCombiner = function(){
   }
 
   self.combine = function(source, target){
-    Engine.textManager.hideText();
+    nsn.fire(nsn.events.ON_COMBINE, {source: source, target: target});
+
     Engine.inventory.itemSelected = null;
 
     var combinationConfig = findCombinationConfig(source, target);

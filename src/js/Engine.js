@@ -187,7 +187,6 @@ var Engine = function(){
 
   self.stopEverything = function() {
     Engine.player.resetAnimation();
-    Engine.textManager.stopAllTexts();
     Engine.objectHandler.hideHUD();
   };
 

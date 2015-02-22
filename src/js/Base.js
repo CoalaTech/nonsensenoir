@@ -15,6 +15,11 @@
 
     ON_MOUSE_OVER_HIGHLIGHT: "on_mouse_over_highlight",
     ON_MOUSE_OUT_HIGHLIGHT: "on_mouse_out_highlight",
+    ON_COMBINE: "on_combine",
+    ITEM_PICKED: "item_picked",
+    USE_ITEM_START: "use_item_start",
+    PLAYER_TALKING: "player_talking",
+    PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended"
   };
 
   nsn.cursors = {

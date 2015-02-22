@@ -66,14 +66,7 @@ nsn.Background.prototype = {
 
     this.image.addEventListener('click',
       function(evt){
-
-        if (Engine.inventory.itemSelected){
-
-          Engine.inventory.cancelUseItem();
-
-        }else{
           nsn.fire(nsn.events.BACKGROUND_CLICKED, evt);
-        }
       }
     );
 

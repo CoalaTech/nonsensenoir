@@ -124,8 +124,9 @@ nsn.Inventory = function(){
   };
 
   self.cancelUseItem = function(){
-    self.itemSelected = null;
-    Engine.textManager.hideText();
+    if(self.itemSelected){
+      self.itemSelected = null;
+    }
   };
 
   var createOpenButton = function(){

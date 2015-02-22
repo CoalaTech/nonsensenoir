@@ -50,7 +50,6 @@ nsn.Character = (function(){
     addListeners: function(){
 
       this.image.addEventListener('click', function(){
-        Engine.textManager.showText("Vou te mandar de volta, meu fio!");
         setTimeout(function(){
           Engine.setSceneAsCurrent('Apartamento', Engine.currentScene.exits.saidaSacada);
         }, 2000);

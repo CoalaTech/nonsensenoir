@@ -8,9 +8,13 @@ nsn.TextManager = function(){
 
   this._nextLineOfText = "";
 
+  this._linesCounter = 0;
+
   this.canvasContext = Engine.canvas.getContext("2d");
 
   this._defaultTimeout = 7000;
+
+  this._currentTextTimeoutId;
 
   this._textLayer = new createjs.Container();
 
@@ -42,11 +46,16 @@ nsn.TextManager.prototype = {
 
     this.canvasContext.font = this._font;
 
-    this._textLayer.addEventListener('click', this.clearText);
+    this._textLayer.addEventListener('click', this.clearText.bind(this));
 
-    nsn.listen(nsn.events.SCENE_CHANGED, this.hideText);
-    nsn.listen(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, this._onMouseOverHighlight);
-    nsn.listen(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, this._onMouseOutHighlight);
+    nsn.listen(nsn.events.SCENE_CHANGED, this.hideText, this);
+    nsn.listen(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, this._onMouseOverHighlight, this);
+    nsn.listen(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, this._onMouseOutHighlight, this);
+    nsn.listen(nsn.events.STOP_EVERYTHING, this.stopAllTexts, this);
+    nsn.listen(nsn.events.ON_COMBINE, this.hideText, this);
+    nsn.listen(nsn.events.ITEM_PICKED, this._handleItemPicked, this);
+    nsn.listen(nsn.events.USE_ITEM_START, this._handleUseItemStart, this);
+    nsn.listen(nsn.events.PLAYER_TALKING, this._handlePlayerTalk, this);
   },
 
   _setSkipTextOnKeypress: function (){
@@ -77,6 +86,7 @@ nsn.TextManager.prototype = {
   },
 
   hideText: function(){
+    this._clearCurrentTextTimeout();
     this._textObject.text = "";
     this._isShowingDialog = false;
     this._textLayer.alpha = 0;
@@ -85,7 +95,7 @@ nsn.TextManager.prototype = {
   showText: function(text, customTimeout){
     var textBrokenInLines = this._splitTextInLines(text);
     var textWithLineBreaks = "";
-    var textTimeout = customTimeout || _defaultTimeout;
+    var textTimeout = customTimeout || this._defaultTimeout;
 
     if(this.currentDeferred && this.currentDeferred.promise().state() != "resolved"){
       this.currentDeferred.resolve();
@@ -95,37 +105,8 @@ nsn.TextManager.prototype = {
     this.stopAllTexts();
 
     if(textBrokenInLines.length > 2){
-
-      linesCounter = 0;
-
-      //Obs: Esses loops devem pesar, não? Tem um igual no cara andando...
-      (function loopToShowBigTexts () {
-         this.showTextTimeout = setTimeout(function () {
-
-          if(!this.isShowingText()){
-
-            textWithLineBreaks = this._getTwoLinesOfText(textBrokenInLines, linesCounter);
-
-            this._nextLineOfText = textWithLineBreaks;
-
-            this._isShowingDialog = true;
-
-            this._renderText(textWithLineBreaks, textTimeout);
-            linesCounter += 2;
-
-            if (linesCounter < textBrokenInLines.length){
-              loopToShowBigTexts();
-            }else{
-              this._nextLineOfText = "";
-            }
-
-          }else{
-            loopToShowBigTexts();
-          }
-
-         }, 100);
-      })(this);
-
+      this._linesCounter = 0;
+      this.loopToShowBigTexts(textBrokenInLines, textWithLineBreaks, textTimeout);
     }else{
       this._nextLineOfText = "";
       textWithLineBreaks = this._getTwoLinesOfText(textBrokenInLines, 0);
@@ -135,6 +116,33 @@ nsn.TextManager.prototype = {
 
     return this.currentDeferred.promise();
 
+  },
+
+  loopToShowBigTexts: function(textBrokenInLines, textWithLineBreaks, textTimeout){
+    this.showTextTimeout = setTimeout(function () {
+
+      if(!this.isShowingText()){
+
+        textWithLineBreaks = this._getTwoLinesOfText(textBrokenInLines, this._linesCounter);
+
+        this._nextLineOfText = textWithLineBreaks;
+
+        this._isShowingDialog = true;
+
+        this._renderText(textWithLineBreaks, textTimeout);
+        this._linesCounter += 2;
+
+        if (this._linesCounter < textBrokenInLines.length){
+          this.loopToShowBigTexts(textBrokenInLines, textWithLineBreaks, textTimeout);
+        }else{
+          this._nextLineOfText = "";
+        }
+
+      }else{
+        this.loopToShowBigTexts(textBrokenInLines, textWithLineBreaks, textTimeout);
+      }
+
+     }.bind(this), 100);
   },
 
   showTextWithoutTimeout: function(text){
@@ -150,14 +158,18 @@ nsn.TextManager.prototype = {
     this._textObject.text = text;
     this._isShowingDialog = true;
 
-    if(textTimeoutId){
-      clearTimeout(textTimeoutId);
-    }
+    this._clearCurrentTextTimeout();
 
     if(timeout && (timeout > 0)){
-      var textTimeoutId = setTimeout(this.clearText, timeout);
+      this._currentTextTimeoutId = setTimeout(this.clearText.bind(this), timeout);
     }
 
+  },
+
+  _clearCurrentTextTimeout: function(){
+    if(this._currentTextTimeoutId){
+      clearTimeout(this._currentTextTimeoutId);
+    }
   },
 
   stopAllTexts: function() {
@@ -250,6 +262,21 @@ nsn.TextManager.prototype = {
     if(params.text){
       this.showTextWithoutTimeout(params.text);
     }
+  },
+
+  _handleItemPicked: function(params){
+    this.showText(params.text);
+  },
+
+  _handleUseItemStart: function(params){
+    this.showTextWithoutTimeout(params.text);
+  },
+
+  _handlePlayerTalk: function(params){
+    this.showText(params.text);
+    this.currentDeferred.then(function(){
+      nsn.fire(nsn.events.PLAYER_SPEECH_TEXT_ENDED);
+    })
   }
 
 };
