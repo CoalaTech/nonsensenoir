@@ -222,7 +222,7 @@ nsn.Inventory = function(){
       Engine.objectCombiner.combine(self.itemSelected, target);
     }else{
       Engine.objectManager.selectObject(target);
-      Engine.objectHandler.addHUD(
+      Engine.objectHandler.showHUD(
                     self.image.image.width + 10,
                     self.itemsGroup.y + target.group.y + 35,
                     target,
