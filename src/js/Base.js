@@ -45,10 +45,7 @@
     }
   };
 
-  Function.prototype.extend = function(base, escope, args){
-    escope.parent = base;
-    base.apply(escope, args);
-    // this.prototype = base.protoype;
+  Function.prototype.implement = function(base){
     for(var func in base.prototype){
       this.prototype[func] = base.prototype[func];
     }
@@ -73,7 +70,7 @@
     }
     return obj;
 
-  }
+  };
 
 
 })();

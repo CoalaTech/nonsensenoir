@@ -43,7 +43,7 @@ nsn.Player = (function(){
 
     deferred.then(function(){
       nsn.fire(nsn.events.ITEM_PICKED, {item: item, text: actionText});
-    })
+    });
 
     return deferred.promise();
   };

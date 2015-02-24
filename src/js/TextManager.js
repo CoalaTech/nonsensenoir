@@ -14,13 +14,13 @@ nsn.TextManager = function(){
 
   this._defaultTimeout = 7000;
 
-  this._currentTextTimeoutId;
+  this._currentTextTimeoutId = undefined;
 
   this._textLayer = new createjs.Container();
 
   this.textContainer = new createjs.Container();
 
-  this.currentDeferred;
+  this.currentDeferred = undefined;
 
   this.init();
 
@@ -276,7 +276,7 @@ nsn.TextManager.prototype = {
     this.showText(params.text);
     this.currentDeferred.then(function(){
       nsn.fire(nsn.events.PLAYER_SPEECH_TEXT_ENDED);
-    })
+    });
   }
 
 };
