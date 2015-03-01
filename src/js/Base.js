@@ -3,6 +3,8 @@
   var listeners = {};
 
   nsn.events = {
+    ASSETS_LOADED: "assets_loaded",
+
     BACKGROUND_CLICKED: "background_clicked",
     PATH_FOUND: "path_found",
     SCENE_CHANGED: "scene_changed",
