@@ -95,14 +95,15 @@ nsn.TextManager.prototype = {
   },
 
   showText: function(text, customTimeout){
+
     var textBrokenInLines = this._splitTextInLines(text);
     var textWithLineBreaks = "";
     var textTimeout = customTimeout || this._defaultTimeout;
 
-    if(this.currentDeferred && this.currentDeferred.promise().state() != "resolved"){
+    if(this.currentDeferred && this.currentDeferred.promise._state != nsn.PromiseState.RESOLVED){
       this.currentDeferred.resolve();
     }
-    this.currentDeferred = new $.Deferred();
+    this.currentDeferred = new nsn.Deferred();
 
     this.stopAllTexts();
 
@@ -116,7 +117,7 @@ nsn.TextManager.prototype = {
       this._renderText(textWithLineBreaks, textTimeout);
     }
 
-    return this.currentDeferred.promise();
+    return this.currentDeferred.promise;
 
   },
 
@@ -276,7 +277,7 @@ nsn.TextManager.prototype = {
 
   _handlePlayerTalk: function(params){
     this.showText(params.text);
-    this.currentDeferred.then(function(){
+    this.currentDeferred.promise.then(function(){
       nsn.fire(nsn.events.PLAYER_SPEECH_TEXT_ENDED);
     });
   }

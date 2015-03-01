@@ -52,8 +52,6 @@ nsn.Character.prototype = {
     // Available since Character 'implements' nsn.Walkable
     return this.walkPath(path);
 
-    // return walkPromise.promise();
-
   },
 
   position: function (){

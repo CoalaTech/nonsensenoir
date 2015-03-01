@@ -33,7 +33,7 @@ nsn.Panels.Widescreen.prototype = {
 
   show: function(duration){
 
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     this.topStrip.y = -this.stripHeight;
     this.bottomStrip.y = this.height;
@@ -47,13 +47,13 @@ nsn.Panels.Widescreen.prototype = {
       }
     );
 
-    return deferred.promise();
+    return deferred.promise;
 
   },
 
   hide: function(duration){
 
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     createjs.Tween.get(this.topStrip).to({y: -this.stripHeight}, duration);
     createjs.Tween.get(this.bottomStrip).to({y: this.height}, duration).call(
@@ -63,7 +63,7 @@ nsn.Panels.Widescreen.prototype = {
       }.bind(this)
     );
 
-    return deferred.promise();
+    return deferred.promise;
 
   }
 

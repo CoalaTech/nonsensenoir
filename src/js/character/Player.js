@@ -13,7 +13,7 @@ nsn.Player = (function(){
 
   Player.prototype.pickItem = function(item, actionText){
 
-    var deferred = new $.Deferred(),
+    var deferred = new nsn.Deferred(),
       path;
 
     if(item.use_position){
@@ -45,12 +45,12 @@ nsn.Player = (function(){
       nsn.fire(nsn.events.ITEM_PICKED, {item: item, text: actionText});
     });
 
-    return deferred.promise();
+    return deferred.promise;
   };
 
   Player.prototype.useItem = function(item){
 
-    var deferred = new $.Deferred(),
+    var deferred = new nsn.Deferred(),
       path;
 
     if(item.use_position){
@@ -74,16 +74,16 @@ nsn.Player = (function(){
 
     }
 
-    return deferred.promise();
+    return deferred.promise;
   };
 
   Player.prototype.say = function(message){
-    talkingDeferred = new $.Deferred();
+    talkingDeferred = new nsn.Deferred();
     this.image.gotoAndPlay("talk");
 
     nsn.fire(nsn.events.PLAYER_TALKING, {text: message});
 
-    return talkingDeferred.promise();
+    return talkingDeferred.promise;
   };
 
   Player.prototype.addListeners = function(){
