@@ -41,16 +41,14 @@ nsn.Bootstrap = function(){
     {id: "cavalo", src:"./img/props/cavalo.png"}
   ];
 
+  this.startingScreen = new nsn.StartingScreen();
+
 };
 
 
 nsn.Bootstrap.prototype.init = function(){
 
   var queue = new createjs.LoadQueue();
-
-  var pBar = $("#loadingBar");
-  var noirSprite = $("#loadingNoirAnimation");
-  var width = $("#gameArea").width() - 280;
 
   queue.addEventListener("complete",
 
@@ -61,7 +59,6 @@ nsn.Bootstrap.prototype.init = function(){
         asset = this.manifest[index];
         Engine.assets[asset.id] = queue.getResult(asset.id);
       }
-      noirSprite.fadeOut(2000);
 
       nsn.fire(nsn.events.ASSETS_LOADED);
 
@@ -73,14 +70,9 @@ nsn.Bootstrap.prototype.init = function(){
 
     function(e){
 
-      pBar.css('width', e.loaded * 100 + "%");
-      if(e.loaded > 0){
-        noirSprite.css('left', width * e.loaded + "px");
-      }
-      if(e.loaded == 1){
-        noirSprite.fadeOut(2000);
-      }
-    }
+      this.startingScreen.step(e.loaded);
+
+    }.bind(this)
 
   );
 

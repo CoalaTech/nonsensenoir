@@ -26,7 +26,6 @@ nsn.Panels.Widescreen = function(parent, stripHeight){
   this.panel.addChild(this.bottomStrip);
   this.panel.addChild(this.topStrip);
 
-
 };
 
 nsn.Panels.Widescreen.prototype = {

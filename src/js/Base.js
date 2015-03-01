@@ -5,6 +5,8 @@
   nsn.events = {
     ASSETS_LOADED: "assets_loaded",
 
+    GAME_STARTED: "game_started",
+
     BACKGROUND_CLICKED: "background_clicked",
     PATH_FOUND: "path_found",
     SCENE_CHANGED: "scene_changed",

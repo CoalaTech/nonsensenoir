@@ -11,24 +11,17 @@
 
   function initGame(){
 
-    bootstrap = new nsn.Bootstrap();
-
     Engine.gameSound = new nsn.GameSound();
 
-    var canvas = $("#canvas")[0];
+    var canvas = document.getElementById("canvas");
     canvas.width = 997;
     canvas.height = 600;
 
     Engine.canvas = canvas;
 
-    startButton = $('#startGameButton');
-
     Engine.stage = stage = new nsn.Stage();
 
     addEventListeners();
-
-    bootstrap.init();
-
 
     /*  Tentativa de redimensionar a tela */
     if(document.body.offsetWidth < canvas.width || document.body.offsetHeight < canvas.height){
@@ -40,25 +33,18 @@
       stage.stage.scaleX = stage.stage.scaleY = scale;
     }
 
+    bootstrap = new nsn.Bootstrap();
+    bootstrap.init();
+
   }
 
   function addEventListeners(){
 
-    var menuScreen = $('#mainMenu');
-    // var self = this;
-    startButton.click(onButtonClicked);
-
-    startButton.css('display', 'none');
-
-    nsn.listen(nsn.events.ASSETS_LOADED, function(){
-      startButton.css('display', 'block');
-    })
+    nsn.listen(nsn.events.GAME_STARTED, onGameStarted);
 
   }
 
-  var onButtonClicked = function(){
-
-    $('#mainMenu').fadeOut();
+  var onGameStarted = function(){
 
     // Engine.gameSound.playSound(this.id, false);
 
