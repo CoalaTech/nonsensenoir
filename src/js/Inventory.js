@@ -58,18 +58,20 @@ nsn.Inventory = function(){
   }
 
   function setOpenInventoryOnKeypress(){
-    $(document).keypress(function(event){
+
+    nsn.DOMEvent.on(document, 'keypress', function(event){
+
       var keyCode = (event.keyCode ? event.keyCode : event.which);
 
       /* KeyCodes
-       *
        * i = 105
-       *
        */
       if (keyCode == 105){
         toggleInventory();
       }
-    });
+
+    }.bind(this));
+
   }
 
   self.addItem = function(item){

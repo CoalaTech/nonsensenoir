@@ -59,19 +59,21 @@ nsn.TextManager.prototype = {
   },
 
   _setSkipTextOnKeypress: function (){
-    $(document).keypress(function(event){
+
+    nsn.DOMEvent.on(document, 'keypress', function(event){
+
       var keyCode = (event.keyCode ? event.keyCode : event.which);
 
       /* KeyCodes
-       *
        * spacebar = 32
        * period = 46
-       *
        */
       if (keyCode == 32 || keyCode == 46){
         this.clearText();
       }
-    });
+
+    }.bind(this));
+
   },
 
   clearText: function(){
