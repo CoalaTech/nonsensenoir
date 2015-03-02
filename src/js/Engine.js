@@ -10,46 +10,18 @@ var Engine = function(){
 
   self.assets = {};
 
+  self.frameRate = 12;
+
   function init () {
     nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
   }
-
-  self.loadManifest = function(manifest, callback){
-    var queue = new createjs.LoadQueue();
-    queue.addEventListener("complete",
-      function handleComplete() {
-        var asset;
-        for(var index in manifest){
-          asset = manifest[index];
-          self.assets[asset.id] = queue.getResult(asset.id);
-        }
-        noirSprite.fadeOut(2000);
-        callback.apply();
-      }
-    );
-    var pBar = $("#loadingBar");
-    var noirSprite = $("#loadingNoirAnimation");
-    var width = $("#gameArea").width() - 280;
-    queue.addEventListener("progress",
-      function(e){
-        pBar.css('width', e.loaded * 100 + "%");
-        if(e.loaded > 0){
-          noirSprite.css('left', width * e.loaded + "px");
-        }
-        if(e.loaded == 1){
-          noirSprite.fadeOut(2000);
-        }
-      }
-    );
-    queue.loadManifest(manifest);
-  };
 
   self.buildScenes = function(){
     self.objectManager = new nsn.ObjectManager();
 
     var scenes = Engine.assets["scenes.json"];
-    $.each(scenes, function(name, config){
-      self.buildScene(this, config);
+    nsn.each(scenes, function(name, config){
+      self.buildScene(config);
     });
 
     /*  Deixar configuravel depois  */
@@ -96,10 +68,10 @@ var Engine = function(){
       return self.backgrounds[config.name];
     }
 
-    var background = new nsn.Background();
-    background.name = config.name;
-    background.properties = config;
-    background.init(Engine.assets[config.source]);
+    var imageSrc = Engine.assets[config.source],
+        image = new createjs.Bitmap(imageSrc);
+
+    var background = new nsn.Background(config.name, image, config.matrix);
 
 
     self.backgrounds[config.name] = background;
@@ -128,7 +100,7 @@ var Engine = function(){
         background,
         exit;
 
-      $.each(config.Characters, function(index, conf){
+      nsn.each(config.Characters, function(conf, index){
           characterConfig = self.assets['characters.json'][conf.name];
           character = self.buildCharacter(characterConfig);
           character.image.x = conf.startingX;
@@ -144,18 +116,16 @@ var Engine = function(){
 
       if(config.Objects){
         var objectsConfig = self.assets[config.Objects.source];
-        scene.setObjectsConfig(objectsConfig);
+        var objects = self.objectManager.createObjects(objectsConfig);
+        scene.addObjects(objects);
       }
 
       if(config.Exits){
-        $.each(config.Exits, function(index, conf){
-          exit = new nsn.Exit();
-          exit.init(conf);
+        nsn.each(config.Exits, function(conf, index){
+          exit = new nsn.Exit(conf);
           scene.addExit(exit);
         });
       }
-
-      scene.addListeners();
 
       scene.loaded = true;
       
@@ -187,7 +157,6 @@ var Engine = function(){
 
   self.stopEverything = function() {
     Engine.player.resetAnimation();
-    Engine.textManager.stopAllTexts();
     Engine.objectHandler.hideHUD();
   };
 

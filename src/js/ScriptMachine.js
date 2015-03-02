@@ -93,7 +93,7 @@ nsn.ScriptMachine = function(){
   }
 
   function playSound(){
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
     var timesPlayed = 0;
 
     var interval = setInterval(function(){
@@ -105,18 +105,18 @@ nsn.ScriptMachine = function(){
       }
     }, 200);
 
-    return deferred.promise();
+    return deferred.promise;
   }
 
   function wait(timeout){
     timeout = timeout || 500;
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     setTimeout(function(){
       deferred.resolve();
     }, timeout);
 
-    return deferred.promise();
+    return deferred.promise;
   }
 
   init();

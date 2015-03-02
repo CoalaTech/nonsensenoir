@@ -24,7 +24,7 @@ nsn.Inventory = function(){
     createCloseButton();
     setOpenInventoryOnKeypress();
 
-    Engine.stage.showHUD(self.openInventoryButton);
+    Engine.stage.addHUD(self.openInventoryButton);
 
     self.image = new createjs.Bitmap(Engine.assets.inventoryBackground);
 
@@ -58,18 +58,20 @@ nsn.Inventory = function(){
   }
 
   function setOpenInventoryOnKeypress(){
-    $(document).keypress(function(event){
+
+    nsn.DOMEvent.on(document, 'keypress', function(event){
+
       var keyCode = (event.keyCode ? event.keyCode : event.which);
 
       /* KeyCodes
-       *
        * i = 105
-       *
        */
       if (keyCode == 105){
         toggleInventory();
       }
-    });
+
+    }.bind(this));
+
   }
 
   self.addItem = function(item){
@@ -94,8 +96,8 @@ nsn.Inventory = function(){
 
   self.showInventory = function(){
     Engine.stage.removeHUD(self.openInventoryButton);
-    Engine.stage.showHUD(self.closeInventoryButton);
-    Engine.stage.showHUD(self.group);
+    Engine.stage.addHUD(self.closeInventoryButton);
+    Engine.stage.addHUD(self.group);
 
     createjs.Tween.get(self.group).to({x: 0}, 200);
 
@@ -111,7 +113,7 @@ nsn.Inventory = function(){
     }
 
     Engine.stage.removeHUD(self.closeInventoryButton);
-    Engine.stage.showHUD(self.openInventoryButton);
+    Engine.stage.addHUD(self.openInventoryButton);
     createjs.Tween.get(self.group)
           .to({x: -200}, 200)
           .call(function(){
@@ -124,8 +126,9 @@ nsn.Inventory = function(){
   };
 
   self.cancelUseItem = function(){
-    self.itemSelected = null;
-    Engine.textManager.hideText();
+    if(self.itemSelected){
+      self.itemSelected = null;
+    }
   };
 
   var createOpenButton = function(){
@@ -207,7 +210,7 @@ nsn.Inventory = function(){
 
   self.reorganizeItems = function() {
     var position = 0;
-    $.each(self.itemsGroup.children, function() {
+    nsn.each(self.itemsGroup.children, function() {
       setGroupPositionInInventory(this, position);
       position++;
     });

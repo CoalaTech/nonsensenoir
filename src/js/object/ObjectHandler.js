@@ -52,10 +52,11 @@ nsn.ObjectHandler = function(){
 
     if(currentObject.inInventory){
       if(evt.target.name == "use"){
+        //TODO Refatorar useItemMessage...
         var useItemMessage = "Usar " + currentObject.name + " com: ";
-        Engine.textManager.showTextWithoutTimeout(useItemMessage);
         Engine.inventory.useItemMessage = useItemMessage;
         Engine.inventory.itemSelected = currentObject;
+        nsn.fire(nsn.events.USE_ITEM_START, {currentObject: currentObject, text: useItemMessage});
       }else if (evt.target.name == "see"){
         actionText = currentObject.inventory_dialogs.see || defaultActionMessages.see;
         Engine.player.say(actionText);
@@ -68,10 +69,8 @@ nsn.ObjectHandler = function(){
         Engine.objectManager.unselectObject();
         actionText = currentObject.dialogs.use || defaultActionMessages.use;
         if(currentObject.pickable){
-          Engine.currentScene.player.pickItem(currentObject)
+          Engine.currentScene.player.pickItem(currentObject, actionText)
               .then(function(){
-                Engine.textManager.showText(actionText);
-                
                 Engine.currentScene.removeObject(currentObject);
               });
         }else{
@@ -96,7 +95,7 @@ nsn.ObjectHandler = function(){
     currentObject = objectClicked;
     // console.log(objectClicked);
     // Engine.currentScene.container.addChild(self.group);
-    Engine.stage.showHUD(self.group, true);
+    Engine.stage.addHUD(self.group, true);
   };
 
   self.hideHUD = function(){

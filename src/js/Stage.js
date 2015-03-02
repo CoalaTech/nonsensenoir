@@ -1,143 +1,147 @@
+/**
+* @copyright    2014 CoalaTech.
+*/
 nsn.Stage = function(){
 
-  var self = {};
+  /** @type {createjs.Stage} Reference to the createjs Stage instance */
+  this.stage = new createjs.Stage(Engine.canvas);
 
-  var scenePanel, blankPanel, hudPanel, textPanel, fadePanel,
-    fadeShape, blankShape;
+  this._scenePanel = new createjs.Container();
+  this._blankPanel = new createjs.Container();
+  this._hudPanel = new createjs.Container();
+  this._textPanel = new createjs.Container();
+  this._fadePanel = new createjs.Container();
 
-  function init(){
+  this.scene = undefined;
 
-    self.stage = new createjs.Stage(Engine.canvas);
+  this.init();
 
-    self.stage.enableMouseOver(20);
+};
 
-    self.stage.update();
+nsn.Stage.prototype = {
 
-    self.resetCursor();
+  init: function(){
 
-    scenePanel = new createjs.Container();
-    blankPanel = new createjs.Container();
-    hudPanel = new createjs.Container();
-    textPanel = new createjs.Container();
-    fadePanel = new createjs.Container();
+    this.stage.enableMouseOver(20);
 
-    self.stage.addChild(scenePanel);
-    self.stage.addChild(hudPanel);
-    self.stage.addChild(blankPanel);
-    self.stage.addChild(textPanel);
-    self.stage.addChild(fadePanel);
+    this.stage.addChild(this._scenePanel);
+    this.stage.addChild(this._hudPanel);
+    this.stage.addChild(this._blankPanel);
+    this.stage.addChild(this._textPanel);
+    this.stage.addChild(this._fadePanel);
 
-    createTextManager();
+    this._createTextManager();
 
-    createFadePanel();
+    this._createFadePanel();
 
-    createBlankPanel();
+    this._createBlankPanel();
 
-    addListeners();
+    this.stage.update();
 
-  }
+    this._addEventListeners();
 
-  function addListeners(){
-    createjs.Ticker.addEventListener("tick", handleTick);
-    createjs.Ticker.setFPS(11);
-  }
+    this.resetCursor();
 
-  function handleTick(){
-    self.stage.update();
-  }
+  },
 
-  function createTextManager(){
+  _addEventListeners: function(){
+
+    createjs.Ticker.addEventListener("tick", this._handleTick.bind(this));
+
+    createjs.Ticker.setFPS(Engine.frameRate);
+
+  },
+
+  _handleTick: function(){
+    this.stage.update();
+  },
+
+  _createTextManager: function(){
     Engine.textManager = new nsn.TextManager();
-    textPanel.addChild(Engine.textManager.textContainer);
-  }
+    this._textPanel.addChild(Engine.textManager.textContainer);
+  },
 
-  self.addChild = function(child){
-    self.stage.addChild(child);
-  };
-
-  self.setScene = function(scene){
-    self.fadeIn(200, function(){
-      scenePanel.removeAllChildren();
-      scenePanel.addChild(scene.container);
-      self.fadeOut(200);
-    });
-  };
-
-  self.setCursor = function(name){
-    self.stage.cursor = nsn.cursors[name];
-  };
-
-  self.resetCursor = function(name){
-    self.stage.cursor = nsn.cursors["default"];
-  };
-
-  function createFadePanel(){
+  _createFadePanel: function(){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,1)");
     graphics.drawRect(0, 0, Engine.canvas.width, Engine.canvas.height);
 
-    fadeShape = new createjs.Shape(graphics);
+    var fadeShape = new createjs.Shape(graphics);
     fadeShape.alpha = 0;
 
-    fadePanel.addChild(fadeShape);
-  }
+    this._fadePanel.addChild(fadeShape);
+  },
 
-  function createBlankPanel(){
+  _createBlankPanel: function(){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,0.01)");
     graphics.drawRect(0, 0, Engine.canvas.width, Engine.canvas.height);
 
     blankShape = new createjs.Shape(graphics);
 
-    blankPanel.alpha = 0;
+    this._blankPanel.alpha = 0;
 
-    blankPanel.addChild(blankShape);
-  }
+    this._blankPanel.addChild(blankShape);
+  },
 
-  self.fadeIn = function(duration, onFinish){
-    var callback = onFinish || function(){};
-    createjs.Tween.get(fadeShape).to({alpha: 1}, duration).call(callback);
-  };
+  addChild: function(child){
+    this.stage.addChild(child);
+  },
 
-  self.fadeOut = function(duration, onFinish){
-    var callback = onFinish || function(){};
-    createjs.Tween.get(fadeShape).to({alpha: 0}, duration).call(callback);
-  };
+  setScene: function(scene){
+    if(this.scene){
+      this.scene.fadeOut(function(){
+        this._scenePanel.removeAllChildren();
+        this._addScene(scene);
+      }.bind(this));
+    }else{
+      this._addScene(scene);
+    }
+  },
 
-  self.showHUD = function(item, fadeIn){
+  _addScene: function(scene){
+    this._scenePanel.addChild(scene.component);
+    scene.fadeIn();
+    this.scene = scene;
+  },
+
+  setCursor: function(name){
+    this.stage.cursor = nsn.cursors[name];
+  },
+
+  resetCursor: function(name){
+    this.stage.cursor = nsn.cursors["default"];
+  },
+
+  addHUD: function(item, fadeIn){
     if(fadeIn === true){
       item.alpha = 0;
-      hudPanel.addChild(item);
+      this._hudPanel.addChild(item);
       createjs.Tween.get(item).to({alpha: 1}, 100);
     }else{
-      hudPanel.addChild(item);
+      this._hudPanel.addChild(item);
     }
-  };
+  },
 
-  self.removeHUD = function(item, fadeOut){
+  removeHUD: function(item, fadeOut){
     if(fadeOut === true){
-      hudPanel.removeChild(item);
       createjs.Tween.get(item).to({alpha: 0}, 100);
+      this._hudPanel.removeChild(item);
     }else{
-      hudPanel.removeChild(item);
+      this._hudPanel.removeChild(item);
     }
-  };
+  },
 
-  self.disableInteraction = function(){
-    // blankPanel.addChild(blankShape);
-    blankPanel.alpha = 1;
+  disableInteraction: function(){
+    this._blankPanel.alpha = 1;
     console.log("Desabilitando interações");
-  };
+  },
 
-  self.enableInteraction = function(){
-    // blankPanel.removeChild(blankShape);
-    blankPanel.alpha = 0;
+  enableInteraction: function(){
+    this._blankPanel.alpha = 0;
     console.log("Habilitando interações");
-  };
-
-
-  init();
-
-  return self;
+  }
 
 };
+
+nsn.Stage.prototype.constructor = nsn.Stage;

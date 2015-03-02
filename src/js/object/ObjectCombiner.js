@@ -96,7 +96,8 @@ nsn.ObjectCombiner = function(){
   }
 
   self.combine = function(source, target){
-    Engine.textManager.hideText();
+    nsn.fire(nsn.events.ON_COMBINE, {source: source, target: target});
+
     Engine.inventory.itemSelected = null;
 
     var combinationConfig = findCombinationConfig(source, target);
@@ -139,7 +140,7 @@ nsn.ObjectCombiner = function(){
   }
 
   function removeCombinedItems(combinationConfig, source, target) {
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     /*
      *BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
@@ -169,7 +170,7 @@ nsn.ObjectCombiner = function(){
       });
     }
 
-    return deferred.promise();
+    return deferred.promise;
   }
 
   var generateAnotherItem = function(){

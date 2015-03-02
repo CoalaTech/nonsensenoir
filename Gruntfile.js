@@ -81,13 +81,32 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+
+    watch: {
+      files: ['src/**/*'],
+      tasks: ['no-serving'],
+    },
+
+    concurrent: {
+        serveAndWatch: {
+          tasks: ['serve', 'watch'],
+          options: {
+              logConcurrentOutput: true
+          }
+        }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-serve');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
 
-  grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
+  // grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
+  grunt.registerTask('default', ['concurrent:serveAndWatch']);
+  grunt.registerTask('no-serving', ['concat', 'copy:dist']);
 
 };

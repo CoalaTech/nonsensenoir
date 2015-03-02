@@ -3,6 +3,10 @@
   var listeners = {};
 
   nsn.events = {
+    ASSETS_LOADED: "assets_loaded",
+
+    GAME_STARTED: "game_started",
+
     BACKGROUND_CLICKED: "background_clicked",
     PATH_FOUND: "path_found",
     SCENE_CHANGED: "scene_changed",
@@ -11,7 +15,15 @@
     TEXT_END: "text_end",
     STOP_EVERYTHING: "stop_everything",
 
-    ON_ACTION: "on_action"
+    ON_ACTION: "on_action",
+
+    ON_MOUSE_OVER_HIGHLIGHT: "on_mouse_over_highlight",
+    ON_MOUSE_OUT_HIGHLIGHT: "on_mouse_out_highlight",
+    ON_COMBINE: "on_combine",
+    ITEM_PICKED: "item_picked",
+    USE_ITEM_START: "use_item_start",
+    PLAYER_TALKING: "player_talking",
+    PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended"
   };
 
   nsn.cursors = {
@@ -37,13 +49,65 @@
     }
   };
 
-  Function.prototype.extend = function(base, escope, args){
-    escope.parent = base;
-    base.apply(escope, args);
-    // this.prototype = base.protoype;
+  Function.prototype.implement = function(base){
     for(var func in base.prototype){
       this.prototype[func] = base.prototype[func];
     }
   };
+
+  /** Adapted from underscore.js - http://underscorejs.org/underscore.js */
+  nsn.each = function(obj, func, context){
+
+    if (!obj) return obj;
+
+    var i, length = obj.length;
+
+    if (length === +length) {  /* It's an array */
+      for (i = 0; i < length; i++) {
+        func.call(context, obj[i], i, obj);
+      }
+    } else {  /* It's an object */
+      var keys = Object.keys(obj);
+      for (i = 0, length = keys.length; i < length; i++) {
+        func.call(context, keys[i], obj[keys[i]], obj);
+      }
+    }
+    return obj;
+
+  };
+
+  /* Based on John Resig's implementation at:
+     http://ejohn.org/blog/flexible-javascript-events/
+  */
+  nsn.DOMEvent = {
+    on: function( obj, type, fn ) {
+      if ( obj.attachEvent ) {
+        obj['e'+type+fn] = fn;
+        obj[type+fn] = function(){
+          obj['e'+type+fn]( window.event );
+        };
+        obj.attachEvent( 'on'+type, obj[type+fn] );
+      } else
+        obj.addEventListener( type, fn, false );
+    },
+    off: function( obj, type, fn ) {
+      if ( obj.detachEvent ) {
+        obj.detachEvent( 'on'+type, obj[type+fn] );
+        obj[type+fn] = null;
+      } else
+        obj.removeEventListener( type, fn, false );
+    }
+  };
+
+  /* Facade for RSVP Promises */
+
+  nsn.Promise = RSVP.Promise;
+  nsn.Deferred = RSVP.defer;
+  nsn.PromiseState = {
+    PENDING: 0,
+    RESOLVED: 1,
+    REJECTED: 2
+  };
+
 
 })();
