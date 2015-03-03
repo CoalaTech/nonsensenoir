@@ -12,9 +12,6 @@ nsn.Bootstrap = function(){
     {id: "player_sprite", src:"./img/character/player_sprite.png"},
     {id: "Dona", src:"./img/character/Dona.png"},
     {id: "scene2_2", src:"./img/background/scene2_2.jpg"},
-    // {id: "maskAP", src:"./img/background/maskAP.png"},
-    {id: "maskAP", src:"./img/background/maskAP.jpg"},
-    // {id: "maskAP", src:"./img/background/mask2.jpg"},
     {id: "mask", src:"./img/background/mask.jpg"},
     {id: "balcony", src:"./img/background/balcony.jpg"},
     {id: "entradaSacada", src:"./img/props/entradaSacada.png"},
@@ -78,4 +75,4 @@ nsn.Bootstrap.prototype.init = function(){
 
   queue.loadManifest(this.manifest);
 
-}
+};
