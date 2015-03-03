@@ -16,36 +16,6 @@ var Engine = function(){
     nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
   }
 
-  self.loadManifest = function(manifest, callback){
-    var queue = new createjs.LoadQueue();
-    queue.addEventListener("complete",
-      function handleComplete() {
-        var asset;
-        for(var index in manifest){
-          asset = manifest[index];
-          self.assets[asset.id] = queue.getResult(asset.id);
-        }
-        noirSprite.fadeOut(2000);
-        callback.apply();
-      }
-    );
-    var pBar = $("#loadingBar");
-    var noirSprite = $("#loadingNoirAnimation");
-    var width = $("#gameArea").width() - 280;
-    queue.addEventListener("progress",
-      function(e){
-        pBar.css('width', e.loaded * 100 + "%");
-        if(e.loaded > 0){
-          noirSprite.css('left', width * e.loaded + "px");
-        }
-        if(e.loaded == 1){
-          noirSprite.fadeOut(2000);
-        }
-      }
-    );
-    queue.loadManifest(manifest);
-  };
-
   self.buildScenes = function(){
     self.objectManager = new nsn.ObjectManager();
 

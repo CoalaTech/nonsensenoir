@@ -16,12 +16,12 @@ nsn.Walkable.prototype = {
 
     this.stop();
 
-    this.walkPromise = $.Deferred();
+    this.walkDeferred = new nsn.Deferred();
 
     this.path = path;
 
     if(!this._pathIsValid()){
-      this.walkPromise.resolve();
+      this.walkDeferred.resolve();
     }else{
       this.cellSize = Engine.cellSize;
       this.pathIndex = 0;
@@ -29,7 +29,7 @@ nsn.Walkable.prototype = {
       this.walkAnimated();
     }
 
-    return this.walkPromise;
+    return this.walkDeferred.promise;
 
   },
 
@@ -39,7 +39,7 @@ nsn.Walkable.prototype = {
 
   /* 
     Splits the path into subpaths, calls walkTo() for each subpath.
-    In the last subpath it resolves the walkPromise, finishing the walking cycle.
+    In the last subpath it resolves the walkDeferred, finishing the walking cycle.
   */
   walkAnimated: function(){
 
@@ -54,7 +54,7 @@ nsn.Walkable.prototype = {
     this.pathIndex++;
 
     if(this.pathIndex == this.path.length - 1){
-      pathWalkPromise.then(this.walkPromise.resolve);
+      pathWalkPromise.then(this.walkDeferred.resolve);
       return;
     }
 
@@ -64,7 +64,7 @@ nsn.Walkable.prototype = {
 
   walkTo: function(x, y){
 
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     this.isPlayingAnimation = true;
     this.isMoving = true;
@@ -92,7 +92,7 @@ nsn.Walkable.prototype = {
             .call(this._onWalkTweenComplete.bind(this))
             .call(deferred.resolve);
 
-    return deferred.promise();
+    return deferred.promise;
 
   },
 
