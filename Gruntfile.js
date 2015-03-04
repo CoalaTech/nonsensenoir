@@ -106,7 +106,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-concurrent');
 
   // grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
-  grunt.registerTask('default', ['concurrent:serveAndWatch']);
+  grunt.registerTask('serving', ['concurrent:serveAndWatch']);
   grunt.registerTask('no-serving', ['concat', 'copy:dist']);
+  grunt.registerTask('default', ['no-serving', 'serving']);
 
 };
