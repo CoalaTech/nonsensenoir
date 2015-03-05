@@ -13,8 +13,8 @@ nsn.Player = (function(){
 
   Player.prototype.pickItem = function(item, actionText){
 
-    var deferred = new nsn.Deferred(),
-      path;
+    var deferred = new nsn.Deferred();
+    var path;
 
     if(item.use_position){
 
@@ -41,7 +41,7 @@ nsn.Player = (function(){
 
     }
 
-    deferred.then(function(){
+    deferred.promise.then(function(){
       nsn.fire(nsn.events.ITEM_PICKED, {item: item, text: actionText});
     });
 
