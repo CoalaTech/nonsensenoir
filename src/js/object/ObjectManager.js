@@ -1,95 +1,81 @@
 nsn.ObjectManager = function(){
+  this.objects = [];
 
-  var self = {},
-    objects, selectedObject,
-    colorFilter, blurFilter,
-    thresholdFilter, brightnessFilter,
-    bounds;
+  this.selectedObject = null;
 
-  function init(){
-    self.objects = [];
+  this.colorFilter = new createjs.ColorFilter(1, 0.8, 0.4, 1, 0, 0, 0, 0);
 
-    selectedObject = null;
+  this.blurFilter = new createjs.BlurFilter(2, 2, 0.6);
 
-    colorFilter = new createjs.ColorFilter(1, 0.8, 0.4, 1, 0, 0, 0, 0);
+  this.thresholdFilter = new createjs.ThresholdFilter(150);
 
-    blurFilter = new createjs.BlurFilter(2, 2, 0.6);
+  this.brightnessFilter = new createjs.BrightnessFilter(50);
 
-    thresholdFilter = new createjs.ThresholdFilter(150);
+  this.bounds = this.blurFilter.getBounds();
+};
 
-    brightnessFilter = new createjs.BrightnessFilter(50);
+nsn.ObjectManager.prototype = {
 
-    bounds = blurFilter.getBounds();
-  }
-
-  self.createObjects = function(objects){
+  createObjects: function(objects){
 
     var createdObjects = [];
     for (var i = 0; objectsSize = objects.length, i < objectsSize; i++) {
-      createdObjects.push(self.createObject(objects[i]));
+      createdObjects.push(this.createObject(objects[i]));
     }
 
     return createdObjects;
-  };
+  },
 
-  self.createObject = function(config) {
-    var objectBitmap = self.generateObjectBitmap(config);
+  createObject: function(config) {
+    var objectBitmap = this.generateObjectBitmap(config);
 
-    self.objects.push(objectBitmap);
+    this.objects.push(objectBitmap);
 
-    self.addObjectListeners(objectBitmap);
+    this.addObjectListeners(objectBitmap);
 
     return objectBitmap;
-  };
+  },
 
-  self.generateObjectBitmap = function(objectConfig) {
+  generateObjectBitmap: function(objectConfig) {
     var objectBitmap = new createjs.Bitmap(Engine.assets[objectConfig.path]);
     for (var property in objectConfig) {
       if(objectConfig.hasOwnProperty(property)){
         objectBitmap[property] = objectConfig[property];
       }
     }
-    // objectBitmap.name = objectConfig.name;
-    // objectBitmap.pickable = objectConfig.pickable;
-    // objectBitmap.use_position = objectConfig.use_position;
-    // objectBitmap.dialogs =  objectConfig.dialogs;
-    // objectBitmap.x = objectConfig.x;
-    // objectBitmap.y = objectConfig.y;
-    // objectBitmap.foreground = objectConfig.foreground;
 
     return objectBitmap;
-  };
+  },
 
-  self.addObjectListeners = function(objectBitmap){
-    objectBitmap.addEventListener('click', onObjectClicked);
-    objectBitmap.addEventListener('mouseover', self.onMouseOverObject);
-    objectBitmap.addEventListener('mouseout', self.onMouseOutObject);
-  };
+  addObjectListeners: function(objectBitmap){
+    objectBitmap.addEventListener('click', this._onObjectClicked.bind(this));
+    objectBitmap.addEventListener('mouseover', this.onMouseOverObject.bind(this));
+    objectBitmap.addEventListener('mouseout', this.onMouseOutObject.bind(this));
+  },
 
-  function onObjectClicked(e){
-
+  _onObjectClicked: function(e){
     if(Engine.inventory.itemSelected){
       Engine.objectCombiner.combine(Engine.inventory.itemSelected, e.currentTarget);
     }else{
-      var coordinates = targetCoordinates(e.target);
+      var coordinates = this._targetCoordinates(e.target);
 
-      self.unselectObject();
-      self.selectObject(e.target);
+      this.unselectObject();
+      this.selectObject(e.target);
 
       Engine.objectHandler.showHUD(coordinates.x, coordinates.y, e.target);
     }
+  },
 
-  }
-
-  function targetCoordinates(target){
+  _targetCoordinates: function(target){
     var coordinates = {
       x: target.x + target.image.width / 2,
       y: target.y + target.image.height / 2
     };
-    return coordinates;
-  }
 
-  self.onMouseOverObject = function(evt){
+    return coordinates;
+  },
+
+  onMouseOverObject: function(evt){
     Engine.stage.setCursor("default_highlight");
 
     var objectName = evt.target.name;
@@ -97,16 +83,16 @@ nsn.ObjectManager = function(){
 
     //TODO Refatorar useItemMessage...
     if(Engine.inventory.itemSelected){
-      if(isNotTheSameObjectInInventory(objectName)){
+      if(this._isNotTheSameObjectInInventory(objectName)){
         messageToShow = Engine.inventory.useItemMessage + " " + objectName
       }
     }
 
     nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Object', text: messageToShow});
 
-  };
+  },
 
-  self.onMouseOutObject = function (evt){
+  onMouseOutObject: function (evt){
     Engine.stage.resetCursor();
 
     var messageToShow;
@@ -117,41 +103,39 @@ nsn.ObjectManager = function(){
     }
 
     nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Object', text: messageToShow});
-  };
+  },
 
-  function isNotTheSameObjectInInventory(objectName){
+  _isNotTheSameObjectInInventory: function(objectName){
     return Engine.inventory.itemSelected.name != objectName;
-  }
+  },
 
-  self.selectObject = function(object){
-    selectedObject = object;
-    coordinates = targetCoordinates(object);
+  selectObject: function(object){
+    this.selectedObject = object;
+    coordinates = this._targetCoordinates(object);
     x = coordinates.x;
     y = coordinates.y;
 
     /*  Color filter  */
-    selectedObject.filters = [colorFilter];
-    selectedObject.cache(0, 0, object.image.width, object.image.height);
+    this.selectedObject.filters = [this.colorFilter];
+    this.selectedObject.cache(0, 0, object.image.width, object.image.height);
 
     /*  Blur e Color Filter  */
     // this.selectedObject.filters = [this.blurFilter, this.colorFilter];
     // this.selectedObject.cache(this.bounds.x, this.bounds.y, object.image.width + this.bounds.width, object.image.height + this.bounds.height);
 
     /*  Threshold filter  */
-    // selectedObject.filters = [brightnessFilter, thresholdFilter];
-    // selectedObject.cache(0, 0, object.image.width, object.image.height);
+    // this.selectedObject.filters = [this.brightnessFilter, this.thresholdFilter];
+    // this.selectedObject.cache(0, 0, object.image.width, object.image.height);
 
-  };
+  },
 
-  self.unselectObject = function(){
-    if(selectedObject){
-      selectedObject.filters = [];
-      selectedObject.uncache();
-      selectedObject = null;
+  unselectObject: function(){
+    if(this.selectedObject){
+      this.selectedObject.filters = [];
+      this.selectedObject.uncache();
+      this.selectedObject = null;
     }
-  };
-
-  init();
-
-  return self;
+  }
 };
+
+nsn.ObjectManager.prototype.constructor = nsn.ObjectManager;
