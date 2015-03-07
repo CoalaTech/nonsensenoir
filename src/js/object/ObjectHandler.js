@@ -8,6 +8,12 @@ nsn.ObjectHandler = function(){
 
   this.group = this._createGroup();
 
+  /* Defined in _createActionButton:
+   * this.mouth
+   * this.see
+   * this.use
+   */
+
   this.init();
 
 };
