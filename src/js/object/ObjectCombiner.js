@@ -7,8 +7,6 @@
   - Pode acontecer algo como sumir um item da tela sem gerar um novo
 */
 
-var DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";
-
 var combinations = {
   "pinguim_jackers":{
     "combinable?" : true,
@@ -92,7 +90,8 @@ nsn.ObjectCombiner = function(){
   var self = {};
 
   function init(){
-    nsn.listen(nsn.events.ITEM_USED_IN_SCENE, hideObjectAfterUse, this);
+    nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, hideObjectAfterUse, this);
+    nsn.listen(nsn.events.FINISHED_COMBINE_ITEMS_FROM_INVENTORY, finishObjectCombination, this);
   }
 
   self.combine = function(source, target){
@@ -106,8 +105,17 @@ nsn.ObjectCombiner = function(){
       closeInventory();
     }
 
-    // TODO TextManager should be handling this
-    showCombinationMessage(combinationConfig);
+    /* TODO Decide if we are going to dispatch this event here.
+     * Here, the combination action didn't really finish yet. It only dispatched other
+     * events to perform the combination.
+     * If we really want to wait for the combination to finish, we need to move this
+     * to function 'finishObjectCombination'.
+     * It's here now because it's handling only the text show and it makes sense to
+     * show the combination message concurrently with the combination action being performed.
+     * Another option is to create another event only to handle the combination message, in case
+     * we really need an event that guarantees the combination action has ended.
+     */
+    nsn.fire(nsn.events.FINISHED_ON_COMBINE, {combinationConfig: combinationConfig});
   };
 
   var findCombinationConfig = function(source, target){
@@ -127,11 +135,11 @@ nsn.ObjectCombiner = function(){
   function combineItemsAccordingTo(combinationConfig, source, target){
     if(combinationConfig && combinationConfig["combinable?"]){
       /*
-       *BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
-       *na tela? Tipo usar o pinguim no Jackers no cenário mesmo. Vai gerar um item no inventario
-       *do cara do nada. E do jeito que o código tá embaixo vai dar pau. Dá pra arrumar tranquilo,
-       *mas enfim, acho que temos que organizar melhor.
-      */
+       * BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
+       * na tela? Tipo usar o pinguim no Jackers no cenário mesmo. Vai gerar um item no inventario
+       * do cara do nada. E do jeito que o código tá embaixo vai dar pau. Dá pra arrumar tranquilo,
+       * mas enfim, acho que temos que organizar melhor.
+       */
 
       var newItemAfterCombination;
 
@@ -145,20 +153,17 @@ nsn.ObjectCombiner = function(){
         createjs.Tween.get(target.group).to({alpha: 0}, 500).call(function() {
           nsn.fire(nsn.events.COMBINING_ITEMS_FROM_INVENTORY, {source: source,
                                                                target: target,
-                                                               newItem: newItemAfterCombination});
+                                                               newItem: newItemAfterCombination,
+                                                               combinationConfig: combinationConfig});
         });
       }else{
         // TODO We need to review these fadeouts
         createjs.Tween.get(source.group).to({alpha: 0}, 300).call(function(){
           nsn.fire(nsn.events.USING_ITEM_IN_SCENE, {source: source,
                                                     target: target,
-                                                    newItem: newItemAfterCombination});
+                                                    newItem: newItemAfterCombination,
+                                                    combinationConfig: combinationConfig});
         });
-      }
-
-      //TODO Check if we need to wait previous events to end before starting the script
-      if(combinationConfig["run_script?"]){
-        runScript(combinationConfig);
       }
 
       return true;
@@ -173,20 +178,18 @@ nsn.ObjectCombiner = function(){
     return Engine.objectManager.createObject(newItemConfig);
   };
 
-  var showCombinationMessage = function(combinationConfig){
-    var combinationMessage = DEFAULT_COMBINATION_MESSAGE;
-
-    if(combinationConfig){
-      combinationMessage = combinationConfig["message"];
-    }
-
-    Engine.player.say(combinationMessage);
-  };
-
   // TODO We need to review these fadeouts
   var hideObjectAfterUse = function(params){
-    createjs.Tween.get(params.target).to({alpha: 0}, 500);
+    createjs.Tween.get(params.target).to({alpha: 0}, 500).call(function(){
+      finishObjectCombination(params);
+    });
   };
+
+  var finishObjectCombination = function(params){
+    if(params.combinationConfig["run_script?"]){
+      runScript(params.combinationConfig);
+    }
+  }
 
   function runScript(combinationConfig) {
     var script_params = combinationConfig["script_params"];

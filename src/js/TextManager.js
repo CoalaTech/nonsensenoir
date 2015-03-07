@@ -1,5 +1,7 @@
 nsn.TextManager = function(){
 
+  this.DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";
+
   this._font = "35px Mouse Memoirs";
 
   this._textObject = this._createTextObject();
@@ -52,10 +54,11 @@ nsn.TextManager.prototype = {
     nsn.listen(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, this._onMouseOverHighlight, this);
     nsn.listen(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, this._onMouseOutHighlight, this);
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopAllTexts, this);
-    nsn.listen(nsn.events.ON_COMBINE, this.hideText, this);
     nsn.listen(nsn.events.ITEM_PICKED, this._handleItemPicked, this);
     nsn.listen(nsn.events.USE_ITEM_START, this._handleUseItemStart, this);
     nsn.listen(nsn.events.PLAYER_TALKING, this._handlePlayerTalk, this);
+    nsn.listen(nsn.events.ON_COMBINE, this.hideText, this);
+    nsn.listen(nsn.events.FINISHED_ON_COMBINE, this._handleCombinationMessage, this);
   },
 
   _setSkipTextOnKeypress: function (){
@@ -280,6 +283,16 @@ nsn.TextManager.prototype = {
     this.currentDeferred.promise.then(function(){
       nsn.fire(nsn.events.PLAYER_SPEECH_TEXT_ENDED);
     });
+  },
+
+  _handleCombinationMessage: function(params){
+    var combinationMessage = this.DEFAULT_COMBINATION_MESSAGE;
+
+    if(params.combinationConfig){
+      combinationMessage = params.combinationConfig["message"];
+    }
+
+    nsn.fire(nsn.events.COMBINATION_MESSAGE_BUILT, {combinationMessage: combinationMessage});
   }
 
 };

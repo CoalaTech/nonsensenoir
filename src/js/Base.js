@@ -24,9 +24,12 @@
     PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended",
 
     ON_COMBINE: "on_combine",
+    FINISHED_ON_COMBINE: "finished_on_combine",
     COMBINING_ITEMS_FROM_INVENTORY: "combining_items_from_inventory",
+    FINISHED_COMBINING_ITEMS_FROM_INVENTORY: "finished_combining_items_from_inventory",
     USING_ITEM_IN_SCENE: "using_item_in_scene",
-    ITEM_USED_IN_SCENE: "item_used_in_scene"
+    FINISHED_USING_ITEM_IN_SCENE: "finished_using_item_in_scene",
+    COMBINATION_MESSAGE_BUILT: "combination_message_built"
   };
 
   nsn.cursors = {

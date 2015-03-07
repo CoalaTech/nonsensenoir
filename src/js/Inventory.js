@@ -39,7 +39,7 @@ nsn.Inventory.prototype = {
     nsn.listen(nsn.events.ON_COMBINE, this.cancelUseItem, this);
     nsn.listen(nsn.events.COMBINING_ITEMS_FROM_INVENTORY, this._combineItems, this);
     nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.hideInventory, this);
-    nsn.listen(nsn.events.ITEM_USED_IN_SCENE, this._removeItemAfterUse, this);
+    nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, this._removeItemAfterUse, this);
   },
 
   setOpenInventoryOnKeypress: function(){
@@ -263,6 +263,8 @@ nsn.Inventory.prototype = {
     if(params.newItem){
       this.addItem(params.newItem);
     }
+
+    nsn.fire(nsn.events.FINISHED_COMBINE_ITEMS_FROM_INVENTORY, params);
   },
 
   _removeItemAfterUse: function(params){

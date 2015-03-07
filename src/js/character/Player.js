@@ -77,7 +77,7 @@ nsn.Player = (function(){
     }
 
     deferred.promise.then(function(){
-      nsn.fire(nsn.events.ITEM_USED_IN_SCENE, params);
+      nsn.fire(nsn.events.FINISHED_USING_ITEM_IN_SCENE, params);
     });
 
     return deferred.promise;
@@ -100,9 +100,14 @@ nsn.Player = (function(){
     nsn.listen(nsn.events.INVENTORY_CLOSED, closeInventory, this);
     nsn.listen(nsn.events.PLAYER_SPEECH_TEXT_ENDED, stopTalking, this);
     nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.useItem, this);
+    nsn.listen(nsn.events.COMBINATION_MESSAGE_BUILT, handleCombinationMessageBuilt, this);
 
     createjs.Ticker.addEventListener("tick", handleTick.bind(this));
   };
+
+  function handleCombinationMessageBuilt(params){
+    this.say(params.combinationMessage);
+  }
 
   function onBackgroundClicked(evt){
     this.walk(evt.stageX, evt.stageY);
