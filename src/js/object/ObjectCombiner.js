@@ -100,11 +100,6 @@ nsn.ObjectCombiner = function(){
     var combinationConfig = findCombinationConfig(source, target);
     var itemsWereCombined = combineItemsAccordingTo(combinationConfig, source, target);
 
-    if(!itemsWereCombined){
-      //TODO Shouldn't be handling inventory close
-      closeInventory();
-    }
-
     /* TODO Decide if we are going to dispatch this event here.
      * Here, the combination action didn't really finish yet. It only dispatched other
      * events to perform the combination.
@@ -115,7 +110,8 @@ nsn.ObjectCombiner = function(){
      * Another option is to create another event only to handle the combination message, in case
      * we really need an event that guarantees the combination action has ended.
      */
-    nsn.fire(nsn.events.FINISHED_ON_COMBINE, {combinationConfig: combinationConfig});
+    nsn.fire(nsn.events.FINISHED_ON_COMBINE, {combinationConfig: combinationConfig,
+                                              itemsWereCombined: itemsWereCombined});
   };
 
   var findCombinationConfig = function(source, target){
@@ -194,15 +190,6 @@ nsn.ObjectCombiner = function(){
   function runScript(combinationConfig) {
     var script_params = combinationConfig["script_params"];
     nsn.fire(nsn.events.ON_ACTION, script_params);
-  }
-
-  function closeInventory () {
-    Engine.inventory.hideInventory(true);
-    /*
-     *TODO: poderíamos usar o promise pra esperar tocar a animação de fechar para ele falar depois, mas talvez o jogador
-     *se irrite na hora que estiver agarrado e precisar ficar esperando esses segundinhos pra tentar
-     *um tanto de combinação. Hehe. Ou não.
-     */
   }
 
   init();
