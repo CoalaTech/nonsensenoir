@@ -101,12 +101,13 @@ nsn.ObjectCombiner = function(){
     Engine.inventory.itemSelected = null;
 
     var combinationConfig = findCombinationConfig(source, target);
-    if(combinationConfig){
-      combineItemsAccordingTo(combinationConfig, source, target);
-    }else{
+    var combinationMessage = combinationConfig["message"] || DEFAULT_COMBINATION_MESSAGE;
+
+    if(!combineItemsAccordingTo(combinationConfig, source, target)){
       closeInventory();
-      showCombinationMessage(DEFAULT_COMBINATION_MESSAGE);
     }
+
+    showCombinationMessage(combinationMessage);
   };
 
   var findCombinationConfig = function(source, target){
@@ -124,7 +125,7 @@ nsn.ObjectCombiner = function(){
   };
 
   function combineItemsAccordingTo(combinationConfig, source, target){
-    if(combinationConfig["combinable?"]){
+    if(combinationConfig && combinationConfig["combinable?"]){
       var removedItemsPromise = removeCombinedItems(combinationConfig, source, target)
                                   .then(Engine.inventory.reorganizeItems);
 
@@ -133,10 +134,11 @@ nsn.ObjectCombiner = function(){
       }else if(combinationConfig["run_script?"]){
         removedItemsPromise.then(runScript.bind(combinationConfig));
       }
-    }else{
-      closeInventory();
+
+      return true;
     }
-    showCombinationMessage(combinationConfig["message"]);
+
+    return false;
   }
 
   function removeCombinedItems(combinationConfig, source, target) {
