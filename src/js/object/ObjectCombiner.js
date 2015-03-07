@@ -9,29 +9,33 @@
 
 nsn.ObjectCombiner = function(){
 
-  var self = {};
+  this.combinations = this._setupCombinations();
 
-  function init(){
-    self.combinations = setupCombinations();
-    nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, hideObjectAfterUse, this);
-    nsn.listen(nsn.events.FINISHED_COMBINE_ITEMS_FROM_INVENTORY, finishObjectCombination, this);
-  }
+  this.init();
+};
 
-  function setupCombinations(){
+nsn.ObjectCombiner.prototype = {
+
+  init: function(){
+    nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, this._hideObjectAfterUse, this);
+    nsn.listen(nsn.events.FINISHED_COMBINE_ITEMS_FROM_INVENTORY, this._finishObjectCombination, this);
+  },
+
+  _setupCombinations: function(){
     return Engine.assets["objectCombinations.json"];
-  }
+  },
 
-  self.combine = function(source, target){
+  combine: function(source, target){
     nsn.fire(nsn.events.ON_COMBINE, {source: source, target: target});
 
-    var combinationConfig = findCombinationConfig(source, target);
-    var itemsWereCombined = combineItemsAccordingTo(combinationConfig, source, target);
+    var combinationConfig = this._findCombinationConfig(source, target);
+    var itemsWereCombined = this._combineItemsAccordingTo(combinationConfig, source, target);
 
     /* TODO Decide if we are going to dispatch this event here.
      * Here, the combination action didn't really finish yet. It only dispatched other
      * events to perform the combination.
      * If we really want to wait for the combination to finish, we need to move this
-     * to function 'finishObjectCombination'.
+     * to function 'this._finishObjectCombination'.
      * It's here now because it's handling only the text show and it makes sense to
      * show the combination message concurrently with the combination action being performed.
      * Another option is to create another event only to handle the combination message, in case
@@ -39,23 +43,23 @@ nsn.ObjectCombiner = function(){
      */
     nsn.fire(nsn.events.FINISHED_ON_COMBINE, {combinationConfig: combinationConfig,
                                               itemsWereCombined: itemsWereCombined});
-  };
+  },
 
-  var findCombinationConfig = function(source, target){
+  _findCombinationConfig: function(source, target){
     var combinationName = source.name + "_" + target.name;
-    if(self.combinations[combinationName]){
-      return self.combinations[combinationName];
+    if(this.combinations[combinationName]){
+      return this.combinations[combinationName];
     }else{
       combinationName = target.name + "_" + source.name;
-      if(self.combinations[combinationName]){
-        return self.combinations[combinationName];
+      if(this.combinations[combinationName]){
+        return this.combinations[combinationName];
       }
     }
 
     return null;
-  };
+  },
 
-  function combineItemsAccordingTo(combinationConfig, source, target){
+  _combineItemsAccordingTo: function(combinationConfig, source, target){
     if(combinationConfig && combinationConfig["combinable?"]){
       /*
        * BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
@@ -67,7 +71,7 @@ nsn.ObjectCombiner = function(){
       var newItemAfterCombination;
 
       if(combinationConfig["generates_another_item?"]){
-        newItemAfterCombination = generateCombinedItem(combinationConfig);
+        newItemAfterCombination = this._generateCombinedItem(combinationConfig);
       }
 
       if (combinationConfig["target"]["name"] === "inventory") {
@@ -93,34 +97,31 @@ nsn.ObjectCombiner = function(){
     }
 
     return false;
-  }
+  },
 
-  var generateCombinedItem = function(combinationConfig){
+  _generateCombinedItem: function(combinationConfig){
     var newItemConfig = combinationConfig["item"];
 
     return Engine.objectManager.createObject(newItemConfig);
-  };
+  },
 
   // TODO We need to review these fadeouts
-  var hideObjectAfterUse = function(params){
-    createjs.Tween.get(params.target).to({alpha: 0}, 500).call(function(){
-      finishObjectCombination(params);
-    });
-  };
+  _hideObjectAfterUse: function(params){
+    createjs.Tween.get(params.target).to({alpha: 0}, 500)
+      .call(this._finishObjectCombination, [params], this);
+  },
 
-  var finishObjectCombination = function(params){
+  _finishObjectCombination: function(params){
     if(params.combinationConfig["run_script?"]){
-      runScript(params.combinationConfig);
+      this._runScript(params.combinationConfig);
     }
-  }
+  },
 
-  function runScript(combinationConfig) {
+  _runScript: function(combinationConfig) {
     var script_params = combinationConfig["script_params"];
     nsn.fire(nsn.events.ON_ACTION, script_params);
   }
 
-  init();
-
-  return self;
-
 };
+
+nsn.ObjectCombiner.prototype.constructor = nsn.ObjectCombiner;
