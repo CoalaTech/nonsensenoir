@@ -9,6 +9,7 @@ nsn.Bootstrap = function(){
     {id: "props.json", src:"./json/props.json"},
     {id: "empty.json", src:"./json/empty.json"},
     {id: "props_sacada.json", src:"./json/props_sacada.json"},
+    {id: "objectCombinations.json", src:"./json/objectCombinations.json"},
     {id: "player_sprite", src:"./img/character/player_sprite.png"},
     {id: "Dona", src:"./img/character/Dona.png"},
     {id: "scene2_2", src:"./img/background/scene2_2.jpg"},

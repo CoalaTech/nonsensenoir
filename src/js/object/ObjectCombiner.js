@@ -7,91 +7,18 @@
   - Pode acontecer algo como sumir um item da tela sem gerar um novo
 */
 
-var combinations = {
-  "pinguim_jackers":{
-    "combinable?" : true,
-    "generates_another_item?" : true,
-    "message": "Hum... é estranho mas pode funcionar!",
-    "item" : {
-        "name":"pinguim_jackers",
-        "path":"pinguim_s",
-        "x": 450,
-        "y": 54,
-        "pickable": true,
-        "dialogs": {
-          "use": "Tá na mão.",
-          "mouth": "Sabe lá o que rola em cima dessa geladeira. Não vou por a boca nesse bicho.",
-          "see": "Um pinguim vestido a caracter para uma festa em cima do refrigerador que nunca acontecerá. Que deprimente...",
-          "description": "Um belo pinguim"
-        },
-        "inventory_dialogs" : {
-          "see": "Minha grande combinação!",
-        },
-    },
-    "target": {
-        "name": "inventory",
-        "parameters": {
-        }
-    }
-  },
-  "jackers_almofada":{
-    "combinable?" : true,
-    "generates_another_item?" : false,
-    "message": "Já ouvi dizer que o Jackers tem poder corrosivo em almofadas. Vamos ver!",
-    "target": {
-      "name": "none",
-    }
-  },
-  "jackers_faca":{
-    "combinable?" : true,
-    "generates_another_item?" : true,
-    "message": "Já ouvi dizer que o Jackers jogado na faca gera um novo Jackers em seu local de origem. Vamos ver!",
-    "item" : {
-                "name":"jackers_faca",
-                "path":"jackers_s",
-                "x": 596,
-                "y": 119,
-                "pickable": true,
-                "dialogs": {
-                  "use": "Pegar um Jacker's eu vou.",
-                  "mouth": "Só se for agora!",
-                  "see": "Um jackers saboroso, apetitoso, lindo...",
-                  "description": "Um pote de Jackers intacto"
-                },
-                "inventory_dialogs" : {
-                  "see": "Item gerado maluco!",
-                },
-                "depth": 1
-    },
-    "target": {
-        "name": "scene",
-        "parameters": {
-        }
-    }
-  },
-  "pinguim_tv":{
-    "combinable?" : false,
-    "message": "Colocar o pinguim em cima da tv pra que? Pra ficar bonito? Eu lá tenho cara de decorador?"
-  },
-  "pinguim_tesoura":{
-    "combinable?" : true,
-    "generates_another_item?" : false,
-    "run_script?" : true,
-    "script_params" : {"type": "enter_scene", "target": "Sacada"},
-    "message": "Não sou nenhum assassino de pinguins. Nem de brincadeira.",
-    "target": {
-      "name": "none",
-    }
-  }
-};
-
 nsn.ObjectCombiner = function(){
 
   var self = {};
 
   function init(){
+    self.combinations = setupCombinations();
     nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, hideObjectAfterUse, this);
     nsn.listen(nsn.events.FINISHED_COMBINE_ITEMS_FROM_INVENTORY, finishObjectCombination, this);
+  }
+
+  function setupCombinations(){
+    return Engine.assets["objectCombinations.json"];
   }
 
   self.combine = function(source, target){
@@ -116,12 +43,12 @@ nsn.ObjectCombiner = function(){
 
   var findCombinationConfig = function(source, target){
     var combinationName = source.name + "_" + target.name;
-    if(combinations[combinationName]){
-      return combinations[combinationName];
+    if(self.combinations[combinationName]){
+      return self.combinations[combinationName];
     }else{
       combinationName = target.name + "_" + source.name;
-      if(combinations[combinationName]){
-        return combinations[combinationName];
+      if(self.combinations[combinationName]){
+        return self.combinations[combinationName];
       }
     }
 
