@@ -132,7 +132,16 @@ p.addExit = function(exit){
 
 p._addEventListeners = function(){
   nsn.listen(nsn.events.SCENE_CHANGED, this._onSceneChanged, this);
-}
+  nsn.listen(nsn.events.ITEM_USED_IN_SCENE, this._handleItemUsedInScene, this);
+};
+
+p._handleItemUsedInScene = function(params){
+  this.removeObject(params.target);
+
+  if(params.newItem){
+    this.addObject(params.newItem, params.newItem.depth);
+  }
+};
 
 p._onSceneChanged = function(event){
 

@@ -18,11 +18,15 @@
 
     ON_MOUSE_OVER_HIGHLIGHT: "on_mouse_over_highlight",
     ON_MOUSE_OUT_HIGHLIGHT: "on_mouse_out_highlight",
-    ON_COMBINE: "on_combine",
     ITEM_PICKED: "item_picked",
     USE_ITEM_START: "use_item_start",
     PLAYER_TALKING: "player_talking",
-    PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended"
+    PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended",
+
+    ON_COMBINE: "on_combine",
+    COMBINING_ITEMS_FROM_INVENTORY: "combining_items_from_inventory",
+    USING_ITEM_IN_SCENE: "using_item_in_scene",
+    ITEM_USED_IN_SCENE: "item_used_in_scene"
   };
 
   nsn.cursors = {

@@ -36,6 +36,10 @@ nsn.Inventory.prototype = {
 
     nsn.listen(nsn.events.BACKGROUND_CLICKED, this.hideInventory, this);
     nsn.listen(nsn.events.SCENE_CHANGED, this.hideInventory, this);
+    nsn.listen(nsn.events.ON_COMBINE, this.cancelUseItem, this);
+    nsn.listen(nsn.events.COMBINING_ITEMS_FROM_INVENTORY, this._combineItems, this);
+    nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.hideInventory, this);
+    nsn.listen(nsn.events.ITEM_USED_IN_SCENE, this._removeItemAfterUse, this);
   },
 
   setOpenInventoryOnKeypress: function(){
@@ -249,6 +253,20 @@ nsn.Inventory.prototype = {
   _onMouseOutObject: function(event){
     event.target = event.target.object ? event.target.object : event.target;
     Engine.objectManager.onMouseOutObject(event);
+  },
+
+  _combineItems: function(params){
+    this.removeItem(params.source);
+    this.removeItem(params.target);
+    this.reorganizeItems();
+
+    if(params.newItem){
+      this.addItem(params.newItem);
+    }
+  },
+
+  _removeItemAfterUse: function(params){
+    this.removeItem(params.source);
   }
 }
 

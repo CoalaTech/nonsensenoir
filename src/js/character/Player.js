@@ -48,10 +48,12 @@ nsn.Player = (function(){
     return deferred.promise;
   };
 
-  Player.prototype.useItem = function(item){
+  Player.prototype.useItem = function(params){
 
-    var deferred = new nsn.Deferred(),
-      path;
+    var deferred = new nsn.Deferred();
+    var path;
+
+    var item = params.target;
 
     if(item.use_position){
 
@@ -74,6 +76,10 @@ nsn.Player = (function(){
 
     }
 
+    deferred.promise.then(function(){
+      nsn.fire(nsn.events.ITEM_USED_IN_SCENE, params);
+    });
+
     return deferred.promise;
   };
 
@@ -93,6 +99,7 @@ nsn.Player = (function(){
     nsn.listen(nsn.events.INVENTORY_OPENED, openInventory, this);
     nsn.listen(nsn.events.INVENTORY_CLOSED, closeInventory, this);
     nsn.listen(nsn.events.PLAYER_SPEECH_TEXT_ENDED, stopTalking, this);
+    nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.useItem, this);
 
     createjs.Ticker.addEventListener("tick", handleTick.bind(this));
   };

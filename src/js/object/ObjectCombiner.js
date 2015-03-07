@@ -47,7 +47,7 @@ var combinations = {
   "jackers_faca":{
     "combinable?" : true,
     "generates_another_item?" : true,
-    "message": "Já ouvi dizer que o Jackers jogado no faca gera um novo Jackers em seu local de origem. Vamos ver!",
+    "message": "Já ouvi dizer que o Jackers jogado na faca gera um novo Jackers em seu local de origem. Vamos ver!",
     "item" : {
                 "name":"jackers_faca",
                 "path":"jackers_s",
@@ -92,22 +92,22 @@ nsn.ObjectCombiner = function(){
   var self = {};
 
   function init(){
-
+    nsn.listen(nsn.events.ITEM_USED_IN_SCENE, hideObjectAfterUse, this);
   }
 
   self.combine = function(source, target){
     nsn.fire(nsn.events.ON_COMBINE, {source: source, target: target});
 
-    Engine.inventory.itemSelected = null;
-
     var combinationConfig = findCombinationConfig(source, target);
-    var combinationMessage = combinationConfig["message"] || DEFAULT_COMBINATION_MESSAGE;
+    var itemsWereCombined = combineItemsAccordingTo(combinationConfig, source, target);
 
-    if(!combineItemsAccordingTo(combinationConfig, source, target)){
+    if(!itemsWereCombined){
+      //TODO Shouldn't be handling inventory close
       closeInventory();
     }
 
-    showCombinationMessage(combinationMessage);
+    // TODO TextManager should be handling this
+    showCombinationMessage(combinationConfig);
   };
 
   var findCombinationConfig = function(source, target){
@@ -126,13 +126,39 @@ nsn.ObjectCombiner = function(){
 
   function combineItemsAccordingTo(combinationConfig, source, target){
     if(combinationConfig && combinationConfig["combinable?"]){
-      var removedItemsPromise = removeCombinedItems(combinationConfig, source, target)
-                                  .then(Engine.inventory.reorganizeItems);
+      /*
+       *BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
+       *na tela? Tipo usar o pinguim no Jackers no cenário mesmo. Vai gerar um item no inventario
+       *do cara do nada. E do jeito que o código tá embaixo vai dar pau. Dá pra arrumar tranquilo,
+       *mas enfim, acho que temos que organizar melhor.
+      */
+
+      var newItemAfterCombination;
 
       if(combinationConfig["generates_another_item?"]){
-        removedItemsPromise.then(generateAnotherItem.bind(combinationConfig));
-      }else if(combinationConfig["run_script?"]){
-        removedItemsPromise.then(runScript.bind(combinationConfig));
+        newItemAfterCombination = generateCombinedItem(combinationConfig);
+      }
+
+      if (combinationConfig["target"]["name"] === "inventory") {
+        // TODO We need to review these fadeouts
+        createjs.Tween.get(source.group).to({alpha: 0}, 500);
+        createjs.Tween.get(target.group).to({alpha: 0}, 500).call(function() {
+          nsn.fire(nsn.events.COMBINING_ITEMS_FROM_INVENTORY, {source: source,
+                                                               target: target,
+                                                               newItem: newItemAfterCombination});
+        });
+      }else{
+        // TODO We need to review these fadeouts
+        createjs.Tween.get(source.group).to({alpha: 0}, 300).call(function(){
+          nsn.fire(nsn.events.USING_ITEM_IN_SCENE, {source: source,
+                                                    target: target,
+                                                    newItem: newItemAfterCombination});
+        });
+      }
+
+      //TODO Check if we need to wait previous events to end before starting the script
+      if(combinationConfig["run_script?"]){
+        runScript(combinationConfig);
       }
 
       return true;
@@ -141,58 +167,28 @@ nsn.ObjectCombiner = function(){
     return false;
   }
 
-  function removeCombinedItems(combinationConfig, source, target) {
-    var deferred = new nsn.Deferred();
-
-    /*
-     *BUG1: como que faz quando se quer combinar um item que era pra ser combinado no inventory
-     *na tela? Tipo usar o pinguim no Jackers no cenário mesmo. Vai gerar um item no inventario 
-     *do cara do nada. E do jeito que o código tá embaixo vai dar pau. Dá pra arrumar tranquilo, 
-     *mas enfim, acho que temos que organizar melhor.
-    */
-
-    if (combinationConfig["target"]["name"] === "inventory") {
-      createjs.Tween.get(source.group).to({alpha: 0}, 500);
-      createjs.Tween.get(target.group).to({alpha: 0}, 500).call(function() {
-        Engine.inventory.removeItem(source);
-        Engine.inventory.removeItem(target);
-        deferred.resolve();
-      });
-    }else{
-      createjs.Tween.get(source.group).to({alpha: 0}, 300).call(function(){
-        Engine.inventory.hideInventory();
-        Engine.currentScene.player.useItem(target)
-              .then(function(){
-                createjs.Tween.get(target).to({alpha: 0}, 500).call(function() {
-                  Engine.inventory.removeItem(source);
-                  Engine.currentScene.removeObject(target);
-                  deferred.resolve();
-                });
-              });
-      });
-    }
-
-    return deferred.promise;
-  }
-
-  var generateAnotherItem = function(){
-    var combinationConfig = this; /*  Foi chamado com um bind */
+  var generateCombinedItem = function(combinationConfig){
     var newItemConfig = combinationConfig["item"];
-    var object = Engine.objectManager.createObject(newItemConfig);
-    
-    if (combinationConfig["target"]["name"] === "inventory") {
-      Engine.inventory.addItem(object);
-    }else{
-      Engine.currentScene.addObject(object, newItemConfig.depth);
+
+    return Engine.objectManager.createObject(newItemConfig);
+  };
+
+  var showCombinationMessage = function(combinationConfig){
+    var combinationMessage = DEFAULT_COMBINATION_MESSAGE;
+
+    if(combinationConfig){
+      combinationMessage = combinationConfig["message"];
     }
+
+    Engine.player.say(combinationMessage);
   };
 
-  var showCombinationMessage = function(message){
-    Engine.player.say(message);
+  // TODO We need to review these fadeouts
+  var hideObjectAfterUse = function(params){
+    createjs.Tween.get(params.target).to({alpha: 0}, 500);
   };
 
-  function runScript () {
-    var combinationConfig = this; /*  Foi chamado com um bind  */
+  function runScript(combinationConfig) {
     var script_params = combinationConfig["script_params"];
     nsn.fire(nsn.events.ON_ACTION, script_params);
   }
