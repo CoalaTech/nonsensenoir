@@ -1,16 +1,14 @@
 nsn.ScriptMachine = function(){
 
-  var self = {};
-
-  var map = {
+  this.map = {
     widescreen: Engine.widescreen,
     walk: Engine.player.walk,
     say: Engine.player.say,
-    wait: wait,
-    playSound: playSound
+    wait: this._wait,
+    playSound: this._playSound
   };
 
-  var script = {
+  this.script = {
     see: {
       "sofa": [
         {
@@ -54,16 +52,22 @@ nsn.ScriptMachine = function(){
     }
   };
 
-  function init(){
-    nsn.listen(nsn.events.ON_ACTION, executeAction, this);
-  }
+  this.init();
 
-  function executeAction(event){
-    if(!script[event.type] || !script[event.type][event.target]){ return; }
+};
+
+nsn.ScriptMachine.prototype = {
+
+  init: function(){
+    nsn.listen(nsn.events.ON_ACTION, this._executeAction, this);
+  },
+
+  _executeAction: function(event){
+    if(!this.script[event.type] || !this.script[event.type][event.target]){ return; }
 
     Engine.stage.disableInteraction();
 
-    var actions = script[event.type][event.target];
+    var actions = this.script[event.type][event.target];
 
     var currentAction = 0;
 
@@ -73,7 +77,7 @@ nsn.ScriptMachine = function(){
       currentAction++;
       action = actions[currentAction];
       if(action){
-        promise = map[action.calls].apply(action.scope, action.params);
+        promise = this.map[action.calls].apply(action.scope, action.params);
         if(action.waitForMe === false){
           nextAction();
         }else{
@@ -82,22 +86,17 @@ nsn.ScriptMachine = function(){
       }else{
         Engine.stage.enableInteraction();
       }
-    };
+    }.bind(this);
 
-    var promise = map[action.calls].apply(action.scope, action.params);
+    var promise = this.map[action.calls].apply(action.scope, action.params);
     promise.then(nextAction);
-  }
+  },
 
-  function logAction(){
-    console.log("Dentro de logAction");
-  }
-
-  function playSound(){
+  _playSound: function(){
     var deferred = new nsn.Deferred();
     var timesPlayed = 0;
 
     var interval = setInterval(function(){
-      console.log("La la la laaa laalala la la...");
       timesPlayed++;
       if(timesPlayed == 3){
         clearInterval(interval);
@@ -106,9 +105,9 @@ nsn.ScriptMachine = function(){
     }, 200);
 
     return deferred.promise;
-  }
+  },
 
-  function wait(timeout){
+  _wait: function(timeout){
     timeout = timeout || 500;
     var deferred = new nsn.Deferred();
 
@@ -119,8 +118,6 @@ nsn.ScriptMachine = function(){
     return deferred.promise;
   }
 
-  init();
-
-  return self;
-
 };
+
+nsn.ScriptMachine.prototype.constructor = nsn.ScriptMachine;
