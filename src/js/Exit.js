@@ -1,57 +1,83 @@
-nsn.Exit = function(){
+/**
+* @copyright    2014 CoalaTech.
+*/
+nsn.Exit = function(config){
 
-  var self = {};
+  this.config = config;
 
-  self.init = function(config){
-    self.config = config;
-    self.name = config.name;
-    self.description = config.description;
+  this.init();
 
-    self.image = new createjs.Bitmap(Engine.assets[config.source]);
-    self.image.x = config.imageX;
-    self.image.y = config.imageY;
+};
 
-    self.exitX = config.exitX * Engine.stage.stage.scaleX;
-    self.exitY = config.exitY * Engine.stage.stage.scaleY;
+nsn.Exit.prototype = {
 
-    self.image.addEventListener("click", onExitClicked);
-    self.image.addEventListener('mouseover', onMouseOverObject);
-    self.image.addEventListener('mouseout', onMouseOutObject);
-  };
+  init: function(){
 
-  var onExitClicked = function(event){
-    /*  TODO: Chegar na cena com o 'facing' correto e no nsn.Exit correto  */
-    // var pathToExit = Engine.currentScene.background.findPath(event.stageX, event.stageY);
-    var playerPosition = Engine.player.position();
-    if(playerPosition[0] == self.exitX && playerPosition[1] == self.exitY){
-      Engine.setSceneAsCurrent(self.config.targetScene, self);
+    /** @type {string} Exit's name/description */
+    this.name = this.config.name;
+
+    /** @type {string} Exit's description */
+    this.description = this.config.description;
+
+    /** @type {createjs.Bitmap} The exit's image, e.g, a door, a window, a rug, etc...  */
+    this.image = new createjs.Bitmap(nsn.Engine.assets[this.config.source]);
+
+    this.image.x = this.config.imageX;
+    this.image.y = this.config.imageY;
+
+    this.exitX = this.config.exitX * nsn.Engine.scaleX();
+    this.exitY = this.config.exitY * nsn.Engine.scaleY();
+
+    this._addEventListeners();
+
+  },
+
+  _addEventListeners: function(){
+
+    this.image.addEventListener("click", this._walkToExit.bind(this));
+    this.image.addEventListener('mouseover', this._onMouseOver.bind(this));
+    this.image.addEventListener('mouseout', this._onMouseOut.bind(this));
+
+  },
+
+  _walkToExit: function(){
+
+    var playerPosition = nsn.Engine.player.position();
+
+    /* Going back and forth between scenes */
+    if(playerPosition[0] == this.exitX && playerPosition[1] == this.exitY){
+      nsn.Engine.setSceneAsCurrent(this.config.targetScene, this);
       return;
     }
 
+    /* All hail STOP_EVERYTHING! =] */
     nsn.fire(nsn.events.STOP_EVERYTHING);
 
-    Engine.player.walk(self.exitX, self.exitY)
+    nsn.Engine.player.walk(this.exitX, this.exitY)
           .then(function(){
-              Engine.setSceneAsCurrent(self.config.targetScene, self);
-            }
-          );
-  };
+              nsn.Engine.setSceneAsCurrent(this.config.targetScene, this);
+            }.bind(this));
 
-  var onMouseOverObject = function(event){
-    Engine.stage.setCursor("exit");
-    if(!Engine.textManager.isShowingDialog){
-      // Engine.textManager.showTextWithoutTimeout(self.description);
-      Engine.textManager.showTextWithoutTimeout(self.description);
-    }
-  };
+  },
 
-  var onMouseOutObject = function (evt){
-    Engine.stage.resetCursor();
-    if (!Engine.textManager.isShowingDialog){
-      Engine.textManager.hideText();
-    }
-  };
+  _onMouseOver: function(){
 
-  return self;
+    //TODO Refatorar para stage ouvir novo evento
+    nsn.Engine.stage.setCursor("exit");
+    //TODO Refatorar para usar o nome do objeto e não uma string
+    nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Exit', text: this.description});
+
+  },
+
+  _onMouseOut: function (){
+
+    //TODO Refatorar para stage ouvir novo evento
+    nsn.Engine.stage.resetCursor();
+    //TODO Refatorar para usar o nome do objeto e não uma string
+    nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Exit'});
+
+  }
 
 };
+
+nsn.Exit.prototype.constructor = nsn.Exit;

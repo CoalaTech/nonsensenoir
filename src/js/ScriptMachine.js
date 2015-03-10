@@ -1,21 +1,20 @@
 nsn.ScriptMachine = function(){
 
-  var self = {};
-
-  var map = {
-    widescreen: Engine.widescreen,
-    walk: Engine.player.walk,
-    say: Engine.player.say,
-    wait: wait,
-    playSound: playSound
+  this.map = {
+    widescreen: nsn.Engine.widescreen,
+    walk: nsn.Engine.player.walk,
+    say: nsn.Engine.player.say,
+    wait: this._wait,
+    playSound: this._playSound
   };
 
-  var script = {
+  this.script = {
     see: {
       "sofa": [
         {
           calls: "widescreen",
-          params: [true]
+          params: [true],
+          scope: nsn.Engine
         }
       ]
     },
@@ -23,7 +22,8 @@ nsn.ScriptMachine = function(){
       "Sacada": [
         {
           calls: "widescreen",
-          params: [true]
+          params: [true],
+          scope: nsn.Engine
         },
         {
           calls: "playSound",
@@ -33,7 +33,7 @@ nsn.ScriptMachine = function(){
           /*  Isso vai falhar se o stage.scale for diferente de 1  */
           calls: "walk",
           params: [404, 557],
-          scope: Engine.player
+          scope: nsn.Engine.player
         },
         {
           calls: "wait",
@@ -42,28 +42,35 @@ nsn.ScriptMachine = function(){
         {
           calls: "say",
           params: ["Oi, tia. O que é a merenda hoje?", 4000],
-          scope: Engine.player
+          scope: nsn.Engine.player
         },
         {
           calls: "widescreen",
           params: [false],
           /*  Se nao for especificado, a acao seguinte espera essa terminar  */
-          waitForMe: false
+          waitForMe: false,
+          scope: nsn.Engine
         }
       ]
     }
   };
 
-  function init(){
-    nsn.listen(nsn.events.ON_ACTION, executeAction, this);
-  }
+  this.init();
 
-  function executeAction(event){
-    if(!script[event.type] || !script[event.type][event.target]){ return; }
+};
 
-    Engine.stage.disableInteraction();
+nsn.ScriptMachine.prototype = {
 
-    var actions = script[event.type][event.target];
+  init: function(){
+    nsn.listen(nsn.events.ON_ACTION, this._executeAction, this);
+  },
+
+  _executeAction: function(event){
+    if(!this.script[event.type] || !this.script[event.type][event.target]){ return; }
+
+    nsn.Engine.stage.disableInteraction();
+
+    var actions = this.script[event.type][event.target];
 
     var currentAction = 0;
 
@@ -73,31 +80,26 @@ nsn.ScriptMachine = function(){
       currentAction++;
       action = actions[currentAction];
       if(action){
-        promise = map[action.calls].apply(action.scope, action.params);
+        promise = this.map[action.calls].apply(action.scope, action.params);
         if(action.waitForMe === false){
           nextAction();
         }else{
           promise.then(nextAction);
         }
       }else{
-        Engine.stage.enableInteraction();
+        nsn.Engine.stage.enableInteraction();
       }
-    };
+    }.bind(this);
 
-    var promise = map[action.calls].apply(action.scope, action.params);
+    var promise = this.map[action.calls].apply(action.scope, action.params);
     promise.then(nextAction);
-  }
+  },
 
-  function logAction(){
-    console.log("Dentro de logAction");
-  }
-
-  function playSound(){
-    var deferred = new $.Deferred();
+  _playSound: function(){
+    var deferred = new nsn.Deferred();
     var timesPlayed = 0;
 
     var interval = setInterval(function(){
-      console.log("La la la laaa laalala la la...");
       timesPlayed++;
       if(timesPlayed == 3){
         clearInterval(interval);
@@ -105,22 +107,20 @@ nsn.ScriptMachine = function(){
       }
     }, 200);
 
-    return deferred.promise();
-  }
+    return deferred.promise;
+  },
 
-  function wait(timeout){
+  _wait: function(timeout){
     timeout = timeout || 500;
-    var deferred = new $.Deferred();
+    var deferred = new nsn.Deferred();
 
     setTimeout(function(){
       deferred.resolve();
     }, timeout);
 
-    return deferred.promise();
+    return deferred.promise;
   }
 
-  init();
-
-  return self;
-
 };
+
+nsn.ScriptMachine.prototype.constructor = nsn.ScriptMachine;

@@ -1,4 +1,5 @@
 nsn.Player = (function(){
+  var talkingDeferred;
 
   /*  Extends Player  */
   function Player(source){
@@ -7,13 +8,13 @@ nsn.Player = (function(){
   Player.prototype = new nsn.Character();
 
   Player.prototype.hasItem = function(item){
-    return Engine.inventory.hasItem(item);
+    return nsn.Engine.inventory.hasItem(item);
   };
 
-  Player.prototype.pickItem = function(item){
+  Player.prototype.pickItem = function(item, actionText){
 
-    var deferred = new $.Deferred(),
-      path;
+    var deferred = new nsn.Deferred();
+    var path;
 
     if(item.use_position){
 
@@ -23,7 +24,7 @@ nsn.Player = (function(){
             this.face(item.use_position.facing);
           }
 
-          Engine.inventory.addItem(item);
+          nsn.Engine.inventory.addItem(item);
 
           take.call(this);
 
@@ -32,7 +33,7 @@ nsn.Player = (function(){
 
     }else{
 
-      Engine.inventory.addItem(item);
+      nsn.Engine.inventory.addItem(item);
 
       take.call(this);
 
@@ -40,13 +41,19 @@ nsn.Player = (function(){
 
     }
 
-    return deferred.promise();
+    deferred.promise.then(function(){
+      nsn.fire(nsn.events.ITEM_PICKED, {item: item, text: actionText});
+    });
+
+    return deferred.promise;
   };
 
-  Player.prototype.useItem = function(item){
+  Player.prototype.useItem = function(params){
 
-    var deferred = new $.Deferred(),
-      path;
+    var deferred = new nsn.Deferred();
+    var path;
+
+    var item = params.target;
 
     if(item.use_position){
 
@@ -69,20 +76,20 @@ nsn.Player = (function(){
 
     }
 
-    return deferred.promise();
+    deferred.promise.then(function(){
+      nsn.fire(nsn.events.FINISHED_USING_ITEM_IN_SCENE, params);
+    });
+
+    return deferred.promise;
   };
 
-  Player.prototype.say = function(){
-
-    var deferred = new $.Deferred();
-
+  Player.prototype.say = function(message){
+    talkingDeferred = new nsn.Deferred();
     this.image.gotoAndPlay("talk");
 
-    var textPromise = Engine.textManager.showText.apply(this, arguments);
+    nsn.fire(nsn.events.PLAYER_TALKING, {text: message});
 
-    textPromise.done(deferred.resolve);
-
-    return deferred.promise();
+    return talkingDeferred.promise;
   };
 
   Player.prototype.addListeners = function(){
@@ -91,9 +98,16 @@ nsn.Player = (function(){
     nsn.listen(nsn.events.TEXT_END, this.resetAnimation, this);
     nsn.listen(nsn.events.INVENTORY_OPENED, openInventory, this);
     nsn.listen(nsn.events.INVENTORY_CLOSED, closeInventory, this);
+    nsn.listen(nsn.events.PLAYER_SPEECH_TEXT_ENDED, stopTalking, this);
+    nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.useItem, this);
+    nsn.listen(nsn.events.COMBINATION_MESSAGE_BUILT, handleCombinationMessageBuilt, this);
 
     createjs.Ticker.addEventListener("tick", handleTick.bind(this));
   };
+
+  function handleCombinationMessageBuilt(params){
+    this.say(params.combinationMessage);
+  }
 
   function onBackgroundClicked(evt){
     this.walk(evt.stageX, evt.stageY);
@@ -128,6 +142,10 @@ nsn.Player = (function(){
     }else{
       this.resetAnimation.call(this);
     }
+  }
+
+  function stopTalking(){
+    talkingDeferred.resolve();
   }
 
   function handleTick(){
