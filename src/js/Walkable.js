@@ -23,7 +23,7 @@ nsn.Walkable.prototype = {
     if(!this._pathIsValid()){
       this.walkDeferred.resolve();
     }else{
-      this.cellSize = Engine.cellSize;
+      this.cellSize = nsn.Engine.cellSize;
       this.pathIndex = 0;
 
       this.walkAnimated();
@@ -45,10 +45,10 @@ nsn.Walkable.prototype = {
 
     var pathEndNode = this.path[this.pathIndex + 1];
 
-    /* TODO: Expose scaleX and scaleY properties directly on the Engine class */
+    /* TODO: Expose scaleX and scaleY properties directly on the nsn.Engine class */
     var pathWalkPromise = this.walkTo(
-      (pathEndNode[0] * this.cellSize + (this.cellSize / 2)) / Engine.stage.stage.scaleX,
-      (pathEndNode[1] * this.cellSize + (this.cellSize / 2)) / Engine.stage.stage.scaleY
+      (pathEndNode[0] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.stage.stage.scaleX,
+      (pathEndNode[1] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.stage.stage.scaleY
     );
 
     this.pathIndex++;

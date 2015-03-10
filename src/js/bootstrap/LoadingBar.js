@@ -3,7 +3,7 @@ nsn.LoadingBar = function(x, y, width, height){
   this.x = x;
   this.y = y;
 
-  this.width = width || (Engine.canvas.width - 2*x);
+  this.width = width || (nsn.Engine.canvas.width - 2*x);
   this.height = height || 30;
 
   this.component = new createjs.Shape();

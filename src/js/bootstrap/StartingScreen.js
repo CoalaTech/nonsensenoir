@@ -9,13 +9,13 @@ nsn.StartingScreen = function(){
   var buttonWidth = 180;
 
   this.buttonStart = new createjs.Bitmap('img/hud/iniciar.jpg');
-  this.buttonStart.x = (Engine.canvas.width / 2) - (buttonWidth / 2);
+  this.buttonStart.x = (nsn.Engine.canvas.width / 2) - (buttonWidth / 2);
   this.buttonStart.y = 350;
 
   this.container.addChild(this.background);
   this.container.addChild(this.loadingBar.component);
 
-  Engine.stage.stage.addChild(this.container);
+  nsn.Engine.stage.stage.addChild(this.container);
 
 };
 
@@ -29,7 +29,7 @@ nsn.StartingScreen.prototype.step = function(progress){
     this.buttonStart.addEventListener('click', function(){
       nsn.fire(nsn.events.GAME_STARTED);
 
-      Engine.stage.stage.removeChild(this.container);
+      nsn.Engine.stage.stage.removeChild(this.container);
     }.bind(this));
   }
 

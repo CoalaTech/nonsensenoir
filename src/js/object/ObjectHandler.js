@@ -55,31 +55,31 @@ nsn.ObjectHandler.prototype = {
       if(evt.target.name == "use"){
         //TODO Refatorar useItemMessage...
         var useItemMessage = "Usar " + this.currentObject.name + " com: ";
-        Engine.inventory.useItemMessage = useItemMessage;
-        Engine.inventory.itemSelected = this.currentObject;
+        nsn.Engine.inventory.useItemMessage = useItemMessage;
+        nsn.Engine.inventory.itemSelected = this.currentObject;
         nsn.fire(nsn.events.USE_ITEM_START, {currentObject: this.currentObject, text: useItemMessage});
       }else if (evt.target.name == "see"){
         actionText = this.currentObject.inventory_dialogs.see || this.defaultActionMessages.see;
-        Engine.player.say(actionText);
+        nsn.Engine.player.say(actionText);
       }else if (evt.target.name == "mouth"){
         actionText = this.currentObject.inventory_dialogs.mouth || this.defaultActionMessages.mouth;
-        Engine.player.say(actionText);
+        nsn.Engine.player.say(actionText);
       }
     }else{
       if(evt.target.name == "use"){
-        Engine.objectManager.unselectObject();
+        nsn.Engine.objectManager.unselectObject();
         actionText = this.currentObject.dialogs.use || this.defaultActionMessages.use;
         if(this.currentObject.pickable){
-          Engine.currentScene.player.pickItem(this.currentObject, actionText);
+          nsn.Engine.currentScene.player.pickItem(this.currentObject, actionText);
         }else{
-          Engine.player.say(actionText);
+          nsn.Engine.player.say(actionText);
         }
       }else if (evt.target.name == "see"){
         actionText = this.currentObject.dialogs.see || this.defaultActionMessages.see;
-        Engine.player.say(actionText);
+        nsn.Engine.player.say(actionText);
       }else if (evt.target.name == "mouth"){
         actionText = this.currentObject.dialogs.mouth || this.defaultActionMessages.mouth;
-        Engine.player.say(actionText);
+        nsn.Engine.player.say(actionText);
       }
 
       nsn.fire(nsn.events.ON_ACTION, {"type": evt.target.name, "target": this.currentObject.name});
@@ -91,13 +91,13 @@ nsn.ObjectHandler.prototype = {
   showHUD: function(x, y, objectClicked, inline){
     this._calculatePosition(x, y, inline);
     this.currentObject = objectClicked;
-    Engine.stage.addHUD(this.group, true);
+    nsn.Engine.stage.addHUD(this.group, true);
   },
 
   hideHUD: function(){
     this.currentObject = null;
-    Engine.stage.removeHUD(this.group);
-    Engine.objectManager.unselectObject();
+    nsn.Engine.stage.removeHUD(this.group);
+    nsn.Engine.objectManager.unselectObject();
   },
 
   /*
@@ -108,9 +108,9 @@ nsn.ObjectHandler.prototype = {
   // TODO Refactor
   _calculatePosition: function(x, y, inline){
     // console.log(x, y);
-    Engine.mouth = this.mouth;
-    Engine.see = this.see;
-    Engine.use = this.use;
+    nsn.Engine.mouth = this.mouth;
+    nsn.Engine.see = this.see;
+    nsn.Engine.use = this.use;
     // Pooooooodre
     // =]
     if(inline){
@@ -182,7 +182,7 @@ nsn.ObjectHandler.prototype = {
       this.mouth.y = y;
     }
 
-    if(x + 100 + this.use.regX > Engine.stage.width){
+    if(x + 100 + this.use.regX > nsn.Engine.stage.width){
       this.use.x = x;
       this.use.y = y + 100;
     }else{
@@ -193,9 +193,9 @@ nsn.ObjectHandler.prototype = {
 
   _setActions: function(){
     return {
-      "see": Engine.assets.objHandlerSee,
-      "mouth": Engine.assets.objHandlerMouth,
-      "use": Engine.assets.objHandlerUse
+      "see": nsn.Engine.assets.objHandlerSee,
+      "mouth": nsn.Engine.assets.objHandlerMouth,
+      "use": nsn.Engine.assets.objHandlerUse
     };
   },
 
@@ -209,8 +209,8 @@ nsn.ObjectHandler.prototype = {
 
   _createGroup: function(){
     var group = new createjs.Container();
-    group.width = Engine.stage.width;
-    group.height = Engine.stage.height;
+    group.width = nsn.Engine.stage.width;
+    group.height = nsn.Engine.stage.height;
 
     return group;
   }

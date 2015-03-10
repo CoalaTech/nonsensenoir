@@ -12,7 +12,7 @@ nsn.TextManager = function(){
 
   this._linesCounter = 0;
 
-  this.canvasContext = Engine.canvas.getContext("2d");
+  this.canvasContext = nsn.Engine.canvas.getContext("2d");
 
   this._defaultTimeout = 7000;
 
@@ -37,7 +37,7 @@ nsn.TextManager.prototype = {
     var graphics = new createjs.Graphics();
     var shape = new createjs.Shape(graphics);
     graphics.beginFill("rgba(255,255,255,0.01)");
-    graphics.drawRect(0, 0, Engine.canvas.width, Engine.canvas.height);
+    graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
 
     this._textLayer.addChild(shape);
 
@@ -213,7 +213,7 @@ nsn.TextManager.prototype = {
   },
 
   _splitTextInLines: function(text){
-    var canvasWidth = Engine.canvas.width;
+    var canvasWidth = nsn.Engine.canvas.width;
     var marginSpace = 2 * this._textObject.x;
     var textAllowedSpace = canvasWidth - marginSpace;
 

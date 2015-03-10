@@ -11,15 +11,17 @@
 
   function initGame(){
 
-    Engine.gameSound = new nsn.GameSound();
+    nsn.Engine = new nsn.GameEngine();
+
+    nsn.Engine.gameSound = new nsn.GameSound();
 
     var canvas = document.getElementById("canvas");
     canvas.width = 997;
     canvas.height = 600;
 
-    Engine.canvas = canvas;
+    nsn.Engine.canvas = canvas;
 
-    Engine.stage = stage = new nsn.Stage();
+    nsn.Engine.stage = stage = new nsn.Stage();
 
     addEventListeners();
 
@@ -46,22 +48,22 @@
 
   var onGameStarted = function(){
 
-    // Engine.gameSound.playSound(this.id, false);
+    // nsn.Engine.gameSound.playSound(this.id, false);
 
-    Engine.buildScenes();
+    nsn.Engine.buildScenes();
 
-    Engine.setSceneAsCurrent("Apartamento");
+    nsn.Engine.setSceneAsCurrent("Apartamento");
 
     createObjectHandler();
     createObjectCombiner();
 
     createInventory();
 
-    Engine.script = new nsn.ScriptMachine();
+    nsn.Engine.script = new nsn.ScriptMachine();
 
     // Descomentar para rodar a música do jogo
     // -1 quer dizer que o áudio fica em loop
-    // Engine.gameSound.playSound("mainGameMusicShort", -1);
+    // nsn.Engine.gameSound.playSound("mainGameMusicShort", -1);
 
   };
 
@@ -70,22 +72,22 @@
   //  // character = new self.nsn.Player(source, 200, 200);
   //  character = new nsn.Player(source);
 
-  //  Engine.player = character;
+  //  nsn.Engine.player = character;
 
-  //  comadre = new nsn.Character(Engine.assets["characters.json"][1]);
+  //  comadre = new nsn.Character(nsn.Engine.assets["characters.json"][1]);
 
   // }
 
   function createObjectHandler(){
-    Engine.objectHandler = new nsn.ObjectHandler();
+    nsn.Engine.objectHandler = new nsn.ObjectHandler();
   }
 
   function createObjectCombiner(){
-    Engine.objectCombiner = new nsn.ObjectCombiner();
+    nsn.Engine.objectCombiner = new nsn.ObjectCombiner();
   }
 
   function createInventory(){
-    Engine.inventory = new nsn.Inventory();
+    nsn.Engine.inventory = new nsn.Inventory();
   }
 
   window.onload = initGame;

@@ -21,14 +21,14 @@ nsn.Background = function(name, image, matrix){
    * The smaller the cellSize, the more refined the background matrix is.
    * @type {Integer}
    */
-  this.cellSize = 1000 / this.matrix[0].length * Engine.stage.stage.scaleX;
+  this.cellSize = 1000 / this.matrix[0].length * nsn.Engine.stage.stage.scaleX;
 
   /**
    * The class responsible for handling the pathfinding
    * @type {nsn.MatrixPathFinding}
    */
   this.pathFinder = new nsn.MatrixPathFinder(this.matrix);
-  // this.pathFinder = new nsn.BitmapMaskPathfinder(Engine.assets.maskAP);
+  // this.pathFinder = new nsn.BitmapMaskPathfinder(nsn.Engine.assets.maskAP);
 
   /**
    * The container for the background image and other children that might be needed
@@ -45,7 +45,7 @@ nsn.Background.prototype = {
   init: function(){
 
     /* TODO: Shouldn't be here. Must be updated everytime the scene is switched */
-    Engine.cellSize = this.cellSize;
+    nsn.Engine.cellSize = this.cellSize;
 
     this.component.addChildAt(this.image, 0);
 

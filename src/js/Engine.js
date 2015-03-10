@@ -1,36 +1,37 @@
-var Engine = function(){
+nsn.GameEngine = function(){
 
-  var self = {};
+  this.scenes = {};
 
-  self.scenes = {};
+  this.characters = {};
 
-  self.characters = {};
+  this.backgrounds = {};
 
-  self.backgrounds = {};
+  this.assets = {};
 
-  self.assets = {};
+  this.frameRate = 12;
 
-  self.frameRate = 12;
+  this.objectManager;
 
-  function init () {
-    nsn.listen(nsn.events.STOP_EVERYTHING, self.stopEverything);
-  }
+  this.init();
 
-  self.buildScenes = function(){
-    self.objectManager = new nsn.ObjectManager();
+};
 
-    var scenes = Engine.assets["scenes.json"];
+nsn.GameEngine.prototype = {
+
+  init: function(){
+    nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
+  },
+
+  buildScenes: function(){
+    this.objectManager = new nsn.ObjectManager();
+
+    var scenes = this.assets["scenes.json"];
     nsn.each(scenes, function(name, config){
-      self.buildScene(config);
-    });
+      this.buildScene(config);
+    }.bind(this));
+  },
 
-    /*  Deixar configuravel depois  */
-    // self.currentScene = self.scenes.Apartamento;
-    // self.currentScene = self.scenes.Sacada;
-    // self.stage.addChild(self.currentScene.container);
-  };
-
-  self.buildScene = function(config){
+  buildScene: function(config){
     var scene = new nsn.Scene();
     scene.jsonContent = config;
 
@@ -38,54 +39,52 @@ var Engine = function(){
     scene.showEffect = config.showEffect;
     scene.hideEffect = config.hideEffect;
 
-    self.scenes[config.description] = scene;
-  };
+    this.scenes[config.description] = scene;
+  },
 
-  self.buildCharacter = function(config){
+  buildCharacter: function(config){
 
-    if(self.characters[config.name]){
-      return self.characters[config.name];
+    if(this.characters[config.name]){
+      return this.characters[config.name];
     }
 
     var character;
 
     if(config.isPlayer){
       character = new nsn.Player(config);
-      self.player = character;
+      this.player = character;
     }else{
       character = new nsn.Character(config);
     }
 
-    self.characters[config.name] = character;
+    this.characters[config.name] = character;
 
     return character;
+  },
 
-  };
+  buildBackground: function(config){
 
-  self.buildBackground = function(config){
-
-    if(self.backgrounds[config.name]){
-      return self.backgrounds[config.name];
+    if(this.backgrounds[config.name]){
+      return this.backgrounds[config.name];
     }
 
-    var imageSrc = Engine.assets[config.source],
+    var imageSrc = this.assets[config.source],
         image = new createjs.Bitmap(imageSrc);
 
     var background = new nsn.Background(config.name, image, config.matrix);
 
-
-    self.backgrounds[config.name] = background;
+    this.backgrounds[config.name] = background;
 
     return background;
 
-  };
+  },
 
-  self.buildExit = function(config){
+  buildExit: function(config){
     var exit = new nsn.Exit(config);
-  };
+  },
 
-  self.setSceneAsCurrent = function(sceneName, exitObject){
-    var scene = self.scenes[sceneName];
+  setSceneAsCurrent: function(sceneName, exitObject){
+    var scene = this.scenes[sceneName];
 
     if(!scene){
       return;
@@ -101,8 +100,8 @@ var Engine = function(){
         exit;
 
       nsn.each(config.Characters, function(conf, index){
-          characterConfig = self.assets['characters.json'][conf.name];
-          character = self.buildCharacter(characterConfig);
+          characterConfig = this.assets['characters.json'][conf.name];
+          character = this.buildCharacter(characterConfig);
           character.image.x = conf.startingX;
           character.image.y = conf.startingY;
 
@@ -110,13 +109,13 @@ var Engine = function(){
         }.bind(this)
       );
 
-      var backgroundConfig = self.assets[config.Background.source];
-      background = self.buildBackground(backgroundConfig);
+      var backgroundConfig = this.assets[config.Background.source];
+      background = this.buildBackground(backgroundConfig);
       scene.addBackground(background);
 
       if(config.Objects){
-        var objectsConfig = self.assets[config.Objects.source];
-        var objects = self.objectManager.createObjects(objectsConfig);
+        var objectsConfig = this.assets[config.Objects.source];
+        var objects = this.objectManager.createObjects(objectsConfig);
         scene.addObjects(objects);
       }
 
@@ -124,44 +123,41 @@ var Engine = function(){
         nsn.each(config.Exits, function(conf, index){
           exit = new nsn.Exit(conf);
           scene.addExit(exit);
-        });
+        }.bind(this));
       }
 
       scene.loaded = true;
-      
     }
 
     /*  O jogador está vindo de outra cena  */
     if(exitObject){
       var targetScene = scene.exits[exitObject.config.targetExit];
 
-      Engine.player.image.x = targetScene.config.playerX;
-      Engine.player.image.y = targetScene.config.playerY;
-      // Engine.player.facing = exitObject.config.facingOnEnter;
+      this.player.image.x = targetScene.config.playerX;
+      this.player.image.y = targetScene.config.playerY;
+      // this.player.facing = exitObject.config.facingOnEnter;
 
-      Engine.player.stop();
-      scene.addCharacter(Engine.player);
+      this.player.stop();
+      scene.addCharacter(this.player);
     }
 
-    nsn.fire(nsn.events.SCENE_CHANGED, {"from": self.currentScene ? self.currentScene.name : undefined, "to": sceneName});
+    nsn.fire(nsn.events.SCENE_CHANGED, {"from": this.currentScene ? this.currentScene.name : undefined, "to": sceneName});
 
-    self.currentScene = scene;
-    self.stage.setScene(scene);
+    this.currentScene = scene;
+    this.stage.setScene(scene);
 
     nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
-  };
+  },
 
-  self.widescreen = function(value){
-    return Engine.currentScene.widescreen(value);
-  };
+  widescreen: function(value){
+    return this.currentScene.widescreen(value);
+  },
 
-  self.stopEverything = function() {
-    Engine.player.resetAnimation();
-    Engine.objectHandler.hideHUD();
-  };
+  stopEverything: function() {
+    this.player.resetAnimation();
+    this.objectHandler.hideHUD();
+  }
 
-  init();
+};
 
-  return self;
-
-}();
+nsn.GameEngine.prototype.constructor = nsn.GameEngine;

@@ -22,7 +22,7 @@ nsn.ObjectCombiner.prototype = {
   },
 
   _setupCombinations: function(){
-    return Engine.assets["objectCombinations.json"];
+    return nsn.Engine.assets["objectCombinations.json"];
   },
 
   combine: function(source, target){
@@ -102,7 +102,7 @@ nsn.ObjectCombiner.prototype = {
   _generateCombinedItem: function(combinationConfig){
     var newItemConfig = combinationConfig["item"];
 
-    return Engine.objectManager.createObject(newItemConfig);
+    return nsn.Engine.objectManager.createObject(newItemConfig);
   },
 
   // TODO We need to review these fadeouts

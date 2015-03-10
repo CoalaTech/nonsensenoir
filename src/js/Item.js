@@ -10,7 +10,7 @@ nsn.Item = (function(){
 
     this.foreground = option.foreground || false; /*  Item sempre à frente da tela  */
 
-    this.bitmap = new createjs.Bitmap(Engine.assets[imagePath]);
+    this.bitmap = new createjs.Bitmap(nsn.Engine.assets[imagePath]);
     this.bitmap.x = x;
     this.bitmap.y = y;
     this.bitmap.item = this;

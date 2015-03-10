@@ -8,7 +8,7 @@ nsn.Player = (function(){
   Player.prototype = new nsn.Character();
 
   Player.prototype.hasItem = function(item){
-    return Engine.inventory.hasItem(item);
+    return nsn.Engine.inventory.hasItem(item);
   };
 
   Player.prototype.pickItem = function(item, actionText){
@@ -24,7 +24,7 @@ nsn.Player = (function(){
             this.face(item.use_position.facing);
           }
 
-          Engine.inventory.addItem(item);
+          nsn.Engine.inventory.addItem(item);
 
           take.call(this);
 
@@ -33,7 +33,7 @@ nsn.Player = (function(){
 
     }else{
 
-      Engine.inventory.addItem(item);
+      nsn.Engine.inventory.addItem(item);
 
       take.call(this);
 

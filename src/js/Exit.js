@@ -20,13 +20,13 @@ nsn.Exit.prototype = {
     this.description = this.config.description;
 
     /** @type {createjs.Bitmap} The exit's image, e.g, a door, a window, a rug, etc...  */
-    this.image = new createjs.Bitmap(Engine.assets[this.config.source]);
+    this.image = new createjs.Bitmap(nsn.Engine.assets[this.config.source]);
 
     this.image.x = this.config.imageX;
     this.image.y = this.config.imageY;
 
-    this.exitX = this.config.exitX * Engine.stage.stage.scaleX;
-    this.exitY = this.config.exitY * Engine.stage.stage.scaleY;
+    this.exitX = this.config.exitX * nsn.Engine.stage.stage.scaleX;
+    this.exitY = this.config.exitY * nsn.Engine.stage.stage.scaleY;
 
     this._addEventListeners();
 
@@ -42,20 +42,20 @@ nsn.Exit.prototype = {
 
   _walkToExit: function(){
 
-    var playerPosition = Engine.player.position();
+    var playerPosition = nsn.Engine.player.position();
 
     /* Going back and forth between scenes */
     if(playerPosition[0] == this.exitX && playerPosition[1] == this.exitY){
-      Engine.setSceneAsCurrent(this.config.targetScene, this);
+      nsn.Engine.setSceneAsCurrent(this.config.targetScene, this);
       return;
     }
 
     /* All hail STOP_EVERYTHING! =] */
     nsn.fire(nsn.events.STOP_EVERYTHING);
 
-    Engine.player.walk(this.exitX, this.exitY)
+    nsn.Engine.player.walk(this.exitX, this.exitY)
           .then(function(){
-              Engine.setSceneAsCurrent(this.config.targetScene, this);
+              nsn.Engine.setSceneAsCurrent(this.config.targetScene, this);
             }.bind(this));
 
   },
@@ -63,7 +63,7 @@ nsn.Exit.prototype = {
   _onMouseOver: function(){
 
     //TODO Refatorar para stage ouvir novo evento
-    Engine.stage.setCursor("exit");
+    nsn.Engine.stage.setCursor("exit");
     //TODO Refatorar para usar o nome do objeto e não uma string
     nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Exit', text: this.description});
 
@@ -72,7 +72,7 @@ nsn.Exit.prototype = {
   _onMouseOut: function (){
 
     //TODO Refatorar para stage ouvir novo evento
-    Engine.stage.resetCursor();
+    nsn.Engine.stage.resetCursor();
     //TODO Refatorar para usar o nome do objeto e não uma string
     nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Exit'});
 

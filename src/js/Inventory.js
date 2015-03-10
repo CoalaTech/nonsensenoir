@@ -32,7 +32,7 @@ nsn.Inventory.prototype = {
   init: function(){
     this.setOpenInventoryOnKeypress();
 
-    Engine.stage.addHUD(this.openInventoryButton);
+    nsn.Engine.stage.addHUD(this.openInventoryButton);
 
     nsn.listen(nsn.events.BACKGROUND_CLICKED, this.hideInventory, this);
     nsn.listen(nsn.events.SCENE_CHANGED, this.hideInventory, this);
@@ -80,9 +80,9 @@ nsn.Inventory.prototype = {
   },
 
   showInventory: function(){
-    Engine.stage.removeHUD(this.openInventoryButton);
-    Engine.stage.addHUD(this.closeInventoryButton);
-    Engine.stage.addHUD(this.group);
+    nsn.Engine.stage.removeHUD(this.openInventoryButton);
+    nsn.Engine.stage.addHUD(this.closeInventoryButton);
+    nsn.Engine.stage.addHUD(this.group);
 
     createjs.Tween.get(this.group).to({x: 0}, 200);
 
@@ -94,12 +94,12 @@ nsn.Inventory.prototype = {
   hideInventory: function(closedFromButton){
     if(!this.inventoryIsOpen) return;
 
-    Engine.stage.removeHUD(this.closeInventoryButton);
-    Engine.stage.addHUD(this.openInventoryButton);
+    nsn.Engine.stage.removeHUD(this.closeInventoryButton);
+    nsn.Engine.stage.addHUD(this.openInventoryButton);
     createjs.Tween.get(this.group)
           .to({x: -200}, 200)
           .call(function(){
-            Engine.stage.removeHUD(this.group);
+            nsn.Engine.stage.removeHUD(this.group);
           });
 
     this.inventoryIsOpen = false;
@@ -114,7 +114,7 @@ nsn.Inventory.prototype = {
   },
 
   _createOpenButton: function(){
-    var openInventoryButton = new createjs.Bitmap(Engine.assets.openInventory);
+    var openInventoryButton = new createjs.Bitmap(nsn.Engine.assets.openInventory);
     openInventoryButton.x = 20;
     openInventoryButton.y = 20;
     openInventoryButton.addEventListener('click', this._onOpenClicked.bind(this));
@@ -123,7 +123,7 @@ nsn.Inventory.prototype = {
   },
 
   _createCloseButton: function(){
-    var closeInventoryButton = new createjs.Bitmap(Engine.assets.closeInventory);
+    var closeInventoryButton = new createjs.Bitmap(nsn.Engine.assets.closeInventory);
     closeInventoryButton.x = 200;
     closeInventoryButton.y = 20;
     closeInventoryButton.addEventListener('click', this._onCloseClicked.bind(this));
@@ -142,7 +142,7 @@ nsn.Inventory.prototype = {
   },
 
   _createImage: function(){
-    return new createjs.Bitmap(Engine.assets.inventoryBackground);
+    return new createjs.Bitmap(nsn.Engine.assets.inventoryBackground);
   },
 
   _createGroup: function(){
@@ -167,7 +167,7 @@ nsn.Inventory.prototype = {
 
   _onCloseClicked: function(){
     this.hideInventory(true);
-    Engine.objectHandler.hideHUD();
+    nsn.Engine.objectHandler.hideHUD();
   },
 
   _onOpenClicked: function(){
@@ -182,7 +182,7 @@ nsn.Inventory.prototype = {
     newItem.inventory_dialogs = item.inventory_dialogs;
     newItem.inInventory = true;
 
-    var slot = new createjs.Bitmap(Engine.assets.slotInventory);
+    var slot = new createjs.Bitmap(nsn.Engine.assets.slotInventory);
     group.addChild(slot);
     group.addChild(newItem);
     this._setGroupPositionInInventory(group);
@@ -231,13 +231,13 @@ nsn.Inventory.prototype = {
   _onObjectClicked: function(event){
     var target = event.target.object ? event.target.object : event.target;
 
-    Engine.objectManager.unselectObject();
+    nsn.Engine.objectManager.unselectObject();
 
     if(this.itemSelected){
-      Engine.objectCombiner.combine(this.itemSelected, target);
+      nsn.Engine.objectCombiner.combine(this.itemSelected, target);
     }else{
-      Engine.objectManager.selectObject(target);
-      Engine.objectHandler.showHUD(
+      nsn.Engine.objectManager.selectObject(target);
+      nsn.Engine.objectHandler.showHUD(
                     this.image.image.width + 10,
                     this.itemsGroup.y + target.group.y + 35,
                     target,
@@ -248,12 +248,12 @@ nsn.Inventory.prototype = {
 
   _onMouseOverObject: function(event){
     event.target = event.target.object ? event.target.object : event.target;
-    Engine.objectManager.onMouseOverObject(event);
+    nsn.Engine.objectManager.onMouseOverObject(event);
   },
 
   _onMouseOutObject: function(event){
     event.target = event.target.object ? event.target.object : event.target;
-    Engine.objectManager.onMouseOutObject(event);
+    nsn.Engine.objectManager.onMouseOutObject(event);
   },
 
   _combineItems: function(params){

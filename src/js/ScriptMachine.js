@@ -1,9 +1,9 @@
 nsn.ScriptMachine = function(){
 
   this.map = {
-    widescreen: Engine.widescreen,
-    walk: Engine.player.walk,
-    say: Engine.player.say,
+    widescreen: nsn.Engine.widescreen,
+    walk: nsn.Engine.player.walk,
+    say: nsn.Engine.player.say,
     wait: this._wait,
     playSound: this._playSound
   };
@@ -13,7 +13,8 @@ nsn.ScriptMachine = function(){
       "sofa": [
         {
           calls: "widescreen",
-          params: [true]
+          params: [true],
+          scope: nsn.Engine
         }
       ]
     },
@@ -21,7 +22,8 @@ nsn.ScriptMachine = function(){
       "Sacada": [
         {
           calls: "widescreen",
-          params: [true]
+          params: [true],
+          scope: nsn.Engine
         },
         {
           calls: "playSound",
@@ -31,7 +33,7 @@ nsn.ScriptMachine = function(){
           /*  Isso vai falhar se o stage.scale for diferente de 1  */
           calls: "walk",
           params: [404, 557],
-          scope: Engine.player
+          scope: nsn.Engine.player
         },
         {
           calls: "wait",
@@ -40,13 +42,14 @@ nsn.ScriptMachine = function(){
         {
           calls: "say",
           params: ["Oi, tia. O que é a merenda hoje?", 4000],
-          scope: Engine.player
+          scope: nsn.Engine.player
         },
         {
           calls: "widescreen",
           params: [false],
           /*  Se nao for especificado, a acao seguinte espera essa terminar  */
-          waitForMe: false
+          waitForMe: false,
+          scope: nsn.Engine
         }
       ]
     }
@@ -65,7 +68,7 @@ nsn.ScriptMachine.prototype = {
   _executeAction: function(event){
     if(!this.script[event.type] || !this.script[event.type][event.target]){ return; }
 
-    Engine.stage.disableInteraction();
+    nsn.Engine.stage.disableInteraction();
 
     var actions = this.script[event.type][event.target];
 
@@ -84,7 +87,7 @@ nsn.ScriptMachine.prototype = {
           promise.then(nextAction);
         }
       }else{
-        Engine.stage.enableInteraction();
+        nsn.Engine.stage.enableInteraction();
       }
     }.bind(this);
 

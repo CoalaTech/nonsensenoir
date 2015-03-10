@@ -20,9 +20,9 @@ nsn.BitmapMaskPathfinder = function(image, options){
 
 		ctx = canvas.getContext('2d'),
 
-		width = Engine.canvas.width,
+		width = nsn.Engine.canvas.width,
 
-		height = Engine.canvas.height;
+		height = nsn.Engine.canvas.height;
 
 	canvas.width = width;
 

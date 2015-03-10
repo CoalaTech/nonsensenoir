@@ -15,7 +15,7 @@ nsn.Character = function (options){
     var image_data = options.image_data;
 
     /*  Gambs. Só funciona pra array com um elemento  */
-    image_data.images = [Engine.assets[image_data.images[0]]];
+    image_data.images = [nsn.Engine.assets[image_data.images[0]]];
 
     var spritesheet = new createjs.SpriteSheet(image_data);
 
@@ -47,7 +47,7 @@ nsn.Character.prototype = {
     var position = this.position();
 
     /* TODO: Refatorar esse pedaço. Character nao tem que conhecer o background */
-    var path = Engine.currentScene.background.findPath(position[0], position[1], x, y);
+    var path = nsn.Engine.currentScene.background.findPath(position[0], position[1], x, y);
 
     // Available since Character 'implements' nsn.Walkable
     return this.walkPath(path);
@@ -56,8 +56,8 @@ nsn.Character.prototype = {
 
   position: function (){
 
-    return [parseInt(this.image.x * Engine.stage.stage.scaleX / Engine.cellSize, 10),
-        parseInt(this.image.y * Engine.stage.stage.scaleY / Engine.cellSize, 10)];
+    return [parseInt(this.image.x * nsn.Engine.stage.stage.scaleX / nsn.Engine.cellSize, 10),
+        parseInt(this.image.y * nsn.Engine.stage.stage.scaleY / nsn.Engine.cellSize, 10)];
 
   },
 

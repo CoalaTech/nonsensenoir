@@ -4,7 +4,7 @@
 nsn.Stage = function(){
 
   /** @type {createjs.Stage} Reference to the createjs Stage instance */
-  this.stage = new createjs.Stage(Engine.canvas);
+  this.stage = new createjs.Stage(nsn.Engine.canvas);
 
   this._scenePanel = new createjs.Container();
   this._blankPanel = new createjs.Container();
@@ -48,7 +48,7 @@ nsn.Stage.prototype = {
 
     createjs.Ticker.addEventListener("tick", this._handleTick.bind(this));
 
-    createjs.Ticker.setFPS(Engine.frameRate);
+    createjs.Ticker.setFPS(nsn.Engine.frameRate);
 
   },
 
@@ -57,14 +57,14 @@ nsn.Stage.prototype = {
   },
 
   _createTextManager: function(){
-    Engine.textManager = new nsn.TextManager();
-    this._textPanel.addChild(Engine.textManager.textContainer);
+    nsn.Engine.textManager = new nsn.TextManager();
+    this._textPanel.addChild(nsn.Engine.textManager.textContainer);
   },
 
   _createFadePanel: function(){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,1)");
-    graphics.drawRect(0, 0, Engine.canvas.width, Engine.canvas.height);
+    graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
 
     var fadeShape = new createjs.Shape(graphics);
     fadeShape.alpha = 0;
@@ -75,7 +75,7 @@ nsn.Stage.prototype = {
   _createBlankPanel: function(){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,0.01)");
-    graphics.drawRect(0, 0, Engine.canvas.width, Engine.canvas.height);
+    graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
 
     blankShape = new createjs.Shape(graphics);
 

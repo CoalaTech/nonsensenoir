@@ -37,7 +37,7 @@ nsn.ObjectManager.prototype = {
   },
 
   generateObjectBitmap: function(objectConfig) {
-    var objectBitmap = new createjs.Bitmap(Engine.assets[objectConfig.path]);
+    var objectBitmap = new createjs.Bitmap(nsn.Engine.assets[objectConfig.path]);
     for (var property in objectConfig) {
       if(objectConfig.hasOwnProperty(property)){
         objectBitmap[property] = objectConfig[property];
@@ -54,15 +54,15 @@ nsn.ObjectManager.prototype = {
   },
 
   _onObjectClicked: function(e){
-    if(Engine.inventory.itemSelected){
-      Engine.objectCombiner.combine(Engine.inventory.itemSelected, e.currentTarget);
+    if(nsn.Engine.inventory.itemSelected){
+      nsn.Engine.objectCombiner.combine(nsn.Engine.inventory.itemSelected, e.currentTarget);
     }else{
       var coordinates = this._targetCoordinates(e.target);
 
       this.unselectObject();
       this.selectObject(e.target);
 
-      Engine.objectHandler.showHUD(coordinates.x, coordinates.y, e.target);
+      nsn.Engine.objectHandler.showHUD(coordinates.x, coordinates.y, e.target);
     }
   },
 
@@ -76,15 +76,15 @@ nsn.ObjectManager.prototype = {
   },
 
   onMouseOverObject: function(evt){
-    Engine.stage.setCursor("default_highlight");
+    nsn.Engine.stage.setCursor("default_highlight");
 
     var objectName = evt.target.name;
     var messageToShow = objectName;
 
     //TODO Refatorar useItemMessage...
-    if(Engine.inventory.itemSelected){
+    if(nsn.Engine.inventory.itemSelected){
       if(this._isNotTheSameObjectInInventory(objectName)){
-        messageToShow = Engine.inventory.useItemMessage + " " + objectName
+        messageToShow = nsn.Engine.inventory.useItemMessage + " " + objectName
       }
     }
 
@@ -93,20 +93,20 @@ nsn.ObjectManager.prototype = {
   },
 
   onMouseOutObject: function (evt){
-    Engine.stage.resetCursor();
+    nsn.Engine.stage.resetCursor();
 
     var messageToShow;
 
     //TODO Refatorar useItemMessage...
-    if(Engine.inventory.itemSelected){
-      messageToShow = Engine.inventory.useItemMessage;
+    if(nsn.Engine.inventory.itemSelected){
+      messageToShow = nsn.Engine.inventory.useItemMessage;
     }
 
     nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Object', text: messageToShow});
   },
 
   _isNotTheSameObjectInInventory: function(objectName){
-    return Engine.inventory.itemSelected.name != objectName;
+    return nsn.Engine.inventory.itemSelected.name != objectName;
   },
 
   selectObject: function(object){

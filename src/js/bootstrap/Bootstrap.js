@@ -54,7 +54,7 @@ nsn.Bootstrap.prototype.init = function(){
       var asset;
       for(var index in this.manifest){
         asset = this.manifest[index];
-        Engine.assets[asset.id] = queue.getResult(asset.id);
+        nsn.Engine.assets[asset.id] = queue.getResult(asset.id);
       }
 
       nsn.fire(nsn.events.ASSETS_LOADED);
