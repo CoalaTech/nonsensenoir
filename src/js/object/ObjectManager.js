@@ -84,7 +84,7 @@ nsn.ObjectManager.prototype = {
     //TODO Refatorar useItemMessage...
     if(nsn.Engine.inventory.itemSelected){
       if(this._isNotTheSameObjectInInventory(objectName)){
-        messageToShow = nsn.Engine.inventory.useItemMessage + " " + objectName
+        messageToShow = nsn.Engine.inventory.useItemMessage + " " + objectName;
       }
     }
 
@@ -112,34 +112,11 @@ nsn.ObjectManager.prototype = {
   selectObject: function(object){
     this.selectedObject = object;
     this._applyFiltersInSelectedObject(object, [this.colorFilter]);
-
-    /* TODO Check if this is necessary
-     *
-     * Blur e Color Filter Example
-     * Example to show how it needs to be called to mimic the old behavior below
-     *
-     * this.selectedObject.filters = [this.blurFilter, this.colorFilter];
-     * this.selectedObject.cache(this.bounds.x, this.bounds.y, object.image.width + this.bounds.width, object.image.height + this.bounds.height);
-     *
-     * We could simplificate the function _applyFiltersInSelectedObject if the extra parameters were not necessary...
-     */
-     //this._applyFiltersInSelectedObject(object, [this.blurFilter, this.colorFilter], this.bounds.x, this.bounds.y);
   },
 
-  _applyFiltersInSelectedObject: function(object, filters, cord_x, cord_y){
-    var x = cord_x | 0;
-    var y = cord_y | 0;
-
-    var width_offset = 0;
-    var height_offset = 0;
-
-    if(cord_x && cord_y){
-      width_offset = this.bounds.width;
-      height_offset = this.bounds.height;
-    }
-
+  _applyFiltersInSelectedObject: function(object, filters){
     this.selectedObject.filters = filters;
-    this.selectedObject.cache(x, y, object.image.width + width_offset, object.image.height + height_offset);
+    this.selectedObject.cache(0, 0, object.image.width, object.image.height);
   },
 
   unselectObject: function(){
