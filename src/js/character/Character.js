@@ -56,8 +56,8 @@ nsn.Character.prototype = {
 
   position: function (){
 
-    return [parseInt(this.image.x * nsn.Engine.stage.stage.scaleX / nsn.Engine.cellSize, 10),
-        parseInt(this.image.y * nsn.Engine.stage.stage.scaleY / nsn.Engine.cellSize, 10)];
+    return [parseInt(this.image.x * nsn.Engine.scaleX() / nsn.Engine.cellSize, 10),
+            parseInt(this.image.y * nsn.Engine.scaleY() / nsn.Engine.cellSize, 10)];
 
   },
 

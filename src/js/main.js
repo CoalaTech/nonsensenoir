@@ -2,12 +2,9 @@
 
   window.nsn = window.nsn || {};
 
-  var stage;
-
   function initGame(){
     nsn.Engine = new nsn.GameEngine();
-
-    nsn.Engine.stage = stage = new nsn.Stage();
+    nsn.Engine.stage = new nsn.Stage();
 
     /*  Tentativa de redimensionar a tela */
     if(document.body.offsetWidth < nsn.Engine.canvas.width ||
@@ -18,7 +15,7 @@
 
       var scale = Math.min(ratioX, ratioY);
 
-      stage.stage.scaleX = stage.stage.scaleY = scale;
+      nsn.Engine.stage.stage.scaleX = nsn.Engine.stage.stage.scaleY = scale;
     }
 
     var bootstrap = new nsn.Bootstrap();

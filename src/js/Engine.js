@@ -10,8 +10,6 @@ nsn.GameEngine = function(){
 
   this.frameRate = 12;
 
-  this.objectManager;
-
   this.init();
 
 };
@@ -185,6 +183,14 @@ nsn.GameEngine.prototype = {
   stopEverything: function() {
     this.player.resetAnimation();
     this.objectHandler.hideHUD();
+  },
+
+  scaleX: function(){
+    return this.stage.stage.scaleX;
+  },
+
+  scaleY: function(){
+    return this.stage.stage.scaleY;
   }
 
 };

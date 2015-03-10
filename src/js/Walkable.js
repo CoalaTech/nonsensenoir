@@ -47,8 +47,8 @@ nsn.Walkable.prototype = {
 
     /* TODO: Expose scaleX and scaleY properties directly on the nsn.Engine class */
     var pathWalkPromise = this.walkTo(
-      (pathEndNode[0] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.stage.stage.scaleX,
-      (pathEndNode[1] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.stage.stage.scaleY
+      (pathEndNode[0] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.scaleX(),
+      (pathEndNode[1] * this.cellSize + (this.cellSize / 2)) / nsn.Engine.scaleY()
     );
 
     this.pathIndex++;

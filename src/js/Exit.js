@@ -25,8 +25,8 @@ nsn.Exit.prototype = {
     this.image.x = this.config.imageX;
     this.image.y = this.config.imageY;
 
-    this.exitX = this.config.exitX * nsn.Engine.stage.stage.scaleX;
-    this.exitY = this.config.exitY * nsn.Engine.stage.stage.scaleY;
+    this.exitX = this.config.exitX * nsn.Engine.scaleX();
+    this.exitY = this.config.exitY * nsn.Engine.scaleY();
 
     this._addEventListeners();
 

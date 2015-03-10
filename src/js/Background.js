@@ -21,7 +21,7 @@ nsn.Background = function(name, image, matrix){
    * The smaller the cellSize, the more refined the background matrix is.
    * @type {Integer}
    */
-  this.cellSize = 1000 / this.matrix[0].length * nsn.Engine.stage.stage.scaleX;
+  this.cellSize = 1000 / this.matrix[0].length * nsn.Engine.scaleX();
 
   /**
    * The class responsible for handling the pathfinding
