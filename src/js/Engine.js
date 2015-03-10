@@ -19,7 +19,36 @@ nsn.GameEngine = function(){
 nsn.GameEngine.prototype = {
 
   init: function(){
+    this.gameSound = new nsn.GameSound();
+    this.canvas = this._setupCanvas();
+
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
+    nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this);
+  },
+
+  _setupCanvas: function(){
+    var canvas = document.getElementById("canvas");
+    canvas.width = 997;
+    canvas.height = 600;
+
+    return canvas;
+  },
+
+  _onGameStarted: function(){
+    // this.gameSound.playSound(this.id, false);
+
+    this.buildScenes();
+
+    this.setSceneAsCurrent("Apartamento");
+
+    this.objectHandler = new nsn.ObjectHandler();
+    this.objectCombiner = new nsn.ObjectCombiner();
+    this.inventory = new nsn.Inventory();
+    this.script = new nsn.ScriptMachine();
+
+    // Descomentar para rodar a música do jogo
+    // -1 quer dizer que o áudio fica em loop
+    // this.gameSound.playSound("mainGameMusicShort", -1);
   },
 
   buildScenes: function(){
