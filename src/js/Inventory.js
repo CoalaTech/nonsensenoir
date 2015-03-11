@@ -52,7 +52,7 @@ nsn.Inventory.prototype = {
        * i = 105
        */
       if (keyCode == 105){
-        this.toggleInventory();
+        this._toggleInventory();
       }
 
     }.bind(this));
