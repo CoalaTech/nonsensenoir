@@ -10,9 +10,27 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      /*   Concats all the .js files under /src/js into nsn.js */
+      js: {
+        src: ['src/js/**/*.js', '!src/js/main.js'],
+        dest: '<%=buildPath%>/js/nsn.js'
+      },
+    },
+
     copy: {
       dist: {
         files: [
+
+          /*   Main js file which must be loaded first */
+          {
+            expand: true,
+            flatten: true,
+            cwd: 'src/js/',
+            src: ['main.js'],
+            dest: '<%=buildPath%>/js/'
+          },
+
           /*   Bower dependencies */
           {
             expand: true,
@@ -50,13 +68,6 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: false,
-            cwd: 'src/js/',
-            src: ['**/*.js'],
-            dest: '<%=buildPath%>/js/'
-          },
-          {
-            expand: true,
-            flatten: false,
             cwd: 'src/css/',
             src: ['**/*.css'],
             dest: '<%=buildPath%>/css/'
@@ -70,12 +81,33 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+
+    watch: {
+      files: ['src/**/*'],
+      tasks: ['no-serving'],
+    },
+
+    concurrent: {
+        serveAndWatch: {
+          tasks: ['serve', 'watch'],
+          options: {
+              logConcurrentOutput: true
+          }
+        }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-serve');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
 
-  grunt.registerTask('default', ['copy:dist', 'serve']);
+  // grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
+  grunt.registerTask('serving', ['concurrent:serveAndWatch']);
+  grunt.registerTask('no-serving', ['concat', 'copy:dist']);
+  grunt.registerTask('default', ['no-serving', 'serving']);
 
 };
