@@ -100,10 +100,11 @@ module.exports = function(grunt) {
     /* Setup test framework Mocha */
     mocha: {
       test: {
-        src: ['tests/**/*.html'],
+        src: ['test/**/*.html'],
         options: {
           log: true,
-          logErrors: true
+          logErrors: true,
+          reporter: 'Spec' // Use 'Nyan' if you want to smile :)
         },
       },
     }
