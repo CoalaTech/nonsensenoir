@@ -1,5 +1,7 @@
 (function(){
 
+  window.nsn = window.nsn || {};
+
   var listeners = {};
 
   nsn.events = {

@@ -1,4 +1,7 @@
 describe('Engine', function(){
+  before(function(){
+    nsn.Engine = new nsn.GameEngine();
+  });
 
   describe('properties', function(){
     it('has frameRate', function(){
@@ -23,9 +26,9 @@ describe('Engine', function(){
   });
 
   describe('prototype', function(){
-    it('has init()', function(){
-      expect(nsn.Engine).to.respondTo('init');
-    });
+   it('has init()', function(){
+     expect(nsn.Engine).to.respondTo('init');
+   });
   })
 
 });
