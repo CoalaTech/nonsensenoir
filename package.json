@@ -24,6 +24,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha": "^0.4.12",
     "grunt-serve": "~0.1.6",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0"
   }
 }
