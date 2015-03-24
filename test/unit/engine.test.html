@@ -25,14 +25,26 @@
       mocha.setup('bdd');
     </script>
 
-    <!-- Include chai to use as assertion lib and sinon to mock and stub -->
+    <!-- Include chai to use as assertion lib -->
     <script src="../../node_modules/chai/chai.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../node_modules/chai/sinon-chai.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../node_modules/chai/sinon.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       // Setup chai
       var expect = chai.expect;
     </script>
+
+    <!-- Add sinon to mock, stub and etc -->
+    <script src="../../node_modules/sinon-chai/lib/sinon-chai.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/util/core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/times_in_words.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/extend.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/behavior.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/typeOf.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/match.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/format.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/call.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/spy.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../node_modules/sinon/lib/sinon/stub.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- Load project dependencies -->
     <script type="text/javascript" src="../../build/js/lib/rsvp.min.js"></script>
@@ -45,8 +57,6 @@
     <!-- Project source code -->
     <script type="text/javascript" src="../../src/js/Base.js"></script>
     <script type="text/javascript" src="../../src/js/Engine.js"></script>
-    <!-- Shouldn't be necessary. We need to mock GameSound -->
-    <script type="text/javascript" src="../../src/js/GameSound.js"></script>
 
     <!-- Spec files -->
     <script src="engine.spec.js" type="text/javascript" charset="utf-8"></script>

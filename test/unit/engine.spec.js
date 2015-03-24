@@ -1,5 +1,6 @@
 describe('Engine', function(){
   before(function(){
+    nsn.GameSound = sinon.stub();
     nsn.Engine = new nsn.GameEngine();
   });
 
