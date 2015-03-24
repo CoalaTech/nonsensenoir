@@ -27,8 +27,8 @@ nsn.GameSound.prototype = {
     }
 
     var manifest = [
-      {src: "./sound/Thunder1.ogg", id:"startGameButton"},
-      {src: "./sound/SOLthemeshort.ogg", id:"mainGameMusicShort"}
+      {src: nsn.ASSETS_PATH + "sound/Thunder1.ogg", id:"startGameButton"},
+      {src: nsn.ASSETS_PATH + "sound/SOLthemeshort.ogg", id:"mainGameMusicShort"}
     ];
 
     createjs.Sound.registerManifest(manifest);

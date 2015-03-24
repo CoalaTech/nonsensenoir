@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      /*   Concats all the .js files under /src/js into nsn.js */
+      /* Concats all the .js files under /src/js into nsn.js */
       js: {
         src: ['src/js/**/*.js', '!src/js/main.js'],
         dest: '<%=buildPath%>/js/nsn.js'
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       dist: {
         files: [
 
-          /*   Main js file which must be loaded first */
+          /* Main js file which must be loaded first */
           {
             expand: true,
             flatten: true,
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
             dest: '<%=buildPath%>/js/'
           },
 
-          /*   Bower dependencies */
+          /* Bower dependencies */
           {
             expand: true,
             flatten: true,
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             dest: '<%=buildPath%>/js/lib'
           },
 
-          /*   Bower's CSS dependencies */
+          /* Bower's CSS dependencies */
           {
             expand: true,
             flatten: true,
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
             src: ['**/*min.css'],
             dest: '<%=buildPath%>/css/lib'
           },
-          /*   Bower's image dependencies */
+          /* Bower's image dependencies */
           {
             expand: true,
             flatten: true,
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
             dest: '<%=buildPath%>/img/lib'
           },
 
-          /*   Project's assets */
+          /* Project's assets */
           {
             expand: true,
             flatten: false,
@@ -95,6 +95,18 @@ module.exports = function(grunt) {
               logConcurrentOutput: true
           }
         }
+    },
+
+    /* Setup test framework Mocha */
+    mocha: {
+      test: {
+        src: ['test/**/*.html'],
+        options: {
+          log: true,
+          logErrors: true,
+          reporter: 'Spec' // Use 'Nyan' if you want to smile :)
+        },
+      },
     }
 
   });
@@ -104,10 +116,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-mocha');
 
-  // grunt.registerTask('default', ['concat', 'copy:dist', 'serve']);
   grunt.registerTask('serving', ['concurrent:serveAndWatch']);
   grunt.registerTask('no-serving', ['concat', 'copy:dist']);
   grunt.registerTask('default', ['no-serving', 'serving']);
+  grunt.registerTask('spec', ['no-serving', 'mocha']);
 
 };

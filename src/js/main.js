@@ -1,6 +1,8 @@
 (function(){
 
-  window.nsn = window.nsn || {};
+  window.nsn = window.nsn || {
+    ASSETS_PATH: "./"
+  };
 
   function initGame(){
     nsn.Engine = new nsn.GameEngine();
