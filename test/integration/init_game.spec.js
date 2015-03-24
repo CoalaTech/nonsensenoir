@@ -4,7 +4,7 @@ describe('Engine', function(){
     describe('init()', function(){
 
       it('creates GameSound', function(){
-        expect(nsn.Engine.init).to.change(nsn.Engine, 'gameSound');
+        expect(nsn.Engine.gameSound).not.to.be.null;
       });
 
       it('sets up the canvas element');
