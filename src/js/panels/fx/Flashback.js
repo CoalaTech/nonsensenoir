@@ -4,7 +4,7 @@ nsn.Panels.Flashback = function(parent){
 
   this.parent = parent;
 
-  this.filter = new createjs.Bitmap("./img/background/filter2.png");
+  this.filter = new createjs.Bitmap(nsn.ASSETS_PATH + "img/background/filter2.png");
   this.filter.compositeOperation = "lighter";
 
 };
