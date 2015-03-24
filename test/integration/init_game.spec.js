@@ -1,14 +1,17 @@
-describe('Engine', function(){
+describe('main', function(){
 
-  describe('prototype', function(){
-    describe('init()', function(){
-
-      it('creates GameSound', function(){
-        expect(nsn.Engine.gameSound).not.to.be.null;
-      });
-
-      it('sets up the canvas element');
+  describe('initGame()', function(){
+    it('creates nsn.Engine', function(){
+      expect(nsn.Engine).not.to.be.null;
     });
+
+    it('creates nsn.Stage', function(){
+      expect(nsn.Engine.stage).not.to.be.null;
+    });
+
+    it('resizes screen');
+
+    it('runs Bootstrap init');
   })
 
 });
