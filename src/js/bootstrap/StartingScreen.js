@@ -2,13 +2,13 @@ nsn.StartingScreen = function(){
 
   this.container = new createjs.Container();
 
-  this.background = new createjs.Bitmap('img/hud/title.png');
+  this.background = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/title.png');
 
   this.loadingBar = new nsn.LoadingBar(20, 300);
 
   var buttonWidth = 180;
 
-  this.buttonStart = new createjs.Bitmap('img/hud/iniciar.jpg');
+  this.buttonStart = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/iniciar.jpg');
   this.buttonStart.x = (nsn.Engine.canvas.width / 2) - (buttonWidth / 2);
   this.buttonStart.y = 350;
 
