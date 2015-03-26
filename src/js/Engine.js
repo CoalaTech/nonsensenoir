@@ -181,8 +181,12 @@ nsn.GameEngine.prototype = {
   },
 
   stopEverything: function() {
-    this.player.resetAnimation();
-    this.objectHandler.hideHUD();
+    if(this.player){
+      this.player.resetAnimation();
+    }
+    if(this.objectHandler){
+      this.objectHandler.hideHUD();
+    }
   },
 
   scaleX: function(){
