@@ -274,6 +274,10 @@ nsn.Inventory.prototype = {
 
   _handleCombinationEnd: function(params){
     if(!params.itemsWereCombined) this.hideInventory(true);
+  },
+
+  itemIsNotTheSameOfInventory: function(objectName){
+    return this.itemSelected.name != objectName;
   }
 }
 

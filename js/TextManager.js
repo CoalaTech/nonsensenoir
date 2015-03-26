@@ -256,7 +256,16 @@ nsn.TextManager.prototype = {
 
   _onMouseOverHighlight: function(params){
     if(!this._isShowingDialog){
-      this.showTextWithoutTimeout(params.text);
+      var messageToShow = params.objectName;
+
+      // TODO Shouldn't make direct calls to inventory
+      if(nsn.Engine.inventory.itemSelected &&
+         nsn.Engine.inventory.itemIsNotTheSameOfInventory(params.objectName)){
+
+        messageToShow = this._buildFullCombinationMessage(nsn.Engine.inventory.itemSelected, params.objectName);
+      }
+
+      this.showTextWithoutTimeout(messageToShow);
     }
   },
 
@@ -265,8 +274,10 @@ nsn.TextManager.prototype = {
       this.hideText();
     }
 
-    if(params.text){
-      this.showTextWithoutTimeout(params.text);
+    // TODO Shouldn't make direct calls to inventory
+    if(nsn.Engine.inventory.itemSelected){
+      var messageToShow = this._buildCombinationMessagePrefix(nsn.Engine.inventory.itemSelected);
+      this.showTextWithoutTimeout(messageToShow);
     }
   },
 
@@ -293,6 +304,15 @@ nsn.TextManager.prototype = {
     }
 
     nsn.fire(nsn.events.COMBINATION_MESSAGE_BUILT, {combinationMessage: combinationMessage});
+  },
+
+  _buildFullCombinationMessage: function(itemSelected, objectMouseOverName){
+    return this._buildCombinationMessagePrefix(itemSelected) + objectMouseOverName;
+  },
+
+  //TODO I18n
+  _buildCombinationMessagePrefix: function(itemSelected){
+    return "Usar " + itemSelected.name + " com: ";
   }
 
 };

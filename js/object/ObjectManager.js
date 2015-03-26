@@ -77,36 +77,15 @@ nsn.ObjectManager.prototype = {
 
   onMouseOverObject: function(evt){
     nsn.Engine.stage.setCursor("default_highlight");
-
     var objectName = evt.target.name;
-    var messageToShow = objectName;
 
-    //TODO Refatorar useItemMessage...
-    if(nsn.Engine.inventory.itemSelected){
-      if(this._isNotTheSameObjectInInventory(objectName)){
-        messageToShow = nsn.Engine.inventory.useItemMessage + " " + objectName;
-      }
-    }
-
-    nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Object', text: messageToShow});
-
+    nsn.fire(nsn.events.ON_MOUSE_OVER_HIGHLIGHT, {type: 'Object', objectName: objectName});
   },
 
   onMouseOutObject: function (evt){
     nsn.Engine.stage.resetCursor();
 
-    var messageToShow;
-
-    //TODO Refatorar useItemMessage...
-    if(nsn.Engine.inventory.itemSelected){
-      messageToShow = nsn.Engine.inventory.useItemMessage;
-    }
-
-    nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Object', text: messageToShow});
-  },
-
-  _isNotTheSameObjectInInventory: function(objectName){
-    return nsn.Engine.inventory.itemSelected.name != objectName;
+    nsn.fire(nsn.events.ON_MOUSE_OUT_HIGHLIGHT, {type: 'Object'});
   },
 
   selectObject: function(object){
