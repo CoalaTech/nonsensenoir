@@ -286,7 +286,8 @@ nsn.TextManager.prototype = {
   },
 
   _handleUseItemStart: function(params){
-    this.showTextWithoutTimeout(params.text);
+    var messageToShow = this._buildCombinationMessagePrefix(params.currentObject);
+    this.showTextWithoutTimeout(messageToShow);
   },
 
   _handlePlayerTalk: function(params){

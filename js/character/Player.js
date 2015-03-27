@@ -101,6 +101,7 @@ nsn.Player = (function(){
     nsn.listen(nsn.events.PLAYER_SPEECH_TEXT_ENDED, stopTalking, this);
     nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.useItem, this);
     nsn.listen(nsn.events.COMBINATION_MESSAGE_BUILT, handleCombinationMessageBuilt, this);
+    nsn.listen(nsn.events.ACTION_USE_CALLED, reactToActionUse, this);
 
     createjs.Ticker.addEventListener("tick", handleTick.bind(this));
   };
@@ -122,6 +123,16 @@ nsn.Player = (function(){
     position = position || "middle";
     this.stop();
     this.image.gotoAndPlay("grab_" + position);
+  }
+
+  function reactToActionUse(params){
+    var objectClicked = params.currentObject;
+
+    if(objectClicked.pickable){
+      this.pickItem(objectClicked, params.actionText);
+    }else{
+      this.say(params.actionText);
+    }
   }
 
   Player.prototype.resetAnimation = function(){

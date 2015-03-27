@@ -12,9 +12,15 @@ nsn.ObjectManager = function(){
   this.brightnessFilter = new createjs.BrightnessFilter(50);
 
   this.bounds = this.blurFilter.getBounds();
+
+  this._addListeners();
 };
 
 nsn.ObjectManager.prototype = {
+
+  _addListeners: function(){
+    nsn.listen(nsn.events.ACTION_USE_CALLED, this.unselectObject, this);
+  },
 
   createObjects: function(objects){
 

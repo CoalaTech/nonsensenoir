@@ -38,6 +38,7 @@ nsn.Inventory.prototype = {
     nsn.listen(nsn.events.SCENE_CHANGED, this.hideInventory, this);
     nsn.listen(nsn.events.ON_COMBINE, this.cancelUseItem, this);
     nsn.listen(nsn.events.COMBINING_ITEMS_FROM_INVENTORY, this._combineItems, this);
+    nsn.listen(nsn.events.USE_ITEM_START, this._selectItem, this);
     nsn.listen(nsn.events.USING_ITEM_IN_SCENE, this.hideInventory, this);
     nsn.listen(nsn.events.FINISHED_USING_ITEM_IN_SCENE, this._removeItemAfterUse, this);
     nsn.listen(nsn.events.FINISHED_ON_COMBINE, this._handleCombinationEnd, this);
@@ -179,7 +180,7 @@ nsn.Inventory.prototype = {
     var newItem = item.clone();
     /*  Sobreescrever o metodo do EaselJS?  */
     newItem.pickable = item.pickable;
-    newItem.inventory_dialogs = item.inventory_dialogs;
+    newItem.dialogs = item.inventory_dialogs;
     newItem.inInventory = true;
 
     var slot = new createjs.Bitmap(nsn.Engine.assets.slotInventory);
@@ -254,6 +255,10 @@ nsn.Inventory.prototype = {
   _onMouseOutObject: function(event){
     event.target = event.target.object ? event.target.object : event.target;
     nsn.Engine.objectManager.onMouseOutObject(event);
+  },
+
+  _selectItem: function(params){
+    this.itemSelected = params.currentObject;
   },
 
   _combineItems: function(params){
