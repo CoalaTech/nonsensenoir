@@ -11,9 +11,9 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      /* Concats all the .js files under /src/js into nsn.js */
+      /* Concats all the .js files under /js into nsn.js */
       js: {
-        src: ['src/js/**/*.js', '!src/js/main.js'],
+        src: ['js/**/*.js', '!js/main.js'],
         dest: '<%=buildPath%>/js/nsn.js'
       },
     },
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
-            cwd: 'src/js/',
+            cwd: 'js/',
             src: ['main.js'],
             dest: '<%=buildPath%>/js/'
           },
@@ -61,21 +61,21 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: false,
-            cwd: 'src/assets/',
+            cwd: 'assets/',
             src: ['**/*'],
             dest: '<%=buildPath%>'
           },
           {
             expand: true,
             flatten: false,
-            cwd: 'src/css/',
+            cwd: 'css/',
             src: ['**/*.css'],
             dest: '<%=buildPath%>/css/'
           },
           {
             expand: true,
             flatten: false,
-            cwd: 'src/html',
+            cwd: 'html/',
             src: ['**/*.html'],
             dest: '<%=buildPath%>/'
           }
@@ -84,7 +84,10 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['src/**/*'],
+      files: ['js/**/*',
+              'assets/**/*',
+              'css/**/*',
+              'html/**/*'],
       tasks: ['no-serving'],
     },
 
