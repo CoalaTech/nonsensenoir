@@ -47,45 +47,36 @@ nsn.ObjectHandler.prototype = {
     return button;
   },
 
-  // TODO refactor this mess
   _onButtonClicked: function(evt){
-    var actionText = "";
+    var actionName = evt.target.name;
+    var actionText = this.findActionText(actionName);
 
-    if(this.currentObject.inInventory){
-      if(evt.target.name == "use"){
-        //TODO Refatorar useItemMessage...
-        var useItemMessage = "Usar " + this.currentObject.name + " com: ";
-        nsn.Engine.inventory.useItemMessage = useItemMessage;
-        nsn.Engine.inventory.itemSelected = this.currentObject;
-        nsn.fire(nsn.events.USE_ITEM_START, {currentObject: this.currentObject, text: useItemMessage});
-      }else if (evt.target.name == "see"){
-        actionText = this.currentObject.inventory_dialogs.see || this.defaultActionMessages.see;
-        nsn.Engine.player.say(actionText);
-      }else if (evt.target.name == "mouth"){
-        actionText = this.currentObject.inventory_dialogs.mouth || this.defaultActionMessages.mouth;
-        nsn.Engine.player.say(actionText);
-      }
+    if (actionName == "use"){
+      this._handleUseAction(actionText);
     }else{
-      if(evt.target.name == "use"){
-        nsn.Engine.objectManager.unselectObject();
-        actionText = this.currentObject.dialogs.use || this.defaultActionMessages.use;
-        if(this.currentObject.pickable){
-          nsn.Engine.currentScene.player.pickItem(this.currentObject, actionText);
-        }else{
-          nsn.Engine.player.say(actionText);
-        }
-      }else if (evt.target.name == "see"){
-        actionText = this.currentObject.dialogs.see || this.defaultActionMessages.see;
-        nsn.Engine.player.say(actionText);
-      }else if (evt.target.name == "mouth"){
-        actionText = this.currentObject.dialogs.mouth || this.defaultActionMessages.mouth;
-        nsn.Engine.player.say(actionText);
-      }
-
-      nsn.fire(nsn.events.ON_ACTION, {"type": evt.target.name, "target": this.currentObject.name});
+      this._handleOtherActions(actionText);
     }
 
+    nsn.fire(nsn.events.ON_ACTION, {"type": actionName, "target": this.currentObject.name});
+
     this.hideHUD();
+  },
+
+  _handleUseAction: function(actionText){
+    if(this.currentObject.inInventory){
+      nsn.fire(nsn.events.USE_ITEM_START, {currentObject: this.currentObject});
+    } else {
+      nsn.fire(nsn.events.ACTION_USE_CALLED, {currentObject: this.currentObject, actionText: actionText});
+    }
+  },
+
+  //TODO Shouldn't be calling player directly
+  _handleOtherActions: function(actionText){
+    nsn.Engine.player.say(actionText);
+  },
+
+  findActionText: function(actionName){
+    return this.currentObject.dialogs[actionName] || this.defaultActionMessages[actionName];
   },
 
   showHUD: function(x, y, objectClicked, inline){

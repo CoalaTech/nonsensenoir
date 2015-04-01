@@ -20,6 +20,7 @@
     ON_MOUSE_OUT_HIGHLIGHT: "on_mouse_out_highlight",
     ITEM_PICKED: "item_picked",
     USE_ITEM_START: "use_item_start",
+    ACTION_USE_CALLED: "action_use_called",
     PLAYER_TALKING: "player_talking",
     PLAYER_SPEECH_TEXT_ENDED: "player_speech_text_ended",
 
