@@ -34,8 +34,10 @@ nsn.GameEngine.prototype = {
     return canvas;
   },
 
-  _onGameStarted: function(){
+  _onGameStarted: function(params){
     // this.gameSound.playSound(this.id, false);
+
+    this.stage.stage.removeChild(params.startingScreenContainer);
 
     this.buildScenes();
 
