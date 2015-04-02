@@ -9,6 +9,7 @@ nsn.Inventory = function(){
   this.NUM_ITEMS_PER_COL = 4;
 
   this.itemsGroup = this._createItemsGroup();
+  this._itemWithGroupMap = {};
 
   this.horizontalSize = this.itemsGroup.width / this.NUM_ITEMS_PER_ROW;
   this.verticalSize = this.itemsGroup.height / this.NUM_ITEMS_PER_COL;
@@ -202,6 +203,8 @@ nsn.Inventory.prototype = {
     slot.object = newItem;
     group.object = newItem;
     newItem.group = group;
+
+    this._itemWithGroupMap[newItem.name] = newItem;
   },
 
   _centralizeNewItemInsideSlot: function(newItem) {
@@ -214,14 +217,24 @@ nsn.Inventory.prototype = {
   _setGroupPositionInInventory: function(group, position) {
     if (position === undefined){ position = this.numItems; }
 
+    var coordinates = this._calculateGroupPositionCoordinates(position);
+    group.x = coordinates.x;
+    group.y = coordinates.y;
+  },
+
+  _calculateGroupPositionCoordinates: function(position){
     var row = parseInt(position / this.NUM_ITEMS_PER_ROW, 10);
     var column = parseInt(position % this.NUM_ITEMS_PER_ROW, 10);
-    group.x = column * this.horizontalSize;
-    group.y = row * this.verticalSize;
+
+    return {
+      x: column * this.horizontalSize,
+      y: row * this.verticalSize
+    };
   },
 
   _removeFromInventory: function(item){
     this.itemsGroup.removeChild(item.group);
+    this._itemWithGroupMap[item.name] = null;
   },
 
   reorganizeItems: function() {
