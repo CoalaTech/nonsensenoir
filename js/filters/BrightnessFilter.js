@@ -47,7 +47,7 @@ var p = BrightnessFilter.prototype = new createjs.Filter();
 // constructor:
   /** @ignore */
   p.initialize = function( adjustment ) {
-    if( isNaN(adjustment) || adjustment < 0 ) adjustment = 100;
+    if( isNaN(adjustment) || adjustment < 0 ){ adjustment = 100; }
     this.adjustment = adjustment;
   };
 

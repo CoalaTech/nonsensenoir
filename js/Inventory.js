@@ -95,7 +95,7 @@ nsn.Inventory.prototype = {
   },
 
   hideInventory: function(closedFromButton){
-    if(!this.inventoryIsOpen) return;
+    if(!this.inventoryIsOpen){ return; }
 
     nsn.Engine.stage.removeHUD(this.closeInventoryButton);
     nsn.Engine.stage.addHUD(this.openInventoryButton);
@@ -211,7 +211,7 @@ nsn.Inventory.prototype = {
   },
 
   _setGroupPositionInInventory: function(group, position) {
-    if (position === undefined) position = this.numItems;
+    if (position === undefined){ position = this.numItems; }
 
     var row = parseInt(position / this.NUM_ITEMS_PER_ROW, 10);
     var column = parseInt(position % this.NUM_ITEMS_PER_ROW, 10);
@@ -280,7 +280,7 @@ nsn.Inventory.prototype = {
   },
 
   _handleCombinationEnd: function(params){
-    if(!params.itemsWereCombined) this.hideInventory(true);
+    if(!params.itemsWereCombined){ this.hideInventory(true); }
   },
 
   itemIsNotTheSameOfInventory: function(objectName){
