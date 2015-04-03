@@ -53,7 +53,7 @@ nsn.ObjectHandler.prototype = {
     var actionName = evt.target.name;
     var actionText = this.findActionText(actionName);
 
-    if (actionName == "use"){
+    if (actionName === "use"){
       this._handleUseAction(actionText);
     }else{
       this._handleOtherActions(actionText);

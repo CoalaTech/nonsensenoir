@@ -54,7 +54,7 @@ nsn.Inventory.prototype = {
       /* KeyCodes
        * i = 105
        */
-      if (keyCode == 105){
+      if (keyCode === 105){
         this._toggleInventory();
       }
 
@@ -75,7 +75,7 @@ nsn.Inventory.prototype = {
   },
 
   hasItem: function(item){
-    if(typeof(item) == "string"){
+    if(typeof(item) === "string"){
       return this.items[item] !== undefined;
     }else{
       return this.items[item.name] !== undefined;
@@ -284,7 +284,7 @@ nsn.Inventory.prototype = {
   },
 
   itemIsNotTheSameOfInventory: function(objectName){
-    return this.itemSelected.name != objectName;
+    return this.itemSelected.name !== objectName;
   }
 };
 

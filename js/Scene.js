@@ -152,9 +152,9 @@ p._handleItemPicked = function(params){
 
 p._onSceneChanged = function(event){
 
-  if(event.from == this.name){
+  if(event.from === this.name){
     this._removeTickListener();
-  }else if(event.to == this.name){
+  }else if(event.to === this.name){
     this._addTickListener();
   }
 
@@ -183,7 +183,7 @@ p.handleTick = function(){
   }
   for(name in this.characters){
     character = this.characters[name];
-    if(character.name == "Detetive"){continue;}
+    if(character.name === "Detetive"){continue;}
     // if(this.player.image.y > character.y){
     if(this.player.image.y * this.player.image.scaleY > character.y){
       index++;

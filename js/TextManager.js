@@ -73,7 +73,7 @@ nsn.TextManager.prototype = {
        * spacebar = 32
        * period = 46
        */
-      if (keyCode == 32 || keyCode == 46){
+      if (keyCode === 32 || keyCode === 46){
         this.clearText();
       }
 
@@ -105,7 +105,7 @@ nsn.TextManager.prototype = {
     var textWithLineBreaks = "";
     var textTimeout = customTimeout || this._defaultTimeout;
 
-    if(this.currentDeferred && this.currentDeferred.promise._state != nsn.PromiseState.RESOLVED){
+    if(this.currentDeferred && this.currentDeferred.promise._state !== nsn.PromiseState.RESOLVED){
       this.currentDeferred.resolve();
     }
     this.currentDeferred = new nsn.Deferred();

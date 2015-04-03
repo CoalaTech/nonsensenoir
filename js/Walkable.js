@@ -55,7 +55,7 @@ nsn.Walkable.prototype = {
 
     this.pathIndex++;
 
-    if(this.pathIndex == this.path.length - 1){
+    if(this.pathIndex === this.path.length - 1){
       pathWalkPromise.then(this.walkDeferred.resolve);
       return;
     }
@@ -100,9 +100,9 @@ nsn.Walkable.prototype = {
 
   updateImageOrientation: function(destX){
 
-    if(destX > this.image.x && this.facing == "left"){
+    if(destX > this.image.x && this.facing === "left"){
       this.faceRight();
-    }else if(destX < this.image.x && this.facing == "right"){
+    }else if(destX < this.image.x && this.facing === "right"){
       this.faceLeft();
     }
 
@@ -110,7 +110,7 @@ nsn.Walkable.prototype = {
 
   _onWalkTweenComplete: function(){
 
-    if(this.pathIndex == this.path.length - 1){
+    if(this.pathIndex === this.path.length - 1){
       this.image.gotoAndStop("idle");
       this.isPlayingAnimation = false;
       this.isMoving = false;
