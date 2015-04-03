@@ -301,7 +301,7 @@ nsn.TextManager.prototype = {
     var combinationMessage = this.DEFAULT_COMBINATION_MESSAGE;
 
     if(params.combinationConfig){
-      combinationMessage = params.combinationConfig["message"];
+      combinationMessage = params.combinationConfig.message;
     }
 
     nsn.fire(nsn.events.COMBINATION_MESSAGE_BUILT, {combinationMessage: combinationMessage});

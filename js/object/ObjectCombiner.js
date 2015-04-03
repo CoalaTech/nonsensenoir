@@ -74,7 +74,7 @@ nsn.ObjectCombiner.prototype = {
         newItemAfterCombination = this._generateCombinedItem(combinationConfig);
       }
 
-      if (combinationConfig["target"]["name"] === "inventory") {
+      if (combinationConfig.target.name === "inventory") {
         // TODO We need to review these fadeouts
         createjs.Tween.get(source.group).to({alpha: 0}, 500);
         createjs.Tween.get(target.group).to({alpha: 0}, 500).call(function() {
@@ -100,7 +100,7 @@ nsn.ObjectCombiner.prototype = {
   },
 
   _generateCombinedItem: function(combinationConfig){
-    var newItemConfig = combinationConfig["item"];
+    var newItemConfig = combinationConfig.item;
 
     return nsn.Engine.objectManager.createObject(newItemConfig);
   },
@@ -118,7 +118,7 @@ nsn.ObjectCombiner.prototype = {
   },
 
   _runScript: function(combinationConfig) {
-    var script_params = combinationConfig["script_params"];
+    var script_params = combinationConfig.script_params;
     nsn.fire(nsn.events.ON_ACTION, script_params);
   }
 

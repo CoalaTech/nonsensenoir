@@ -1,6 +1,6 @@
 nsn.ObjectHandler = function(){
 
-  this.currentObject;
+  this.currentObject = {};
 
   this.actions = this._setActions();
 
@@ -205,6 +205,6 @@ nsn.ObjectHandler.prototype = {
 
     return group;
   }
-}
+};
 
 nsn.ObjectHandler.prototype.constructor = nsn.ObjectHandler;

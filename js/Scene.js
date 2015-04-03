@@ -190,7 +190,7 @@ p.handleTick = function(){
 
   this.panels.main.setChildIndex(this.player.image, index);
 
-}
+};
 
 p.flashback = function(enabled){
   if(enabled){

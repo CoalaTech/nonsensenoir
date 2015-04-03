@@ -284,6 +284,6 @@ nsn.Inventory.prototype = {
   itemIsNotTheSameOfInventory: function(objectName){
     return this.itemSelected.name != objectName;
   }
-}
+};
 
 nsn.Inventory.prototype.constructor = nsn.Inventory;
