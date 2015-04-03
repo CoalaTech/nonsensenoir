@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.TextManager = function(){
 
   this.DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";

@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.LoadingBar = function(x, y, width, height){
 
   this.x = x;

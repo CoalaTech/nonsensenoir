@@ -1,3 +1,5 @@
+/* global nsn: true, PF: true */
+
 /**
  * @class MatrixPathFinder
  * 

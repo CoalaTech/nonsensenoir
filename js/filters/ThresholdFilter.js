@@ -1,3 +1,5 @@
+/* global createjs: true */
+
 /*
 * ThresholdFilter
 * Visit http://createjs.com/ for documentation, updates and examples.

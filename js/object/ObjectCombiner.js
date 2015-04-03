@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 /*
   Ao combinar dois itens:
   - Pode surgir um novo item

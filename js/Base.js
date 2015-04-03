@@ -1,3 +1,5 @@
+/* global nsn: true, RSVP: true */
+
 (function(){
 
   var listeners = {};

@@ -1,6 +1,8 @@
+// All options available here: http://jshint.com/docs/options/
+
 {
-  "es5": true,
   "curly": true,
   "eqeqeq": true,
-  "undef": true
+  "undef": true,
+  "browser": true
 }

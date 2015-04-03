@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Inventory = function(){
 
   this.items = {};

@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true, console: true */
+
 /**
 * @copyright    2014 CoalaTech.
 */

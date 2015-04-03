@@ -1,3 +1,5 @@
+/* global nsn: true */
+
 nsn.ScriptMachine = function(){
 
   this.map = {

@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Item = (function(){
 
   /*  Não está sendo usado no momento */
@@ -8,7 +10,7 @@ nsn.Item = (function(){
     this.pickable = options.pickable || false;  /*  Pode ser pego?  */
     this.dialogs = options.dialogs || {};   /*  Diálogos de interação */
 
-    this.foreground = option.foreground || false; /*  Item sempre à frente da tela  */
+    this.foreground = options.foreground || false; /*  Item sempre à frente da tela  */
 
     this.bitmap = new createjs.Bitmap(nsn.Engine.assets[imagePath]);
     this.bitmap.x = x;

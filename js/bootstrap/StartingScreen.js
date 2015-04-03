@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.StartingScreen = function(){
 
   this.container = new createjs.Container();

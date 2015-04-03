@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Character = function (options){
 
   this.image = null;
