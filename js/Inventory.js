@@ -238,10 +238,8 @@ nsn.Inventory.prototype = {
   },
 
   reorganizeItems: function() {
-    var position = 0;
-    nsn.each(this.itemsGroup.children, function(itemGroup) {
+    nsn.each(this.itemsGroup.children, function(itemGroup, position) {
       this._setGroupPositionInInventory(itemGroup, position);
-      position++;
     }.bind(this));
   },
 
