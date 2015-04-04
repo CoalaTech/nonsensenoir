@@ -25,9 +25,10 @@ nsn.ObjectManager.prototype = {
   },
 
   createObjects: function(objects){
+    var createdObjects = [],
+        objectsSize = objects.length;
 
-    var createdObjects = [];
-    for (var i = 0; objectsSize = objects.length, i < objectsSize; i++) {
+    for (var i = 0; i < objectsSize; i++) {
       createdObjects.push(this.createObject(objects[i]));
     }
 

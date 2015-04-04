@@ -187,7 +187,7 @@ nsn.TextManager.prototype = {
 
   _getTwoLinesOfText: function(textBrokenInLines, indexToStart){
     var textWithLineBreaks = "";
-
+    var phrase = "";
     var twoLinesCounter = 0;
 
     for (var i = indexToStart; twoLinesCounter < 2; i++) {
@@ -223,6 +223,7 @@ nsn.TextManager.prototype = {
     var textBrokenInLines = [];
     var line = "";
     var word = "";
+    var possiblePhrase = "";
 
     for (var i = 0; i < textWords.length; i++) {
 

@@ -173,7 +173,9 @@ p.handleTick = function(){
   if(!this.player.isMoving){ return; }
 
   var index = 0,
-    object;
+      character,
+      object;
+
   for(var name in this.objects){
     object = this.objects[name];
     // if(this.player.image.y > object.y + object.image.height){
