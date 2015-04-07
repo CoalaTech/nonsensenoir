@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Player = (function(){
   var talkingDeferred;
 

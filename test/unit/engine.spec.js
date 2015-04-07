@@ -1,3 +1,5 @@
+/* global nsn: true, expect: true, sinon: true */
+
 describe('Engine', function(){
   before(function(){
     nsn.GameSound = sinon.stub();
@@ -30,6 +32,6 @@ describe('Engine', function(){
    it('has init()', function(){
      expect(nsn.Engine).to.respondTo('init');
    });
-  })
+  });
 
 });

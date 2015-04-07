@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.TextManager = function(){
 
   this.DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";
@@ -71,7 +73,7 @@ nsn.TextManager.prototype = {
        * spacebar = 32
        * period = 46
        */
-      if (keyCode == 32 || keyCode == 46){
+      if (keyCode === 32 || keyCode === 46){
         this.clearText();
       }
 
@@ -103,7 +105,7 @@ nsn.TextManager.prototype = {
     var textWithLineBreaks = "";
     var textTimeout = customTimeout || this._defaultTimeout;
 
-    if(this.currentDeferred && this.currentDeferred.promise._state != nsn.PromiseState.RESOLVED){
+    if(this.currentDeferred && this.currentDeferred.promise._state !== nsn.PromiseState.RESOLVED){
       this.currentDeferred.resolve();
     }
     this.currentDeferred = new nsn.Deferred();
@@ -185,7 +187,7 @@ nsn.TextManager.prototype = {
 
   _getTwoLinesOfText: function(textBrokenInLines, indexToStart){
     var textWithLineBreaks = "";
-
+    var phrase = "";
     var twoLinesCounter = 0;
 
     for (var i = indexToStart; twoLinesCounter < 2; i++) {
@@ -221,6 +223,7 @@ nsn.TextManager.prototype = {
     var textBrokenInLines = [];
     var line = "";
     var word = "";
+    var possiblePhrase = "";
 
     for (var i = 0; i < textWords.length; i++) {
 
@@ -301,7 +304,7 @@ nsn.TextManager.prototype = {
     var combinationMessage = this.DEFAULT_COMBINATION_MESSAGE;
 
     if(params.combinationConfig){
-      combinationMessage = params.combinationConfig["message"];
+      combinationMessage = params.combinationConfig.message;
     }
 
     nsn.fire(nsn.events.COMBINATION_MESSAGE_BUILT, {combinationMessage: combinationMessage});

@@ -1,3 +1,5 @@
+/* global nsn: true, RSVP: true */
+
 (function(){
 
   var listeners = {};
@@ -65,7 +67,7 @@
   /** Adapted from underscore.js - http://underscorejs.org/underscore.js */
   nsn.each = function(obj, func, context){
 
-    if (!obj) return obj;
+    if (!obj){ return obj; }
 
     var i, length = obj.length;
 
@@ -94,15 +96,17 @@
           obj['e'+type+fn]( window.event );
         };
         obj.attachEvent( 'on'+type, obj[type+fn] );
-      } else
+      } else {
         obj.addEventListener( type, fn, false );
+      }
     },
     off: function( obj, type, fn ) {
       if ( obj.detachEvent ) {
         obj.detachEvent( 'on'+type, obj[type+fn] );
         obj[type+fn] = null;
-      } else
+      } else {
         obj.removeEventListener( type, fn, false );
+      }
     }
   };
 

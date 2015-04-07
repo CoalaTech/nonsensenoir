@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Inventory = function(){
 
   this.items = {};
@@ -52,7 +54,7 @@ nsn.Inventory.prototype = {
       /* KeyCodes
        * i = 105
        */
-      if (keyCode == 105){
+      if (keyCode === 105){
         this._toggleInventory();
       }
 
@@ -73,7 +75,7 @@ nsn.Inventory.prototype = {
   },
 
   hasItem: function(item){
-    if(typeof(item) == "string"){
+    if(typeof(item) === "string"){
       return this.items[item] !== undefined;
     }else{
       return this.items[item.name] !== undefined;
@@ -93,7 +95,7 @@ nsn.Inventory.prototype = {
   },
 
   hideInventory: function(closedFromButton){
-    if(!this.inventoryIsOpen) return;
+    if(!this.inventoryIsOpen){ return; }
 
     nsn.Engine.stage.removeHUD(this.closeInventoryButton);
     nsn.Engine.stage.addHUD(this.openInventoryButton);
@@ -209,7 +211,7 @@ nsn.Inventory.prototype = {
   },
 
   _setGroupPositionInInventory: function(group, position) {
-    if (position === undefined) position = this.numItems;
+    if (position === undefined){ position = this.numItems; }
 
     var row = parseInt(position / this.NUM_ITEMS_PER_ROW, 10);
     var column = parseInt(position % this.NUM_ITEMS_PER_ROW, 10);
@@ -278,12 +280,12 @@ nsn.Inventory.prototype = {
   },
 
   _handleCombinationEnd: function(params){
-    if(!params.itemsWereCombined) this.hideInventory(true);
+    if(!params.itemsWereCombined){ this.hideInventory(true); }
   },
 
   itemIsNotTheSameOfInventory: function(objectName){
-    return this.itemSelected.name != objectName;
+    return this.itemSelected.name !== objectName;
   }
-}
+};
 
 nsn.Inventory.prototype.constructor = nsn.Inventory;

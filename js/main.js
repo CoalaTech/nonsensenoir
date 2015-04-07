@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 (function(){
 
   window.nsn = window.nsn || {

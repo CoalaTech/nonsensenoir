@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Panels = nsn.Panels || {};
 
 nsn.Panels.Widescreen = function(parent, stripHeight){

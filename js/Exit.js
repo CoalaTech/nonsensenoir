@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 /**
 * @copyright    2014 CoalaTech.
 */
@@ -45,7 +47,7 @@ nsn.Exit.prototype = {
     var playerPosition = nsn.Engine.player.position();
 
     /* Going back and forth between scenes */
-    if(playerPosition[0] == this.exitX && playerPosition[1] == this.exitY){
+    if(playerPosition[0] === this.exitX && playerPosition[1] === this.exitY){
       nsn.Engine.setSceneAsCurrent(this.config.targetScene, this);
       return;
     }

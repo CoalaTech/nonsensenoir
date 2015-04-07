@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 /**
 * @copyright    2014 CoalaTech.
 */
@@ -150,9 +152,9 @@ p._handleItemPicked = function(params){
 
 p._onSceneChanged = function(event){
 
-  if(event.from == this.name){
+  if(event.from === this.name){
     this._removeTickListener();
-  }else if(event.to == this.name){
+  }else if(event.to === this.name){
     this._addTickListener();
   }
 
@@ -171,7 +173,9 @@ p.handleTick = function(){
   if(!this.player.isMoving){ return; }
 
   var index = 0,
-    object;
+      character,
+      object;
+
   for(var name in this.objects){
     object = this.objects[name];
     // if(this.player.image.y > object.y + object.image.height){
@@ -181,7 +185,7 @@ p.handleTick = function(){
   }
   for(name in this.characters){
     character = this.characters[name];
-    if(character.name == "Detetive"){continue;}
+    if(character.name === "Detetive"){continue;}
     // if(this.player.image.y > character.y){
     if(this.player.image.y * this.player.image.scaleY > character.y){
       index++;
@@ -190,7 +194,7 @@ p.handleTick = function(){
 
   this.panels.main.setChildIndex(this.player.image, index);
 
-}
+};
 
 p.flashback = function(enabled){
   if(enabled){

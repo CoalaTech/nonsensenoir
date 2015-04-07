@@ -1,3 +1,5 @@
+/* global nsn: true, PF: true, console: true */
+
 /**
  * @class BitmapMaskPathfinder
  * 

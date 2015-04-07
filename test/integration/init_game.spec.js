@@ -1,3 +1,5 @@
+/* global nsn: true, expect: true */
+
 describe('main', function(){
 
   describe('initGame()', function(){
@@ -12,6 +14,6 @@ describe('main', function(){
     it('resizes screen');
 
     it('runs Bootstrap init');
-  })
+  });
 
 });

@@ -1,3 +1,5 @@
+/* global nsn: true */
+
 nsn.ScriptMachine = function(){
 
   this.map = {
@@ -101,7 +103,7 @@ nsn.ScriptMachine.prototype = {
 
     var interval = setInterval(function(){
       timesPlayed++;
-      if(timesPlayed == 3){
+      if(timesPlayed === 3){
         clearInterval(interval);
         deferred.resolve();
       }

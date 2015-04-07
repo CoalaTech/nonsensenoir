@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true, console: true */
+
 /**
 * @copyright    2014 CoalaTech.
 */
@@ -77,7 +79,7 @@ nsn.Stage.prototype = {
     graphics.beginFill("rgba(0,0,0,0.01)");
     graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
 
-    blankShape = new createjs.Shape(graphics);
+    var blankShape = new createjs.Shape(graphics);
 
     this._blankPanel.alpha = 0;
 

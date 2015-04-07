@@ -1,3 +1,5 @@
+/* global createjs: true */
+
 /*
 * ThresholdFilter
 * Visit http://createjs.com/ for documentation, updates and examples.
@@ -45,7 +47,7 @@ var p = ThresholdFilter.prototype = new createjs.Filter();
 // constructor:
   /** @ignore */
   p.initialize = function( threshold ) {
-    if( isNaN(threshold) || threshold < 0 ) threshold = 100;
+    if( isNaN(threshold) || threshold < 0 ){ threshold = 100; }
     this.threshold = threshold;
   };
 

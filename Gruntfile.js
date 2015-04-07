@@ -91,6 +91,18 @@ module.exports = function(grunt) {
       tasks: ['no-serving'],
     },
 
+    jshint: {
+      game_src: {
+        src: ['js/**/*.js']
+      },
+      test: {
+        src: ['test/**/*.js']
+      },
+      options: {
+        jshintrc: true
+      }
+    },
+
     concurrent: {
         serveAndWatch: {
           tasks: ['serve', 'watch'],
@@ -118,6 +130,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-mocha');
 

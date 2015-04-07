@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Character = function (options){
 
   this.image = null;
@@ -80,7 +82,7 @@ nsn.Character.prototype = {
   },
 
   face: function(side){
-    if(side == "left"){
+    if(side === "left"){
       this.faceLeft();
     }else{
       this.faceRight();
@@ -88,7 +90,7 @@ nsn.Character.prototype = {
   },
 
   faceRight: function(){
-    if(this.facing == "left"){
+    if(this.facing === "left"){
       this.image.scaleX = -this.image.scaleX;
       this.offsetX = -this.offsetX;
     }
@@ -96,7 +98,7 @@ nsn.Character.prototype = {
   },
 
   faceLeft: function(){
-    if(this.facing == "right"){
+    if(this.facing === "right"){
       this.image.scaleX = -this.image.scaleX;
       this.offsetX = -this.offsetX;
     }

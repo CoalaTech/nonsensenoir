@@ -1,3 +1,5 @@
+/* global nsn: true, createjs: true */
+
 nsn.Bootstrap = function(){
 
   // TODO: Load from a JSON file
