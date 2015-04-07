@@ -1,4 +1,4 @@
-NonSenseNoir pilot
+NonSenseNoir pilot [![Code Climate](https://codeclimate.com/github/CoalaTech/nonsensenoir/badges/gpa.svg)](https://codeclimate.com/github/CoalaTech/nonsensenoir)
 ====
 
 Prototype of an adventure game. This is an old code that is being refactored and soon will become a full game.
