@@ -41,21 +41,32 @@
     "exit": "url('data:image/png;base64,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'), auto"
   };
 
-  nsn.listen = function(eventName, callback, scope){
+  nsn.listen = function(eventName, callback, scope, once){
     if(!listeners[eventName]){
       listeners[eventName] = [];
     }
-    listeners[eventName].push({callback: callback, scope: scope});
+    listeners[eventName].push({callback: callback, scope: scope, once: once});
   };
 
   nsn.fire = function(eventName, eventObject){
-    if(!listeners[eventName]){ return; }
 
-    var callback;
-    for (var i = listeners[eventName].length - 1; i >= 0; i--) {
-      callback = listeners[eventName][i];
-      callback.callback.call(callback.scope || this, eventObject);
+    var evtListeners = listeners[eventName],
+        evtListenersCount,
+        listener;
+
+    if(!evtListeners){ return; }
+
+    evtListenersCount = evtListeners.length;
+
+    for (var i = evtListenersCount - 1; i >= 0; i--) {
+      listener = evtListeners[i];
+      listener.callback.call(listener.scope || this, eventObject);
+
+      if(listener.once === true){
+        evtListeners.splice(i, 1);
+      }
     }
+
   };
 
   Function.prototype.implement = function(base){
