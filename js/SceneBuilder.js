@@ -3,77 +3,98 @@
 /**
 * @copyright    2014 CoalaTech.
 */
-(nsn.SceneBuilder = {
+(function(){
 
-  buildScenes: function(scenesConfiguration){
-    // this.objectManager = new nsn.ObjectManager();
+  var scenes = {};
 
-    // var scenes = this.assets["scenes.json"];
-    var scenes = scenesConfiguration;
+  nsn.SceneBuilder = {
 
-    nsn.each(scenes, function(name, config){
-      this.buildScene(config);
-    }.bind(this));
+    getScene: function(name){
 
-  },
+      var scene = scenes[name];
 
-  buildScene: function(config){
+      if(scene){
 
-    var scene = new nsn.Scene();
+        /* The whole point of calling getScene is to get a loaded scene
+           with characters, objects and exits instantiated and in place. */
+        this.initScene(scene);
 
-    scene.config = config;
+        return scene;
 
-    scene.name = config.description;
-    scene.showEffect = config.showEffect;
-    scene.hideEffect = config.hideEffect;
-
-    this.scenes[config.description] = scene;
-
-  },
-
-  initScene: function(scene){
-
-    /*  A cena ainda nao foi construida  */
-    if(!scene.loaded){
-
-      var config = scene.config,
-        characterConfig,
-        character,
-        background,
-        exit;
-
-      nsn.each(config.Characters, function(conf, index){
-
-          character = Engine.getCharacter(conf.name);
-
-          // Will it be necessary to reset the characters' properties each time?
-
-          character.image.x = conf.startingX;
-          character.image.y = conf.startingY;
-
-          scene.addCharacter(character);
-
-        }.bind(this)
-      );
-
-      background = Engine.getBackground(config.Background.name);
-
-      scene.addBackground(background);
-
-      if(config.Objects){
-        var objectsConfig = this.assets[config.Objects.source];
-        var objects = this.objectManager.createObjects(objectsConfig);
-        scene.addObjects(objects);
       }
 
-      if(config.Exits){
-        nsn.each(config.Exits, function(conf, index){
-          exit = Engine.buildExit(conf);
-          scene.addExit(exit);
-        });
-      }
+      throw new Error('No scene called ' + name + ' found');
 
-      scene.loaded = true;
+    },
+
+    buildScenes: function(scenesConfiguration){
+
+      var scenes = scenesConfiguration;
+
+      nsn.each(scenes, function(name, config){
+        this.buildScene(config);
+      }.bind(this));
+
+    },
+
+    buildScene: function(config){
+
+      var scene = new nsn.Scene();
+
+      scene.config = config;
+
+      scene.name = config.description;
+      scene.showEffect = config.showEffect;
+      scene.hideEffect = config.hideEffect;
+
+      scenes[config.description] = scene;
+
+    },
+
+    initScene: function(scene){
+
+      /* The scene hasn't been built yet */
+      if(!scene.loaded){
+
+        var config = scene.config,
+          characterConfig,
+          character,
+          background,
+          exit;
+
+        nsn.each(config.Characters, function(conf, index){
+
+            character = nsn.Engine.getCharacter(conf.name);
+
+            character.image.x = conf.startingX;
+            character.image.y = conf.startingY;
+
+            scene.addCharacter(character);
+
+          }
+        );
+
+        background = nsn.Engine.getBackground(config.Background.name);
+
+        scene.addBackground(background);
+
+        /* TODO Refactor me!!! Lets use the objectManager wisely (and Engine.assets, as well) */
+        if(config.Objects){
+          var objectsConfig = nsn.Engine.assets[config.Objects.source];
+          var objects = nsn.Engine.objectManager.createObjects(objectsConfig);
+          scene.addObjects(objects);
+        }
+
+        if(config.Exits){
+          nsn.each(config.Exits, function(conf, index){
+            exit = nsn.Engine.buildExit(conf);
+            scene.addExit(exit);
+          });
+        }
+
+        scene.loaded = true;
+
+      }
 
     }
 

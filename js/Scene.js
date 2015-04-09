@@ -131,6 +131,16 @@ p.addExit = function(exit){
 
 };
 
+p.findPath = function(fromX, fromY, toX, toY){
+
+  if(!this.background){
+    throw new Error('No background, no path to be found =P');
+  }
+
+  return this.background.findPath(fromX, fromY, toX, toY);
+
+};
+
 
 p._addEventListeners = function(){
   nsn.listen(nsn.events.SCENE_CHANGED, this._onSceneChanged, this);

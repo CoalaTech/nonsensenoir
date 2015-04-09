@@ -2,8 +2,6 @@
 
 nsn.GameEngine = function(){
 
-  this.scenes = {};
-
   this.characters = {};
 
   this.backgrounds = {};
@@ -21,6 +19,9 @@ nsn.GameEngine.prototype = {
   init: function(){
     this.gameSound = new nsn.GameSound();
     this.canvas = this._setupCanvas();
+
+    /* TODO The class below can be 'static' or 'singletons' */
+    this.objectManager = new nsn.ObjectManager();
 
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
     nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this);
@@ -42,7 +43,7 @@ nsn.GameEngine.prototype = {
 
     this.setSceneAsCurrent("Apartamento");
 
-    /* All the classes below can be 'static' or 'singletons' */
+    /* TODO All the classes below can be 'static' or 'singletons' */
     this.objectHandler = new nsn.ObjectHandler();
     this.objectCombiner = new nsn.ObjectCombiner();
     this.inventory = new nsn.Inventory();
@@ -56,22 +57,21 @@ nsn.GameEngine.prototype = {
   getCharacter: function(name){
 
     if(!this.characters[name]){
-      buildCharacter(name);
+      this._buildCharacter(name);
     }
 
     return this.characters[name];
 
   },
 
-  buildCharacter: function(name){
+  _buildCharacter: function(name){
 
-    var config = this.assets['characters.json'][name];
+    var config = this.assets['characters.json'][name],
+      character;
 
-    if(this.characters[name]){
-      return this.characters[name];
+    if(!config){
+      throw new Error('No character config found for ' + name);
     }
-
-    var character;
 
     if(config.isPlayer){
       character = new nsn.Player(config);
@@ -86,12 +86,22 @@ nsn.GameEngine.prototype = {
 
   },
 
-  buildBackground: function(name){
+  getBackground: function(name){
+
+    if(!this.backgrounds[name]){
+      this._buildBackground(name);
+    }
+
+    return this.backgrounds[name];
+
+  },
+
+  _buildBackground: function(name){
 
     var config = this.assets[name + '.json'];
 
-    if(this.backgrounds[name]){
-      return this.backgrounds[name];
+    if(!config){
+      throw new Error('No background config found for ' + name);
     }
 
     var imageSrc = this.assets[config.source],
@@ -106,18 +116,16 @@ nsn.GameEngine.prototype = {
   },
 
   buildExit: function(config){
-    var exit = new nsn.Exit(config);
+    return new nsn.Exit(config);
+  },
+
+  getCurrentScene: function(){
+    return this._currentScene;
   },
 
   setSceneAsCurrent: function(sceneName, exitObject){
 
-    var scene = this.scenes[sceneName];
-
-    if(!scene){
-      return;
-    }
-
-    nsn.SceneBuilder.initScene();
+    var scene = nsn.SceneBuilder.getScene(sceneName);
 
     if(exitObject){
       var targetScene = scene.exits[exitObject.config.targetExit];
@@ -137,6 +145,16 @@ nsn.GameEngine.prototype = {
     this.stage.setScene(scene);
 
     nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
+
+  },
+
+  findPath: function(fromX, fromY, toX, toY){
+
+    if(!this._currentScene){
+      throw new Error('No scene set as current.');
+    }
+
+    return this._currentScene.findPath(fromX, fromY, toX, toY);
 
   },
 
