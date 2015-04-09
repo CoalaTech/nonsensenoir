@@ -17,14 +17,10 @@ nsn.GameEngine = function(){
 nsn.GameEngine.prototype = {
 
   init: function(){
-    this.gameSound = new nsn.GameSound();
     this.canvas = this._setupCanvas();
 
-    /* TODO The class below can be 'static' or 'singletons' */
-    this.objectManager = new nsn.ObjectManager();
-
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
-    nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this);
+    nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this, true);
   },
 
   _setupCanvas: function(){
@@ -43,10 +39,6 @@ nsn.GameEngine.prototype = {
 
     this.setSceneAsCurrent("Apartamento");
 
-    /* TODO All the classes below can be 'static' or 'singletons' */
-    this.objectHandler = new nsn.ObjectHandler();
-    this.objectCombiner = new nsn.ObjectCombiner();
-    this.inventory = new nsn.Inventory();
     this.script = new nsn.ScriptMachine();
 
     // Descomentar para rodar a música do jogo

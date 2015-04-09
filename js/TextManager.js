@@ -262,10 +262,10 @@ nsn.TextManager.prototype = {
       var messageToShow = params.objectName;
 
       // TODO Shouldn't make direct calls to inventory
-      if(nsn.Engine.inventory.itemSelected &&
-         nsn.Engine.inventory.itemIsNotTheSameOfInventory(params.objectName)){
+      if(nsn.Inventory.itemSelected &&
+         nsn.Inventory.itemIsNotTheSameOfInventory(params.objectName)){
 
-        messageToShow = this._buildFullCombinationMessage(nsn.Engine.inventory.itemSelected, params.objectName);
+        messageToShow = this._buildFullCombinationMessage(nsn.Inventory.itemSelected, params.objectName);
       }
 
       this.showTextWithoutTimeout(messageToShow);
@@ -278,8 +278,8 @@ nsn.TextManager.prototype = {
     }
 
     // TODO Shouldn't make direct calls to inventory
-    if(nsn.Engine.inventory.itemSelected){
-      var messageToShow = this._buildCombinationMessagePrefix(nsn.Engine.inventory.itemSelected);
+    if(nsn.Inventory.itemSelected){
+      var messageToShow = this._buildCombinationMessagePrefix(nsn.Inventory.itemSelected);
       this.showTextWithoutTimeout(messageToShow);
     }
   },
