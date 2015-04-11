@@ -21,6 +21,7 @@ nsn.GameEngine.prototype = {
 
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
     nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this, true);
+    nsn.listen(nsn.events.ASSETS_LOADED, this._onAssetsLoaded, this, true);
   },
 
   _setupCanvas: function(){
@@ -34,16 +35,19 @@ nsn.GameEngine.prototype = {
   _onGameStarted: function(params){
     // this.gameSound.playSound(this.id, false);
 
-    // this.buildScenes();
-    nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
-
-    this.setSceneAsCurrent("Apartamento");
-
     this.script = new nsn.ScriptMachine();
 
     // Descomentar para rodar a música do jogo
     // -1 quer dizer que o áudio fica em loop
     // this.gameSound.playSound("mainGameMusicShort", -1);
+  },
+
+  _onAssetsLoaded: function(){
+
+    nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
+
+    this.setSceneAsCurrent("Apartamento");
+
   },
 
   getCharacter: function(name){
@@ -124,7 +128,6 @@ nsn.GameEngine.prototype = {
 
       this.player.image.x = targetScene.config.playerX;
       this.player.image.y = targetScene.config.playerY;
-      // this.player.facing = exitObject.config.facingOnEnter;
 
       this.player.stop();
       scene.addCharacter(this.player);
@@ -155,8 +158,12 @@ nsn.GameEngine.prototype = {
   },
 
   stopEverything: function() {
-    this.player.resetAnimation();
-    this.objectHandler.hideHUD();
+    if(this.player){
+      this.player.resetAnimation();
+    }
+    if(this.objectHandler){
+      this.objectHandler.hideHUD();
+    }
   },
 
   scaleX: function(){
