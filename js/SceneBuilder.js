@@ -98,6 +98,14 @@
 
     }
 
-  }
+  };
+
+  nsn.listen(nsn.events.ASSETS_LOADED, function(){
+
+    nsn.SceneBuilder.buildScenes(nsn.Engine.assets["scenes.json"]);
+
+    this.setSceneAsCurrent("Apartamento");
+
+  }, this, true);
 
 })();

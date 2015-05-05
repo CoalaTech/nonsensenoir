@@ -63,7 +63,7 @@ nsn.GameEngine.prototype = {
   _buildCharacter: function(name){
 
     var config = this.assets['characters.json'][name],
-      character;
+        character;
 
     if(!config){
       throw new Error('No character config found for ' + name);
