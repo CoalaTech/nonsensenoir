@@ -21,6 +21,7 @@ nsn.Inventory = function(){
 
   this.image = this._createImage();
   this.group = this._createGroup();
+  this.groupSize = this.group.getBounds();
 
   this.openInventoryButton = this._createOpenButton();
   this.closeInventoryButton = this._createCloseButton();
@@ -87,7 +88,7 @@ nsn.Inventory.prototype = {
     nsn.Engine.stage.addHUD(this.closeInventoryButton);
     nsn.Engine.stage.addHUD(this.group);
 
-    createjs.Tween.get(this.group).to({x: 0}, 200);
+    createjs.Tween.get(this.group).to({x: 0}, this.groupSize.width);
 
     this.inventoryIsOpen = true;
 
@@ -100,7 +101,7 @@ nsn.Inventory.prototype = {
     nsn.Engine.stage.removeHUD(this.closeInventoryButton);
     nsn.Engine.stage.addHUD(this.openInventoryButton);
     createjs.Tween.get(this.group)
-          .to({x: -200}, 200)
+          .to({x: -this.groupSize.width}, 200)
           .call(function(){
             nsn.Engine.stage.removeHUD(this.group);
           });
@@ -154,7 +155,7 @@ nsn.Inventory.prototype = {
     group.addChild(this.image);
     group.addChild(this.itemsGroup);
 
-    group.x = -200;
+    group.x = -group.getBounds().width;
     group.y = 0;
 
     return group;
