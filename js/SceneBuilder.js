@@ -35,6 +35,8 @@
         this.buildScene(config);
       }.bind(this));
 
+      this.setSceneAsCurrent("Apartamento");
+
     },
 
     buildScene: function(config){

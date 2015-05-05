@@ -46,8 +46,6 @@ nsn.GameEngine.prototype = {
 
     nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
 
-    this.setSceneAsCurrent("Apartamento");
-
   },
 
   getCharacter: function(name){
