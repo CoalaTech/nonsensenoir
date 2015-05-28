@@ -1,8 +1,18 @@
 module.exports = function(grunt) {
 
+  // Configurable paths
+  var config = {
+    js: 'js',
+    assets: 'assets',
+    css: 'css',
+    html: 'html',
+    test: 'test',
+    build: 'build'
+  };
+
   grunt.initConfig({
 
-    buildPath: "build/",
+    config: config,
 
     serve: {
       options: {
@@ -13,8 +23,8 @@ module.exports = function(grunt) {
     concat: {
       /* Concats all the .js files under /js into nsn.js */
       js: {
-        src: ['js/**/*.js', '!js/main.js'],
-        dest: '<%=buildPath%>/js/nsn.js'
+        src: ['<%=config.js%>/**/*.js', '!<%=config.js%>/main.js'],
+        dest: '<%=config.build%>/js/nsn.js'
       },
     },
 
@@ -26,9 +36,9 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
-            cwd: 'js/',
+            cwd: '<%=config.js%>/',
             src: ['main.js'],
-            dest: '<%=buildPath%>/js/'
+            dest: '<%=config.build%>/js/'
           },
 
           /* Bower dependencies */
@@ -37,7 +47,7 @@ module.exports = function(grunt) {
             flatten: true,
             cwd: 'bower_components/',
             src: ['**/*.js'],
-            dest: '<%=buildPath%>/js/lib'
+            dest: '<%=config.build%>/js/lib'
           },
 
           /* Bower's CSS dependencies */
@@ -46,7 +56,7 @@ module.exports = function(grunt) {
             flatten: true,
             cwd: 'bower_components/',
             src: ['**/*min.css'],
-            dest: '<%=buildPath%>/css/lib'
+            dest: '<%=config.build%>/css/lib'
           },
           /* Bower's image dependencies */
           {
@@ -54,40 +64,40 @@ module.exports = function(grunt) {
             flatten: true,
             cwd: 'bower_components/',
             src: ['**/*.png', '**/*.gif'],
-            dest: '<%=buildPath%>/img/lib'
+            dest: '<%=config.build%>/img/lib'
           },
 
           /* Project's assets */
           {
             expand: true,
             flatten: false,
-            cwd: 'assets/',
+            cwd: '<%=config.assets%>/',
             src: ['**/*'],
-            dest: '<%=buildPath%>'
+            dest: '<%=config.build%>'
           },
           {
             expand: true,
             flatten: false,
-            cwd: 'css/',
+            cwd: '<%=config.css%>/',
             src: ['**/*.css'],
-            dest: '<%=buildPath%>/css/'
+            dest: '<%=config.build%>/css/'
           },
           {
             expand: true,
             flatten: false,
-            cwd: 'html/',
+            cwd: '<%=config.html%>/',
             src: ['**/*.html'],
-            dest: '<%=buildPath%>/'
+            dest: '<%=config.build%>/'
           }
         ]
       }
     },
 
     watch: {
-      files: ['js/**/*',
-              'assets/**/*',
-              'css/**/*',
-              'html/**/*'],
+      files: ['<%=config.js%>/**/*',
+              '<%=config.assets%>/**/*',
+              '<%=config.css%>/**/*',
+              '<%=config.html%>/**/*'],
       tasks: ['no-serving'],
     },
 
