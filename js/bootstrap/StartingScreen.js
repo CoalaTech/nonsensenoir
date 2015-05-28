@@ -29,9 +29,7 @@ nsn.StartingScreen.prototype.step = function(progress){
     this.container.addChild(this.buttonStart);
 
     this.buttonStart.addEventListener('click', function(){
-      nsn.fire(nsn.events.GAME_STARTED);
-
-      nsn.Engine.stage.stage.removeChild(this.container);
+      nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: this.container});
     }.bind(this));
   }
 

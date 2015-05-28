@@ -50,11 +50,22 @@
 
     <!-- Spec files -->
     <script src="init_game.spec.js" type="text/javascript" charset="utf-8"></script>
+    <script src="inventory.spec.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- run mocha -->
     <script type="text/javascript" charset="utf-8">
-      // Run specs only after the assets were loaded
-      nsn.listen(nsn.events.ASSETS_LOADED, mocha.run);
+      nsn.listen(nsn.events.ASSETS_LOADED, function(){
+        var stageChildrenLength = nsn.Engine.stage.stage.children.length;
+        var startingScreenContainer = nsn.Engine.stage.stage.children[stageChildrenLength - 1];
+
+        // Fire GAME_STARTED to simulate buttonStart click
+        nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: startingScreenContainer});
+      });
+
+      // Run specs only after the assets were loaded and the buttonStart was clicked
+      nsn.listen(nsn.events.GAME_STARTED, function(){
+        mocha.run();
+      });
     </script>
   </body>
 </html>

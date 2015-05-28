@@ -47,7 +47,7 @@ nsn.Bootstrap = function(){
 
 nsn.Bootstrap.prototype.init = function(){
 
-  var queue = new createjs.LoadQueue();
+  var queue = new createjs.LoadQueue(false);
 
   queue.addEventListener("complete",
 
