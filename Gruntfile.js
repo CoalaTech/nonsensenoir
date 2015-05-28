@@ -122,14 +122,27 @@ module.exports = function(grunt) {
         }
     },
 
+    connect: {
+      test: {
+        options: {
+          open: false,
+          port: 9001,
+          hostname: 'localhost',
+          base: '.'
+        }
+      }
+    },
+
     /* Setup test framework Mocha */
     mocha: {
       test: {
-        src: ['test/**/*.html'],
+        src: ['<%=config.test%>/unit/*.html'],
         options: {
+          run: false,
           log: true,
           logErrors: true,
-          reporter: 'Spec' // Use 'Nyan' if you want to smile :)
+          reporter: 'Spec', // Use 'Nyan' if you want to smile :)
+          urls: [ 'http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/<%=config.test%>/integration/nsn_build.test.html']
         },
       },
     }
@@ -141,12 +154,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-mocha');
 
   grunt.registerTask('serving', ['concurrent:serveAndWatch']);
   grunt.registerTask('no-serving', ['concat', 'copy:dist']);
   grunt.registerTask('default', ['no-serving', 'serving']);
-  grunt.registerTask('spec', ['no-serving', 'mocha']);
-
+  grunt.registerTask('spec', ['no-serving', 'connect:test', 'mocha']);
 };
