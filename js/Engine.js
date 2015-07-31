@@ -21,7 +21,6 @@ nsn.GameEngine.prototype = {
 
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
     nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this, true);
-    nsn.listen(nsn.events.ASSETS_LOADED, this._onAssetsLoaded, this, true);
   },
 
   _setupCanvas: function(){
@@ -35,17 +34,19 @@ nsn.GameEngine.prototype = {
   _onGameStarted: function(params){
     // this.gameSound.playSound(this.id, false);
 
+    this.stage.stage.removeChild(params.startingScreenContainer);
+
+    // this.buildScenes();
+    nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
+    this.setSceneAsCurrent("Apartamento");
+
+    this.objectHandler = new nsn.ObjectHandler();
+    this.objectCombiner = new nsn.ObjectCombiner();
     this.script = new nsn.ScriptMachine();
 
     // Descomentar para rodar a música do jogo
     // -1 quer dizer que o áudio fica em loop
     // this.gameSound.playSound("mainGameMusicShort", -1);
-  },
-
-  _onAssetsLoaded: function(){
-
-    nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
-
   },
 
   getCharacter: function(name){
@@ -61,7 +62,7 @@ nsn.GameEngine.prototype = {
   _buildCharacter: function(name){
 
     var config = this.assets['characters.json'][name],
-        character;
+      character;
 
     if(!config){
       throw new Error('No character config found for ' + name);

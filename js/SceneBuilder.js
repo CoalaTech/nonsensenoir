@@ -35,8 +35,6 @@
         this.buildScene(config);
       }.bind(this));
 
-      this.setSceneAsCurrent("Apartamento");
-
     },
 
     buildScene: function(config){
@@ -102,12 +100,10 @@
 
   };
 
-  nsn.listen(nsn.events.ASSETS_LOADED, function(){
-
-    nsn.SceneBuilder.buildScenes(nsn.Engine.assets["scenes.json"]);
-
-    this.setSceneAsCurrent("Apartamento");
-
-  }, this, true);
+  // nsn.listen(nsn.events.GAME_STARTED, function(){
+  //
+  //   nsn.SceneBuilder.buildScenes(nsn.Engine.assets["scenes.json"]);
+  //
+  // }, this, true);
 
 })();

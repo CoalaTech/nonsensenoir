@@ -11,8 +11,6 @@
     nsn.Engine = new nsn.GameEngine();
     nsn.Engine.stage = new nsn.Stage();
     nsn.Engine.gameSound = new nsn.GameSound();
-    nsn.Engine.objectHandler = new nsn.ObjectHandler();
-    nsn.Engine.objectCombiner = new nsn.ObjectCombiner();
     nsn.Engine.objectManager = new nsn.ObjectManager();
 
     /*  Tentativa de redimensionar a tela */
