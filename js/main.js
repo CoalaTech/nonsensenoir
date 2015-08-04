@@ -1,10 +1,13 @@
 /* global nsn: true, createjs: true */
 
-(function(){
+window.nsn = window.nsn || {
+  ASSETS_PATH: "./"
+};
 
-  window.nsn = window.nsn || {
-    ASSETS_PATH: "./"
-  };
+define("Main", ["exports", "Engine", "Stage", "TesteES2015"], function (exports, engine, stage, teste) {
+
+  var test = teste,
+      eng = engine;
 
   function initGame(){
 
@@ -30,6 +33,18 @@
 
   }
 
-  window.onload = initGame;
+  exports.initGame = initGame;
 
-})();
+});
+
+window.onload = function(){
+
+  require(["Main"], function(main){
+
+    main.initGame();
+
+    console.log("OK");
+
+  });
+
+}

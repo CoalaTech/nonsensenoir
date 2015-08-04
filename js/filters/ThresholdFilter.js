@@ -34,7 +34,7 @@
  */
 
 // namespace:
-this.createjs = this.createjs||{};
+// this.createjs = this.createjs||{};
 
 (function() {
   "use strict";

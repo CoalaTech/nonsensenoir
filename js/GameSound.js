@@ -33,7 +33,7 @@ nsn.GameSound.prototype = {
       {src: nsn.ASSETS_PATH + "sound/SOLthemeshort.ogg", id:"mainGameMusicShort"}
     ];
 
-    createjs.Sound.registerManifest(manifest);
+    // createjs.Sound.registerManifest(manifest);
 
   }
 
