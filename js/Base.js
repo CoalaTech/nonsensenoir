@@ -69,6 +69,28 @@
 
   };
 
+  var eventHelpers = ["added", "click", "dblclick", "mousedown",
+                    "mouseout", "mouseover", "pressmove", "pressup",
+                    "removed", "rollout", "rollover", "tick"];
+
+  nsn.addEventHelpers = function(obj, customHelpers){
+
+    var helpers = customHelpers || eventHelpers;
+    if(!obj.addEventListener){
+      throw Error("O objeto passado a 'nsn.addEventHelpers' não é um listener de eventos");
+    }
+
+    var helperName,
+        prototype = obj.prototype || obj;
+    for (var i = 0; i < helpers.length; i++) {
+      helperName = helpers[i];
+      obj[helperName] = function(callback){
+        obj.addEventListener(helperName, callback);
+      };
+    }
+
+  };
+
   Function.prototype.implement = function(base){
     for(var func in base.prototype){
       this.prototype[func] = base.prototype[func];
