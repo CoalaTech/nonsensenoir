@@ -1,5 +1,3 @@
-/* global nsn: true, createjs: true */
-
 /**
 * @copyright    2014 CoalaTech.
 * Should not be instantiated.
@@ -10,11 +8,9 @@
 *   - walkFront - Front walking
 *   - walk - Side walking
 */
-nsn.Walkable = function(){};
+class Walkable{
 
-nsn.Walkable.prototype = {
-
-  walkPath: function(path){
+  walkPath() {
 
     this.stop();
 
@@ -33,17 +29,13 @@ nsn.Walkable.prototype = {
 
     return this.walkDeferred.promise;
 
-  },
-
-  // stop: function(){
-
-  // },
+  }
 
   /* 
     Splits the path into subpaths, calls walkTo() for each subpath.
     In the last subpath it resolves the walkDeferred, finishing the walking cycle.
   */
-  walkAnimated: function(){
+  walkAnimated() {
 
     var pathEndNode = this.path[this.pathIndex + 1];
 
@@ -62,9 +54,9 @@ nsn.Walkable.prototype = {
 
     pathWalkPromise.then(this.walkAnimated.bind(this));
 
-  },
+  }
 
-  walkTo: function(x, y){
+  walkTo(x, y) {
 
     var deferred = new nsn.Deferred();
 
@@ -96,9 +88,9 @@ nsn.Walkable.prototype = {
 
     return deferred.promise;
 
-  },
+  }
 
-  updateImageOrientation: function(destX){
+  updateImageOrientation(destX) {
 
     if(destX > this.image.x && this.facing === "left"){
       this.faceRight();
@@ -106,9 +98,9 @@ nsn.Walkable.prototype = {
       this.faceLeft();
     }
 
-  },
+  }
 
-  _onWalkTweenComplete: function(){
+  _onWalkTweenComplete() {
 
     if(this.pathIndex === this.path.length - 1){
       this.image.gotoAndStop("idle");
@@ -116,16 +108,12 @@ nsn.Walkable.prototype = {
       this.isMoving = false;
     }
 
-  },
+  }
 
-  _pathIsValid: function(){
+  _pathIsValid() {
 
     return (this.path && this.path.length > 0);
 
   }
-
-};
-
-nsn.Walkable.prototype.constructor = nsn.Walkable;
-
-// nsn.Character.implement(nsn.Walkable);
+  
+}

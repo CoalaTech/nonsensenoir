@@ -1,50 +1,57 @@
-/* global nsn: true, createjs: true */
+import Walkable from 'Walkable'
 
-nsn.Character = function (options){
+class Character extends Walkable.Walkable{
 
-  this.image = null;
-  this.facing = null;
-  this.offsetX = null;
+  constructor(options) {
 
-  this.isMoving = false;
+    super()
 
-  this.isPlayingAnimation = false;
+    this.image = null;
+    this.facing = null;
+    this.offsetX = null;
 
-  this.options = options;
+    this.isMoving = false;
 
-  if(options){
+    this.isPlayingAnimation = false;
 
-    var image_data = options.image_data;
+    this.options = options;
 
-    /*  Gambs. Só funciona pra array com um elemento  */
-    image_data.images = [nsn.Engine.assets[image_data.images[0]]];
+    if (options) {
 
-    var spritesheet = new createjs.SpriteSheet(image_data);
+      var image_data = options.image_data;
 
-    this.image = new createjs.Sprite(spritesheet);
+      /*  Gambs. Só funciona pra array com um elemento  */
+      image_data.images = [nsn.Engine.assets[image_data.images[0]]];
 
-    this.image.regX = options.regX;
-    this.image.regY = options.regY;
-    this.image.x = parseInt(options.x, 10);
-    this.image.y = parseInt(options.y, 10);
+      var spritesheet = new createjs.SpriteSheet(image_data);
 
-    this.image.gotoAndStop(options.default_animation);
+      this.image = new createjs.Sprite(spritesheet);
 
-    this.name = this.image.name = options.name;
+      this.image.regX = options.regX;
+      this.image.regY = options.regY;
+      this.image.x = parseInt(options.x, 10);
+      this.image.y = parseInt(options.y, 10);
 
-    this.facing = options.facing || "right";
+      this.image.gotoAndStop(options.default_animation);
 
-    this.isPlayer = options.isPlayer;
+      this.name = this.image.name = options.name;
+
+      this.facing = options.facing || "right";
+
+      this.isPlayer = options.isPlayer;
+
+    }
 
   }
 
-  this.addListeners();
+  get position() {
 
-};
+    return [parseInt(this.image.x * nsn.Engine.scaleX() / nsn.Engine.cellSize, 10),
+            parseInt(this.image.y * nsn.Engine.scaleY() / nsn.Engine.cellSize, 10)];
 
-nsn.Character.prototype = {
+  }
 
-  walk: function(x, y){
+  walk(x, y) {
 
     var position = this.position();
 
@@ -53,57 +60,52 @@ nsn.Character.prototype = {
     // Available as long as nsn.Character "implements" nsn.Walkable
     return this.walkPath(path);
 
-  },
+  }
 
-  position: function (){
-
-    return [parseInt(this.image.x * nsn.Engine.scaleX() / nsn.Engine.cellSize, 10),
-            parseInt(this.image.y * nsn.Engine.scaleY() / nsn.Engine.cellSize, 10)];
-
-  },
-
-  addListeners: function(){
-
-  },
-
-  stop: function(){
+  stop() {
 
     createjs.Tween.removeTweens(this.image);
     this.image.gotoAndStop("idle");
     this.isPlayingAnimation = false;
     this.isMoving = false;
 
-  },
+  }
 
-  idle: function(){
+  idle() {
+
     this.stop();
     this.image.gotoAndStop("idle");
-  },
 
-  face: function(side){
+  }
+
+  face(side) {
+
     if(side === "left"){
       this.faceLeft();
     }else{
       this.faceRight();
     }
-  },
 
-  faceRight: function(){
+  }
+
+  faceRight() {
+
     if(this.facing === "left"){
       this.image.scaleX = -this.image.scaleX;
       this.offsetX = -this.offsetX;
     }
     this.facing  = "right";
-  },
 
-  faceLeft: function(){
+  }
+
+  faceLeft() {
+
     if(this.facing === "right"){
       this.image.scaleX = -this.image.scaleX;
       this.offsetX = -this.offsetX;
     }
     this.facing = "left";
+
   }
-
-};
-
-nsn.Character.implement(nsn.Walkable);
+  
+}
