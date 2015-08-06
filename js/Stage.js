@@ -90,7 +90,7 @@ export default class Stage {
     this.stage.addChild(child);
   }
 
-  set scene (scene){
+  setScene (scene){
     if(!scene){
       return;
     }

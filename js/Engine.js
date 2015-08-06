@@ -7,6 +7,10 @@ import Player from 'Player';
 import Background from 'Background';
 
 import 'Exit';
+import 'ObjectHandler';
+import 'ObjectCombiner';
+import 'Inventory';
+import 'ScriptMachine';
 
 nsn.GameEngine = function(){
 
@@ -186,7 +190,7 @@ nsn.GameEngine.prototype = {
 
     this.currentScene = scene;
 
-    this.stage.scene = scene;
+    this.stage.setScene(scene);
 
     nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
   },
