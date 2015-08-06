@@ -1,36 +1,64 @@
 /* global nsn: true, createjs: true */
 
-nsn.StartingScreen = function(){
+export default class StartingScreen {
 
-  this.container = new createjs.Container();
+  constructor(){
 
-  this.background = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/title.png');
+    this.container = new createjs.Container();
 
-  this.loadingBar = new nsn.LoadingBar(20, 300);
+    this.background = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/title.png');
 
-  var buttonWidth = 180;
+    this.loadingBar = new LoadingBar(20, 300);
 
-  this.buttonStart = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/iniciar.jpg');
-  this.buttonStart.x = (nsn.Engine.canvas.width / 2) - (buttonWidth / 2);
-  this.buttonStart.y = 350;
+    var buttonWidth = 180;
 
-  this.container.addChild(this.background);
-  this.container.addChild(this.loadingBar.component);
+    this.buttonStart = new createjs.Bitmap(nsn.ASSETS_PATH + 'img/hud/iniciar.jpg');
+    this.buttonStart.x = (nsn.Engine.canvas.width / 2) - (buttonWidth / 2);
+    this.buttonStart.y = 350;
 
-  nsn.Engine.stage.stage.addChild(this.container);
+    this.container.addChild(this.background);
+    this.container.addChild(this.loadingBar.component);
 
-};
+    nsn.Engine.stage.stage.addChild(this.container);
 
-nsn.StartingScreen.prototype.step = function(progress){
+  }
 
-  this.loadingBar.step(progress);
+  step(progress){
 
-  if(progress === 1){
-    this.container.addChild(this.buttonStart);
+    this.loadingBar.step(progress);
 
-    this.buttonStart.addEventListener('click', function(){
-      nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: this.container});
-    }.bind(this));
+    if(progress === 1){
+      this.container.addChild(this.buttonStart);
+
+      this.buttonStart.addEventListener('click', function(){
+        nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: this.container});
+      }.bind(this));
+    }
+
+  }
+
+}
+
+class LoadingBar{
+
+  constructor(x, y, width, height){
+    this.x = x;
+    this.y = y;
+
+    this.width = width || (nsn.Engine.canvas.width - 2*x);
+    this.height = height || 30;
+
+    this.component = new createjs.Shape();
+    this.rect = this.component.graphics.beginFill("#FF8C1C");
+    this.component.x = x;
+    this.component.y = y;
+    this.component.alpha = 0.8;
+  }
+
+  step(percentual){
+
+    this.rect.drawRect(0, 0, percentual * this.width, this.height);
+
   }
 
 };

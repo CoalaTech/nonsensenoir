@@ -4,7 +4,7 @@ window.nsn = window.nsn || {
   ASSETS_PATH: "./"
 };
 
-define("Main", ["exports", "Engine", "Stage"], function (exports, engine, Stage) {
+define("Main", ["exports", "Engine", "Stage", "Bootstrap"], function (exports, engine, Stage, Bootstrap) {
 
   var eng = engine;
 
@@ -25,8 +25,8 @@ define("Main", ["exports", "Engine", "Stage"], function (exports, engine, Stage)
       nsn.Engine.stage.stage.scaleX = nsn.Engine.stage.stage.scaleY = scale;
     }
 
-    var bootstrap = new nsn.Bootstrap();
-    bootstrap.init();
+    var bootstrap = new Bootstrap();
+    bootstrap.start();
 
   };
 
