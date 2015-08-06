@@ -4,17 +4,15 @@ window.nsn = window.nsn || {
   ASSETS_PATH: "./"
 };
 
-define("Main", ["exports", "Engine", "Stage", "TesteES2015"], function (exports, engine, stage, teste) {
+define("Main", ["exports", "Engine", "Stage"], function (exports, engine, Stage) {
 
   var test = teste,
       eng = engine;
 
-  function initGame(){
+  var initGame = function(){
 
     nsn.Engine = new nsn.GameEngine();
-    nsn.Engine.stage = new nsn.Stage();
-    nsn.Engine.gameSound = new nsn.GameSound();
-    nsn.Engine.objectManager = new nsn.ObjectManager();
+    nsn.Engine.stage = new Stage();
 
     /*  Tentativa de redimensionar a tela */
     if(document.body.offsetWidth < nsn.Engine.canvas.width ||
@@ -31,9 +29,9 @@ define("Main", ["exports", "Engine", "Stage", "TesteES2015"], function (exports,
     var bootstrap = new nsn.Bootstrap();
     bootstrap.init();
 
-  }
+  };
 
-  exports.initGame = initGame;
+  exports.initGame = initGame.bind(this);
 
 });
 

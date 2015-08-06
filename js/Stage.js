@@ -1,28 +1,23 @@
-/* global nsn: true, createjs: true, console: true */
+ /* global nsn: true, createjs: true, console: true */
+ /**
+  * @copyright    2014 CoalaTech.
+  */
 
-/**
-* @copyright    2014 CoalaTech.
-*/
-nsn.Stage = function(){
+import TextManager from 'TextManager';
 
-  /** @type {createjs.Stage} Reference to the createjs Stage instance */
-  this.stage = new createjs.Stage(nsn.Engine.canvas);
+export default class Stage {
 
-  this._scenePanel = new createjs.Container();
-  this._blankPanel = new createjs.Container();
-  this._hudPanel = new createjs.Container();
-  this._textPanel = new createjs.Container();
-  this._fadePanel = new createjs.Container();
+  constructor() {
 
-  this.scene = undefined;
+    this.stage = new createjs.Stage(nsn.Engine.canvas);
 
-  this.init();
+    this._scenePanel = new createjs.Container();
+    this._blankPanel = new createjs.Container();
+    this._hudPanel = new createjs.Container();
+    this._textPanel = new createjs.Container();
+    this._fadePanel = new createjs.Container();
 
-};
-
-nsn.Stage.prototype = {
-
-  init: function(){
+    this.scene = undefined;
 
     this.stage.enableMouseOver(20);
 
@@ -44,26 +39,31 @@ nsn.Stage.prototype = {
 
     this.resetCursor();
 
-  },
+  }
 
-  _addEventListeners: function(){
+  _createTextManager() {
+    nsn.Engine.textManager = new TextManager(this._textPanel);
+    // this._textPanel.addChild(nsn.Engine.textManager.textContainer);
+  }
+
+  _addEventListeners (){
 
     createjs.Ticker.addEventListener("tick", this._handleTick.bind(this));
 
     createjs.Ticker.setFPS(nsn.Engine.frameRate);
 
-  },
+  }
 
-  _handleTick: function(){
+  _handleTick (){
     this.stage.update();
-  },
+  }
 
-  _createTextManager: function(){
-    nsn.Engine.textManager = new nsn.TextManager();
+  _createTextManager (){
+    nsn.Engine.textManager = new TextManager();
     this._textPanel.addChild(nsn.Engine.textManager.textContainer);
-  },
+  }
 
-  _createFadePanel: function(){
+  _createFadePanel (){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,1)");
     graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
@@ -72,9 +72,9 @@ nsn.Stage.prototype = {
     fadeShape.alpha = 0;
 
     this._fadePanel.addChild(fadeShape);
-  },
+  }
 
-  _createBlankPanel: function(){
+  _createBlankPanel (){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,0.01)");
     graphics.drawRect(0, 0, nsn.Engine.canvas.width, nsn.Engine.canvas.height);
@@ -84,13 +84,13 @@ nsn.Stage.prototype = {
     this._blankPanel.alpha = 0;
 
     this._blankPanel.addChild(blankShape);
-  },
+  }
 
-  addChild: function(child){
+  addChild (child){
     this.stage.addChild(child);
-  },
+  }
 
-  setScene: function(scene){
+  setScene (scene){
     if(this.scene){
       this.scene.fadeOut(function(){
         this._scenePanel.removeAllChildren();
@@ -99,23 +99,23 @@ nsn.Stage.prototype = {
     }else{
       this._addScene(scene);
     }
-  },
+  }
 
-  _addScene: function(scene){
+  _addScene (scene){
     this._scenePanel.addChild(scene.component);
     scene.fadeIn();
     this.scene = scene;
-  },
+  }
 
-  setCursor: function(name){
+  setCursor (name){
     this.stage.cursor = nsn.cursors[name];
-  },
+  }
 
-  resetCursor: function(name){
+  resetCursor (name){
     this.stage.cursor = nsn.cursors["default"];
-  },
+  }
 
-  addHUD: function(item, fadeIn){
+  addHUD (item, fadeIn){
     if(fadeIn === true){
       item.alpha = 0;
       this._hudPanel.addChild(item);
@@ -123,27 +123,25 @@ nsn.Stage.prototype = {
     }else{
       this._hudPanel.addChild(item);
     }
-  },
+  }
 
-  removeHUD: function(item, fadeOut){
+  removeHUD (item, fadeOut){
     if(fadeOut === true){
       createjs.Tween.get(item).to({alpha: 0}, 100);
       this._hudPanel.removeChild(item);
     }else{
       this._hudPanel.removeChild(item);
     }
-  },
+  }
 
-  disableInteraction: function(){
+  disableInteraction (){
     this._blankPanel.alpha = 1;
     console.log("Desabilitando interações");
-  },
+  }
 
-  enableInteraction: function(){
+  enableInteraction (){
     this._blankPanel.alpha = 0;
     console.log("Habilitando interações");
   }
 
-};
-
-nsn.Stage.prototype.constructor = nsn.Stage;
+}

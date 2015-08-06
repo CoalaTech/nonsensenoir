@@ -1,38 +1,32 @@
 /* global nsn: true, createjs: true */
 
-nsn.TextManager = function(){
+export default class TextManager {
 
-  this.DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";
+  constructor(parent){
 
-  this._font = "35px Mouse Memoirs";
+    this.DEFAULT_COMBINATION_MESSAGE = "Porque eu faria algo tão non sense?";
 
-  this._textObject = this._createTextObject();
+    this._font = "35px Mouse Memoirs";
 
-  this._isShowingDialog = false;
+    this._textObject = this._createTextObject();
 
-  this._nextLineOfText = "";
+    this._isShowingDialog = false;
 
-  this._linesCounter = 0;
+    this._nextLineOfText = "";
 
-  this.canvasContext = nsn.Engine.canvas.getContext("2d");
+    this._linesCounter = 0;
 
-  this._defaultTimeout = 7000;
+    this.canvasContext = nsn.Engine.canvas.getContext("2d");
 
-  this._currentTextTimeoutId = undefined;
+    this._defaultTimeout = 7000;
 
-  this._textLayer = new createjs.Container();
+    this._currentTextTimeoutId = undefined;
 
-  this.textContainer = new createjs.Container();
+    this._textLayer = new createjs.Container();
 
-  this.currentDeferred = undefined;
+    this.textContainer = new createjs.Container();
 
-  this.init();
-
-};
-
-nsn.TextManager.prototype = {
-
-  init: function(){
+    this.currentDeferred = undefined;
 
     this._setSkipTextOnKeypress();
 
@@ -61,27 +55,28 @@ nsn.TextManager.prototype = {
     nsn.listen(nsn.events.PLAYER_TALKING, this._handlePlayerTalk, this);
     nsn.listen(nsn.events.ON_COMBINE, this.hideText, this);
     nsn.listen(nsn.events.FINISHED_ON_COMBINE, this._handleCombinationMessage, this);
-  },
 
-  _setSkipTextOnKeypress: function (){
+    if(parent){
+      parent.addChild(this.textContainer);
+    }
+
+  }
+
+  _setSkipTextOnKeypress() {
 
     nsn.DOMEvent.on(document, 'keypress', function(event){
 
       var keyCode = (event.keyCode ? event.keyCode : event.which);
 
-      /* KeyCodes
-       * spacebar = 32
-       * period = 46
-       */
       if (keyCode === 32 || keyCode === 46){
         this.clearText();
       }
 
     }.bind(this));
 
-  },
+  }
 
-  clearText: function(){
+  clearText() {
 
     this.hideText();
 
@@ -90,16 +85,16 @@ nsn.TextManager.prototype = {
       this.currentDeferred.resolve();
     }
 
-  },
+  }
 
-  hideText: function(){
+  hideText() {
     this._clearCurrentTextTimeout();
     this._textObject.text = "";
     this._isShowingDialog = false;
     this._textLayer.alpha = 0;
-  },
+  }
 
-  showText: function(text, customTimeout){
+  showText (text, customTimeout){
 
     var textBrokenInLines = this._splitTextInLines(text);
     var textWithLineBreaks = "";
@@ -124,9 +119,9 @@ nsn.TextManager.prototype = {
 
     return this.currentDeferred.promise;
 
-  },
+  }
 
-  loopToShowBigTexts: function(textBrokenInLines, textWithLineBreaks, textTimeout){
+  loopToShowBigTexts (textBrokenInLines, textWithLineBreaks, textTimeout){
     this.showTextTimeout = setTimeout(function () {
 
       if(!this.isShowingText()){
@@ -151,15 +146,15 @@ nsn.TextManager.prototype = {
       }
 
      }.bind(this), 100);
-  },
+  }
 
-  showTextWithoutTimeout: function(text){
+  showTextWithoutTimeout (text){
     this.hideText();
     this._renderText(text, 0);
     this._isShowingDialog = false;
-  },
+  }
 
-  _renderText: function(text, timeout){
+  _renderText (text, timeout){
     if(this._isShowingDialog){
       this._textLayer.alpha = 1;
     }
@@ -172,20 +167,20 @@ nsn.TextManager.prototype = {
       this._currentTextTimeoutId = setTimeout(this.clearText.bind(this), timeout);
     }
 
-  },
+  }
 
-  _clearCurrentTextTimeout: function(){
+  _clearCurrentTextTimeout() {
     if(this._currentTextTimeoutId){
       clearTimeout(this._currentTextTimeoutId);
     }
-  },
+  }
 
-  stopAllTexts: function() {
+  stopAllTexts () {
     clearTimeout(this.showTextTimeout);
     this.hideText();
-  },
+  }
 
-  _getTwoLinesOfText: function(textBrokenInLines, indexToStart){
+  _getTwoLinesOfText (textBrokenInLines, indexToStart){
     var textWithLineBreaks = "";
     var phrase = "";
     var twoLinesCounter = 0;
@@ -204,17 +199,17 @@ nsn.TextManager.prototype = {
     }
 
     return textWithLineBreaks;
-  },
+  }
 
-  isShowingText: function(){
+  isShowingText() {
     if(this._textObject.text === ""){
       return false;
     }else{
       return true;
     }
-  },
+  }
 
-  _splitTextInLines: function(text){
+  _splitTextInLines (text){
     var canvasWidth = nsn.Engine.canvas.width;
     var marginSpace = 2 * this._textObject.x;
     var textAllowedSpace = canvasWidth - marginSpace;
@@ -244,9 +239,9 @@ nsn.TextManager.prototype = {
     textBrokenInLines.push(line);
 
     return textBrokenInLines;
-  },
+  }
 
-  _createTextObject: function(){
+  _createTextObject() {
     var _textObject = new createjs.Text("", this._font, "#FFFFFF");
     _textObject.x = 100;
     _textObject.y = 545;
@@ -255,9 +250,9 @@ nsn.TextManager.prototype = {
     _textObject.shadow = new createjs.Shadow("#000000", 2, 2, 0);
 
     return _textObject;
-  },
+  }
 
-  _onMouseOverHighlight: function(params){
+  _onMouseOverHighlight (params){
     if(!this._isShowingDialog){
       var messageToShow = params.objectName;
 
@@ -270,9 +265,9 @@ nsn.TextManager.prototype = {
 
       this.showTextWithoutTimeout(messageToShow);
     }
-  },
+  }
 
-  _onMouseOutHighlight: function(params){
+  _onMouseOutHighlight (params){
     if (!this._isShowingDialog){
       this.hideText();
     }
@@ -282,25 +277,25 @@ nsn.TextManager.prototype = {
       var messageToShow = this._buildCombinationMessagePrefix(nsn.Inventory.itemSelected);
       this.showTextWithoutTimeout(messageToShow);
     }
-  },
+  }
 
-  _handleItemPicked: function(params){
+  _handleItemPicked (params){
     this.showText(params.text);
-  },
+  }
 
-  _handleUseItemStart: function(params){
+  _handleUseItemStart (params){
     var messageToShow = this._buildCombinationMessagePrefix(params.currentObject);
     this.showTextWithoutTimeout(messageToShow);
-  },
+  }
 
-  _handlePlayerTalk: function(params){
+  _handlePlayerTalk (params){
     this.showText(params.text);
     this.currentDeferred.promise.then(function(){
       nsn.fire(nsn.events.PLAYER_SPEECH_TEXT_ENDED);
     });
-  },
+  }
 
-  _handleCombinationMessage: function(params){
+  _handleCombinationMessage (params){
     var combinationMessage = this.DEFAULT_COMBINATION_MESSAGE;
 
     if(params.combinationConfig){
@@ -308,17 +303,15 @@ nsn.TextManager.prototype = {
     }
 
     nsn.fire(nsn.events.COMBINATION_MESSAGE_BUILT, {combinationMessage: combinationMessage});
-  },
+  }
 
-  _buildFullCombinationMessage: function(itemSelected, objectMouseOverName){
+  _buildFullCombinationMessage (itemSelected, objectMouseOverName){
     return this._buildCombinationMessagePrefix(itemSelected) + objectMouseOverName;
-  },
+  }
 
   //TODO I18n
-  _buildCombinationMessagePrefix: function(itemSelected){
+  _buildCombinationMessagePrefix (itemSelected){
     return "Usar " + itemSelected.name + " com: ";
   }
 
-};
-
-nsn.TextManager.prototype.constructor = nsn.TextManager;
+}
