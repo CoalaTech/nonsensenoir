@@ -8,7 +8,7 @@
 *   - walkFront - Front walking
 *   - walk - Side walking
 */
-class Walkable{
+export default class Walkable{
 
   walkPath() {
 

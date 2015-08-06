@@ -7,13 +7,13 @@ nsn.ObjectManager = function(){
 
   this.colorFilter = new createjs.ColorFilter(1, 0.8, 0.4, 1, 0, 0, 0, 0);
 
-  this.blurFilter = new createjs.BlurFilter(2, 2, 0.6);
+  /*this.blurFilter = new createjs.BlurFilter(2, 2, 0.6);
 
   this.thresholdFilter = new createjs.ThresholdFilter(150);
 
   this.brightnessFilter = new createjs.BrightnessFilter(50);
 
-  this.bounds = this.blurFilter.getBounds();
+  this.bounds = this.blurFilter.getBounds();*/
 
   this._addListeners();
 };
@@ -117,3 +117,5 @@ nsn.ObjectManager.prototype = {
 };
 
 nsn.ObjectManager.prototype.constructor = nsn.ObjectManager;
+
+exports.default = nsn.ObjectManager;

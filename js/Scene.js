@@ -1,5 +1,9 @@
 /* global nsn: true, createjs: true */
 
+import 'Widescreen';
+import 'Flashback';
+import 'Fade';
+
 /**
 * @copyright    2014 CoalaTech.
 */

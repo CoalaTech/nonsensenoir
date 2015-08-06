@@ -1,5 +1,13 @@
 /* global nsn: true, createjs: true */
 
+import ObjectManager from 'ObjectManager';
+import Scene from 'Scene';
+import Character from 'Character';
+import Player from 'Player';
+import Background from 'Background';
+
+import 'Exit';
+
 nsn.GameEngine = function(){
 
   this.scenes = {};
@@ -64,7 +72,7 @@ nsn.GameEngine.prototype = {
   },
 
   buildScene: function(config){
-    var scene = new nsn.Scene();
+    var scene = new Scene();
     scene.jsonContent = config;
 
     scene.name = config.description;
@@ -83,15 +91,16 @@ nsn.GameEngine.prototype = {
     var character;
 
     if(config.isPlayer){
-      character = new nsn.Player(config);
+      character = new Player(config);
       this.player = character;
     }else{
-      character = new nsn.Character(config);
+      character = new Character(config);
     }
 
     this.characters[config.name] = character;
 
     return character;
+
   },
 
   buildBackground: function(config){
@@ -103,7 +112,7 @@ nsn.GameEngine.prototype = {
     var imageSrc = this.assets[config.source],
         image = new createjs.Bitmap(imageSrc);
 
-    var background = new nsn.Background(config.name, image, config.matrix);
+    var background = new Background(config.name, image, config.matrix);
 
     this.backgrounds[config.name] = background;
 
@@ -176,7 +185,8 @@ nsn.GameEngine.prototype = {
     nsn.fire(nsn.events.SCENE_CHANGED, {"from": this.currentScene ? this.currentScene.name : undefined, "to": sceneName});
 
     this.currentScene = scene;
-    this.stage.setScene(scene);
+
+    this.stage.scene = scene;
 
     nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
   },
@@ -202,5 +212,4 @@ nsn.GameEngine.prototype = {
 
 nsn.GameEngine.prototype.constructor = nsn.GameEngine;
 
-// require(['Base']);
 import events from 'Base';

@@ -90,7 +90,11 @@ export default class Stage {
     this.stage.addChild(child);
   }
 
-  setScene (scene){
+  set scene (scene){
+    if(!scene){
+      return;
+    }
+
     if(this.scene){
       this.scene.fadeOut(function(){
         this._scenePanel.removeAllChildren();

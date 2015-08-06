@@ -1,6 +1,6 @@
-import Walkable from 'Walkable'
+import Walkable from 'Walkable';
 
-class Character extends Walkable.Walkable{
+export default class Character extends Walkable{
 
   constructor(options) {
 

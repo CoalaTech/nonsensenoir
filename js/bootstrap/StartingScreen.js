@@ -39,6 +39,8 @@ export default class StartingScreen {
 
 }
 
+
+
 class LoadingBar{
 
   constructor(x, y, width, height){
