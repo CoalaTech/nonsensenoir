@@ -6,8 +6,7 @@ window.nsn = window.nsn || {
 
 define("Main", ["exports", "Engine", "Stage"], function (exports, engine, Stage) {
 
-  var test = teste,
-      eng = engine;
+  var eng = engine;
 
   var initGame = function(){
 
