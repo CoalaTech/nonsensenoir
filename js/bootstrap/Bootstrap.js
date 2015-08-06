@@ -63,7 +63,7 @@ export default class Bootstrap {
         }
 
         nsn.fire(nsn.events.ASSETS_LOADED);
-        nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: this.container});
+        // nsn.fire(nsn.events.GAME_STARTED, {startingScreenContainer: this.container});
 
       }.bind(this)
 
