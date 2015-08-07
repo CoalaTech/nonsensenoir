@@ -53,7 +53,7 @@ export default class Character extends Walkable{
 
   walk(x, y) {
 
-    var position = this.position();
+    var position = this.position;
 
     var path = nsn.Engine.findPath(position[0], position[1], x, y);
 

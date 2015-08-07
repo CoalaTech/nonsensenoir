@@ -1,5 +1,7 @@
 /* global nsn: true, createjs: true */
 
+import events from 'Base';
+
 (function(){
   
   var Inventory = function(){

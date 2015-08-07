@@ -12,6 +12,8 @@ define("Main", ["exports", "Engine", "Stage", "Bootstrap"], function (exports, e
 
     nsn.Engine = new nsn.GameEngine();
     nsn.Engine.stage = new Stage();
+    nsn.Engine.objectManager = new nsn.ObjectManager();
+    // nsn.Engine.gameSound = new nsn.GameSound();
 
     /*  Tentativa de redimensionar a tela */
     if(document.body.offsetWidth < nsn.Engine.canvas.width ||

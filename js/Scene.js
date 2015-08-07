@@ -193,6 +193,16 @@ export default class Scene {
 
   }
 
+  findPath (fromX, fromY, toX, toY){
+
+    if(!this.background){
+      throw new Error('No background, no path to be found =P');
+    }
+
+    return this.background.findPath(fromX, fromY, toX, toY);
+
+  }
+
   flashback (enabled){
     if(enabled){
       this.fx.flashback.show();

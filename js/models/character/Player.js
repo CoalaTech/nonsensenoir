@@ -8,6 +8,8 @@ export default class Player extends Character{
 
     super(options);
 
+    this.addListeners();
+
   }
 
   hasItem (item) {

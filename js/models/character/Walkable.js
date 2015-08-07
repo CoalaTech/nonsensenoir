@@ -10,7 +10,7 @@
 */
 export default class Walkable{
 
-  walkPath() {
+  walkPath(path) {
 
     this.stop();
 
