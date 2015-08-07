@@ -48,10 +48,9 @@ nsn.Character.prototype = {
 
     var position = this.position();
 
-    /* TODO: Refatorar esse pedaço. Character nao tem que conhecer o background */
-    var path = nsn.Engine.currentScene.background.findPath(position[0], position[1], x, y);
+    var path = nsn.Engine.findPath(position[0], position[1], x, y);
 
-    // Available since Character 'implements' nsn.Walkable
+    // Available as long as nsn.Character "implements" nsn.Walkable
     return this.walkPath(path);
 
   },

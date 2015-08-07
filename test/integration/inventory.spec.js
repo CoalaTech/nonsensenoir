@@ -11,8 +11,8 @@ describe('Inventory', function(){
       addItemPinguim;
 
   before(function(){
-    subject = nsn.Engine.inventory;
-    items = nsn.Engine.currentScene.objects;
+    subject = nsn.Inventory;
+    items = nsn.Engine.getCurrentScene().objects;
 
     itemPinguim = items.pinguim;
     itemFaca = items.faca;

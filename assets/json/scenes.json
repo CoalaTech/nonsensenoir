@@ -13,8 +13,7 @@
       
     ],
     "Background":{
-      "name": "apartamento",
-      "source": "apartamento.json"
+      "name": "apartamento"
     },
     "Objects":{
       "source": "props.json"
@@ -56,8 +55,7 @@
       
     ],
     "Background":{
-      "name": "sacada",
-      "source": "sacada.json"
+      "name": "sacada"
     },
     "Objects":{
       "source": "props_sacada.json"

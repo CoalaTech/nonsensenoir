@@ -63,8 +63,8 @@ nsn.ObjectManager.prototype = {
   },
 
   _onObjectClicked: function(e){
-    if(nsn.Engine.inventory.itemSelected){
-      nsn.Engine.objectCombiner.combine(nsn.Engine.inventory.itemSelected, e.currentTarget);
+    if(nsn.Inventory.itemSelected){
+      nsn.Engine.objectCombiner.combine(nsn.Inventory.itemSelected, e.currentTarget);
     }else{
       var coordinates = this._targetCoordinates(e.target);
 

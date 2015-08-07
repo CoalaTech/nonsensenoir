@@ -2,8 +2,6 @@
 
 nsn.GameEngine = function(){
 
-  this.scenes = {};
-
   this.characters = {};
 
   this.backgrounds = {};
@@ -19,11 +17,10 @@ nsn.GameEngine = function(){
 nsn.GameEngine.prototype = {
 
   init: function(){
-    this.gameSound = new nsn.GameSound();
     this.canvas = this._setupCanvas();
 
     nsn.listen(nsn.events.STOP_EVERYTHING, this.stopEverything, this);
-    nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this);
+    nsn.listen(nsn.events.GAME_STARTED, this._onGameStarted, this, true);
   },
 
   _setupCanvas: function(){
@@ -39,13 +36,12 @@ nsn.GameEngine.prototype = {
 
     this.stage.stage.removeChild(params.startingScreenContainer);
 
-    this.buildScenes();
-
+    // this.buildScenes();
+    nsn.SceneBuilder.buildScenes(this.assets["scenes.json"]);
     this.setSceneAsCurrent("Apartamento");
 
     this.objectHandler = new nsn.ObjectHandler();
     this.objectCombiner = new nsn.ObjectCombiner();
-    this.inventory = new nsn.Inventory();
     this.script = new nsn.ScriptMachine();
 
     // Descomentar para rodar a música do jogo
@@ -53,33 +49,24 @@ nsn.GameEngine.prototype = {
     // this.gameSound.playSound("mainGameMusicShort", -1);
   },
 
-  buildScenes: function(){
-    this.objectManager = new nsn.ObjectManager();
+  getCharacter: function(name){
 
-    var scenes = this.assets["scenes.json"];
-    nsn.each(scenes, function(name, config){
-      this.buildScene(config);
-    }.bind(this));
-  },
-
-  buildScene: function(config){
-    var scene = new nsn.Scene();
-    scene.jsonContent = config;
-
-    scene.name = config.description;
-    scene.showEffect = config.showEffect;
-    scene.hideEffect = config.hideEffect;
-
-    this.scenes[config.description] = scene;
-  },
-
-  buildCharacter: function(config){
-
-    if(this.characters[config.name]){
-      return this.characters[config.name];
+    if(!this.characters[name]){
+      this._buildCharacter(name);
     }
 
-    var character;
+    return this.characters[name];
+
+  },
+
+  _buildCharacter: function(name){
+
+    var config = this.assets['characters.json'][name],
+      character;
+
+    if(!config){
+      throw new Error('No character config found for ' + name);
+    }
 
     if(config.isPlayer){
       character = new nsn.Player(config);
@@ -88,105 +75,94 @@ nsn.GameEngine.prototype = {
       character = new nsn.Character(config);
     }
 
-    this.characters[config.name] = character;
+    this.characters[name] = character;
 
     return character;
+
   },
 
-  buildBackground: function(config){
+  getBackground: function(name){
 
-    if(this.backgrounds[config.name]){
-      return this.backgrounds[config.name];
+    if(!this.backgrounds[name]){
+      this._buildBackground(name);
+    }
+
+    return this.backgrounds[name];
+
+  },
+
+  _buildBackground: function(name){
+
+    var config = this.assets[name + '.json'];
+
+    if(!config){
+      throw new Error('No background config found for ' + name);
     }
 
     var imageSrc = this.assets[config.source],
         image = new createjs.Bitmap(imageSrc);
 
-    var background = new nsn.Background(config.name, image, config.matrix);
+    var background = new nsn.Background(name, image, config.matrix);
 
-    this.backgrounds[config.name] = background;
+    this.backgrounds[name] = background;
 
     return background;
 
   },
 
   buildExit: function(config){
-    var exit = new nsn.Exit(config);
+    return new nsn.Exit(config);
+  },
+
+  getCurrentScene: function(){
+    return this._currentScene;
   },
 
   setSceneAsCurrent: function(sceneName, exitObject){
-    var scene = this.scenes[sceneName];
 
-    if(!scene){
-      return;
-    }
+    var scene = nsn.SceneBuilder.getScene(sceneName);
 
-    /*  A cena ainda nao foi construida  */
-    if(!scene.loaded){
-
-      var config = scene.jsonContent,
-        characterConfig,
-        character,
-        background,
-        exit;
-
-      nsn.each(config.Characters, function(conf, index){
-          characterConfig = this.assets['characters.json'][conf.name];
-          character = this.buildCharacter(characterConfig);
-          character.image.x = conf.startingX;
-          character.image.y = conf.startingY;
-
-          scene.addCharacter(character);
-        }.bind(this)
-      );
-
-      var backgroundConfig = this.assets[config.Background.source];
-      background = this.buildBackground(backgroundConfig);
-      scene.addBackground(background);
-
-      if(config.Objects){
-        var objectsConfig = this.assets[config.Objects.source];
-        var objects = this.objectManager.createObjects(objectsConfig);
-        scene.addObjects(objects);
-      }
-
-      if(config.Exits){
-        nsn.each(config.Exits, function(conf, index){
-          exit = new nsn.Exit(conf);
-          scene.addExit(exit);
-        }.bind(this));
-      }
-
-      scene.loaded = true;
-    }
-
-    /*  O jogador está vindo de outra cena  */
     if(exitObject){
       var targetScene = scene.exits[exitObject.config.targetExit];
 
       this.player.image.x = targetScene.config.playerX;
       this.player.image.y = targetScene.config.playerY;
-      // this.player.facing = exitObject.config.facingOnEnter;
 
       this.player.stop();
       scene.addCharacter(this.player);
     }
 
-    nsn.fire(nsn.events.SCENE_CHANGED, {"from": this.currentScene ? this.currentScene.name : undefined, "to": sceneName});
+    nsn.fire(nsn.events.SCENE_CHANGED, {"from": this._currentScene ? this._currentScene.name : undefined, "to": sceneName});
 
-    this.currentScene = scene;
+    this._currentScene = scene;
+
     this.stage.setScene(scene);
 
     nsn.fire(nsn.events.ON_ACTION, {"type": "enter_scene", "target": sceneName});
+
+  },
+
+  findPath: function(fromX, fromY, toX, toY){
+
+    if(!this._currentScene){
+      throw new Error('No scene set as current.');
+    }
+
+    return this._currentScene.findPath(fromX, fromY, toX, toY);
+
   },
 
   widescreen: function(value){
-    return this.currentScene.widescreen(value);
+    return this._currentScene.widescreen(value);
   },
 
   stopEverything: function() {
-    this.player.resetAnimation();
-    this.objectHandler.hideHUD();
+    if(this.player){
+      this.player.resetAnimation();
+    }
+    if(this.objectHandler){
+      this.objectHandler.hideHUD();
+    }
   },
 
   scaleX: function(){
