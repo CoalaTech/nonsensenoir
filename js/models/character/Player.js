@@ -13,7 +13,7 @@ export default class Player extends Character{
   }
 
   hasItem (item) {
-    return nsn.Engine.inventory.hasItem(item);
+    return nsn.Inventory.hasItem(item);
   }
 
   pickItem (item, actionText) {
@@ -29,7 +29,7 @@ export default class Player extends Character{
             this.face(item.use_position.facing);
           }
 
-          nsn.Engine.inventory.addItem(item);
+          nsn.Inventory.addItem(item);
 
           take.call(this);
 
@@ -38,7 +38,7 @@ export default class Player extends Character{
 
     }else{
 
-      nsn.Engine.inventory.addItem(item);
+      nsn.Inventory.addItem(item);
 
       take.call(this);
 
