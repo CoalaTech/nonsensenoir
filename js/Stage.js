@@ -58,11 +58,6 @@ export default class Stage {
     this.stage.update();
   }
 
-  _createTextManager (){
-    nsn.Engine.textManager = new TextManager();
-    this._textPanel.addChild(nsn.Engine.textManager.textContainer);
-  }
-
   _createFadePanel (){
     var graphics = new createjs.Graphics();
     graphics.beginFill("rgba(0,0,0,1)");
