@@ -1,5 +1,7 @@
 /* global nsn: true, createjs: true */
 
+import events from 'Base';
+
 (function(){
   
   var Inventory = function(){
@@ -34,6 +36,7 @@
 
       this.image = this._createImage();
       this.group = this._createGroup();
+      this.groupSize = this.group.getBounds();
 
       this.setOpenInventoryOnKeypress();
 
@@ -90,7 +93,7 @@
       nsn.Engine.stage.addHUD(this.closeInventoryButton);
       nsn.Engine.stage.addHUD(this.group);
 
-      createjs.Tween.get(this.group).to({x: 0}, 200);
+      createjs.Tween.get(this.group).to({x: 0}, this.groupSize.width);
 
       this.inventoryIsOpen = true;
 
@@ -103,7 +106,7 @@
       nsn.Engine.stage.removeHUD(this.closeInventoryButton);
       nsn.Engine.stage.addHUD(this.openInventoryButton);
       createjs.Tween.get(this.group)
-            .to({x: -200}, 200)
+            .to({x: -this.groupSize.width}, 200)
             .call(function(){
               nsn.Engine.stage.removeHUD(this.group);
             });

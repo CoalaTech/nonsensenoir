@@ -44,7 +44,7 @@ nsn.Exit.prototype = {
 
   _walkToExit: function(){
 
-    var playerPosition = nsn.Engine.player.position();
+    var playerPosition = nsn.Engine.player.position;
 
     /* Going back and forth between scenes */
     if(playerPosition[0] === this.exitX && playerPosition[1] === this.exitY){

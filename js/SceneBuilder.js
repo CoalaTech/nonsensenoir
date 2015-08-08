@@ -3,6 +3,9 @@
 /**
 * @copyright    2014 CoalaTech.
 */
+
+import Scene from 'Scene';
+
 (function(){
 
   var scenes = {};
@@ -39,7 +42,7 @@
 
     buildScene: function(config){
 
-      var scene = new nsn.Scene();
+      var scene = new Scene();
 
       scene.config = config;
 

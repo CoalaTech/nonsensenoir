@@ -1,17 +1,19 @@
 /* global nsn: true, createjs: true */
 
-(function(){
+window.nsn = window.nsn || {
+  ASSETS_PATH: "./"
+};
 
-  window.nsn = window.nsn || {
-    ASSETS_PATH: "./"
-  };
+define("Main", ["exports", "Engine", "Stage", "Bootstrap"], function (exports, engine, Stage, Bootstrap) {
 
-  function initGame(){
+  var eng = engine;
+
+  var initGame = function(){
 
     nsn.Engine = new nsn.GameEngine();
-    nsn.Engine.stage = new nsn.Stage();
-    nsn.Engine.gameSound = new nsn.GameSound();
+    nsn.Engine.stage = new Stage();
     nsn.Engine.objectManager = new nsn.ObjectManager();
+    // nsn.Engine.gameSound = new nsn.GameSound();
 
     /*  Tentativa de redimensionar a tela */
     if(document.body.offsetWidth < nsn.Engine.canvas.width ||
@@ -25,11 +27,23 @@
       nsn.Engine.stage.stage.scaleX = nsn.Engine.stage.stage.scaleY = scale;
     }
 
-    var bootstrap = new nsn.Bootstrap();
-    bootstrap.init();
+    var bootstrap = new Bootstrap();
+    bootstrap.start();
 
-  }
+  };
 
-  window.onload = initGame;
+  exports.initGame = initGame.bind(this);
 
-})();
+});
+
+window.onload = function(){
+
+  require(["Main"], function(main){
+
+    main.initGame();
+
+    console.log("OK");
+
+  });
+
+}

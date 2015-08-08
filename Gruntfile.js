@@ -16,14 +16,37 @@ module.exports = function(grunt) {
 
     serve: {
       options: {
-        port: 9000
+        port: 9010
+      }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        experimental: true,
+        modules: "amd",
+        moduleIds: true,
+        getModuleId: function(name){
+          return name.split("/").pop();
+        }
+      },
+      dist: {
+        files: [
+          {
+            "expand": true,
+            "cwd": "<%=config.js%>/",
+            "src": ["**/*.js"],
+            "dest": "tmp/",
+            "ext": ".js"
+          }
+        ]
       }
     },
 
     concat: {
       /* Concats all the .js files under /js into nsn.js */
       js: {
-        src: ['<%=config.js%>/**/*.js', '!<%=config.js%>/main.js'],
+        src: ['tmp/**/*.js', '!tmp/main.js'],
         dest: '<%=config.build%>/js/nsn.js'
       },
     },
@@ -157,9 +180,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-babel');
 
   grunt.registerTask('serving', ['concurrent:serveAndWatch']);
-  grunt.registerTask('no-serving', ['concat', 'copy:dist']);
+  grunt.registerTask('no-serving', ['babel', 'concat', 'copy:dist']);
   grunt.registerTask('default', ['no-serving', 'serving']);
   grunt.registerTask('spec', ['no-serving', 'connect:test', 'mocha']);
 };

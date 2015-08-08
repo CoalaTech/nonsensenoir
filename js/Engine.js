@@ -1,6 +1,22 @@
 /* global nsn: true, createjs: true */
 
+import events from 'Base';
+import ObjectManager from 'ObjectManager';
+import Scene from 'Scene';
+import Character from 'Character';
+import Player from 'Player';
+import BackgroundFactory from 'BackgroundFactory';
+
+import 'Exit';
+import 'ObjectHandler';
+import 'ObjectCombiner';
+import 'Inventory';
+import 'ScriptMachine';
+import 'SceneBuilder';
+
 nsn.GameEngine = function(){
+
+  this.scenes = {};
 
   this.characters = {};
 
@@ -69,10 +85,10 @@ nsn.GameEngine.prototype = {
     }
 
     if(config.isPlayer){
-      character = new nsn.Player(config);
+      character = new Player(config);
       this.player = character;
     }else{
-      character = new nsn.Character(config);
+      character = new Character(config);
     }
 
     this.characters[name] = character;
@@ -83,32 +99,17 @@ nsn.GameEngine.prototype = {
 
   getBackground: function(name){
 
-    if(!this.backgrounds[name]){
-      this._buildBackground(name);
-    }
-
-    return this.backgrounds[name];
+    return BackgroundFactory.getBackground(name);
 
   },
 
-  _buildBackground: function(name){
+  // _buildBackground: function(name){
 
-    var config = this.assets[name + '.json'];
+  //   var config = this.assets[`${name}.json`];
 
-    if(!config){
-      throw new Error('No background config found for ' + name);
-    }
+  //   BackgroundFactory.build(config);
 
-    var imageSrc = this.assets[config.source],
-        image = new createjs.Bitmap(imageSrc);
-
-    var background = new nsn.Background(name, image, config.matrix);
-
-    this.backgrounds[name] = background;
-
-    return background;
-
-  },
+  // },
 
   buildExit: function(config){
     return new nsn.Exit(config);

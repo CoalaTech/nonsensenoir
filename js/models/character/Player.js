@@ -1,19 +1,22 @@
 /* global nsn: true, createjs: true */
 
-nsn.Player = (function(){
-  var talkingDeferred;
+import Character from 'Character';
 
-  /*  Extends Player  */
-  function Player(source){
-    nsn.Character.apply(this, arguments);
+export default class Player extends Character{
+
+  constructor(options) {
+
+    super(options);
+
+    this.addListeners();
+
   }
-  Player.prototype = new nsn.Character();
 
-  Player.prototype.hasItem = function(item){
+  hasItem (item) {
     return nsn.Inventory.hasItem(item);
-  };
+  }
 
-  Player.prototype.pickItem = function(item, actionText){
+  pickItem (item, actionText) {
 
     var deferred = new nsn.Deferred();
     var path;
@@ -48,9 +51,9 @@ nsn.Player = (function(){
     });
 
     return deferred.promise;
-  };
+  }
 
-  Player.prototype.useItem = function(params){
+  useItem (params){
 
     var deferred = new nsn.Deferred();
     var path;
@@ -83,18 +86,18 @@ nsn.Player = (function(){
     });
 
     return deferred.promise;
-  };
+  }
 
-  Player.prototype.say = function(message){
+  say (message){
     talkingDeferred = new nsn.Deferred();
     this.image.gotoAndPlay("talk");
 
     nsn.fire(nsn.events.PLAYER_TALKING, {text: message});
 
     return talkingDeferred.promise;
-  };
+  }
 
-  Player.prototype.addListeners = function(){
+  addListeners (){
     // nsn.listen(nsn.events.PATH_FOUND, this.walkPath, this);
     nsn.listen(nsn.events.BACKGROUND_CLICKED, onBackgroundClicked, this);
     nsn.listen(nsn.events.TEXT_END, this.resetAnimation, this);
@@ -106,69 +109,69 @@ nsn.Player = (function(){
     nsn.listen(nsn.events.ACTION_USE_CALLED, reactToActionUse, this);
 
     createjs.Ticker.addEventListener("tick", handleTick.bind(this));
-  };
-
-  function handleCombinationMessageBuilt(params){
-    this.say(params.combinationMessage);
   }
 
-  function onBackgroundClicked(evt){
-    this.walk(evt.stageX, evt.stageY);
-  }
+}
 
-  function take(){
+var talkingDeferred;
+
+function handleCombinationMessageBuilt(params){
+  this.say(params.combinationMessage);
+}
+
+function onBackgroundClicked(evt){
+  this.walk(evt.stageX, evt.stageY);
+}
+
+function take(){
+  this.stop();
+  this.image.gotoAndPlay("take");
+}
+
+function grab(position){
+  position = position || "middle";
+  this.stop();
+  this.image.gotoAndPlay("grab_" + position);
+}
+
+function reactToActionUse(params){
+  var objectClicked = params.currentObject;
+
+  if(objectClicked.pickable){
+    this.pickItem(objectClicked, params.actionText);
+  }else{
+    this.say(params.actionText);
+  }
+}
+
+Player.prototype.resetAnimation = function(){
+  this.stop();
+  this.image.gotoAndPlay("idle");
+};
+
+function openInventory(){
+  nsn.fire(nsn.events.STOP_EVERYTHING);
+  this.image.gotoAndPlay("inventory");
+}
+
+function closeInventory(evt){
+  /*  Se foi fechado pelo botao, toca a animação ao contrário  */
+  if(evt.closedFromButton === true){
     this.stop();
-    this.image.gotoAndPlay("take");
+    this.image.gotoAndPlay("inventory_close");
+  }else{
+    this.resetAnimation.call(this);
   }
+}
 
-  function grab(position){
-    position = position || "middle";
-    this.stop();
-    this.image.gotoAndPlay("grab_" + position);
-  }
+function stopTalking(){
+  talkingDeferred.resolve();
+}
 
-  function reactToActionUse(params){
-    var objectClicked = params.currentObject;
-
-    if(objectClicked.pickable){
-      this.pickItem(objectClicked, params.actionText);
-    }else{
-      this.say(params.actionText);
-    }
-  }
-
-  Player.prototype.resetAnimation = function(){
-    this.stop();
-    this.image.gotoAndPlay("idle");
-  };
-
-  function openInventory(){
-    nsn.fire(nsn.events.STOP_EVERYTHING);
-    this.image.gotoAndPlay("inventory");
-  }
-
-  function closeInventory(evt){
-    /*  Se foi fechado pelo botao, toca a animação ao contrário  */
-    if(evt.closedFromButton === true){
-      this.stop();
-      this.image.gotoAndPlay("inventory_close");
-    }else{
-      this.resetAnimation.call(this);
-    }
-  }
-
-  function stopTalking(){
-    talkingDeferred.resolve();
-  }
-
-  function handleTick(){
-    // if(this.isMoving){
-      var negative = this.image.scaleX > 0 ? 1 : -1;
-      this.image.scaleX = this.image.scaleY = ((this.image.y + this.image.regY - 60) / 600);
-      this.image.scaleX *= negative;
-    // }
-  }
-
-  return Player;
-
-})();
+function handleTick(){
+  // if(this.isMoving){
+    var negative = this.image.scaleX > 0 ? 1 : -1;
+    this.image.scaleX = this.image.scaleY = ((this.image.y + this.image.regY - 60) / 600);
+    this.image.scaleX *= negative;
+  // }
+}

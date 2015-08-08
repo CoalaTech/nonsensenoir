@@ -7,6 +7,7 @@
     "PreloadJS": "~0.6.0",
     "TweenJS": "~0.6.0",
     "pathfinding": "~0.4.16",
-    "rsvp": "~3.0.17"
+    "rsvp": "~3.0.17",
+    "requirejs": "~2.1.20"
   }
 }

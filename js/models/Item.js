@@ -12,19 +12,12 @@ nsn.Item = (function(){
 
     this.foreground = options.foreground || false; /*  Item sempre à frente da tela  */
 
-    this.bitmap = new createjs.Bitmap(nsn.Engine.assets[imagePath]);
-    this.bitmap.x = x;
-    this.bitmap.y = y;
-    this.bitmap.item = this;
+    this.graphics = graphics;
+    this.graphics.setPosition(x, y);
   }
 
-  Item.prototype.addEventListener = function(type, listener) {
-    this.bitmap.addEventListener(type,
-      function(evt){
-        evt.item = this;
-        listener(evt);
-      }.bind(this)
-    );
+  Item.prototype.click = function(listener){
+    this.graphics.click(listener);
   };
 
   Item.prototype.width = function() {
