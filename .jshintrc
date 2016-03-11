@@ -1,9 +1,0 @@
-// All options available here: http://jshint.com/docs/options/
-
-{
-  "curly": true,
-  "eqeqeq": true,
-  "undef": true,
-  "browser": true,
-  "mocha": true
-}
